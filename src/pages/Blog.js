@@ -173,10 +173,7 @@ function Blog() {
                 onChange={handleSearchChangeBlog}
                 className="p-2   w-full"
               />
-              <button
-                type="submit"
-                className="p-2 ml-2  "
-              >
+              <button type="submit" className="p-2 ml-2  ">
                 <FaSearch className="text-xl" />
               </button>
             </form>
@@ -198,12 +195,12 @@ function Blog() {
             ></div>
           )}
           {!loading && (
-            <div className="blog-container">
+            <div className="w-[90%] outline-dashed mx-auto mt-5">
               {blogs.length > 0 && (
                 <div>
-                  <div className="blogContent">
-                    <div className="blog-flex">
-                      <div className="blogimg">
+                  <div className="">
+                    <div className="flex flex-col lg:flex-row gap-5 items-center ">
+                      <div className="w-[80%] lg:w-[50%] h-[400px] mx-auto">
                         <img
                           src={
                             selectedBlog
@@ -211,10 +208,11 @@ function Blog() {
                               : blogs[0].pictureUrl
                           }
                           alt="Blog poster"
+                          className="w-[100%] h-[100%] object-fill rounded-3xl mx-auto"
                         />
                       </div>
-                      <div className="infoblog">
-                        <div className="flexiconwithinput">
+                      <div className="">
+                        <div className="">
                           <div>
                             {isCopied && (
                               <span
@@ -244,10 +242,10 @@ function Blog() {
                             : blogs[0].content.substring(0, 600)}
                           ...
                         </h6>
-                        <div className="readArticle">
+                        <div className="w-[130px] h-[150px] text-center items-center">
                           <button
                             onClick={() => handleBlogClick(blogs[0])}
-                            className="read"
+                            className="p-5 w-[100%] h-[100%] bg-[#61DAA2] text-white"
                           >
                             read article
                           </button>

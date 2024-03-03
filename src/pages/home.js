@@ -98,7 +98,6 @@ function Home() {
     fetchUserFavourite();
     console.log("CART", cart);
     fetchMianCategory();
-    fetchSubCategory();
     setMainCategoryText(
       translations[language]?.main || translations["en"]?.main
     );
@@ -284,9 +283,9 @@ function Home() {
       console.log("error in fetching main Category", error);
     }
   };
-  const fetchSubCategory = async () => {
+  const fetchSubCategory = async (id) => {
     try {
-      const response = await axios.get(`${baseUrl}/public/category/all`, {
+      const response = await axios.get(`${baseUrl}/public/main/category/${id}`, {
         headers: {
           "Accept-Language": language,
         },
@@ -341,6 +340,7 @@ function Home() {
   const handleMainCatSelect = (id, name) => {
     console.log("Selected main Category id:", id);
     fetchProductsByMainCat(id);
+    fetchSubCategory(id)
     setSelectedMainCat(id);
     setMainCategoryText(name);
   };
