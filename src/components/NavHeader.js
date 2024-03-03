@@ -337,7 +337,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                   <select
                     value={selectedCategoryId}
                     onChange={(e) => handleSelect(parseInt(e.target.value))}
-                    className="bg-[#61DAA2] w-10 lg:w-12 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
+                    className="bg-[#61DAA2]  lg:w-12 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
                   >
                     <option value={null}>{translations[language]?.all}</option>
                     {categories.map((category) => (

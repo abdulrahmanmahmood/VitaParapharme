@@ -753,6 +753,13 @@ function Home() {
               </div>
             )}
 
+            <div className="w-fulll items-center text-center">
+              <button className="bg-[#61DAA2] w-25 h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
+              onClick={()=>navigate('/store')}
+              >
+                Show More
+              </button>
+            </div>
             <div
               className="lg:titleProduct text-center p-2 mx-auto lg:w-[60%] lg:h-[150px] w-full  my-20"
               style={{
