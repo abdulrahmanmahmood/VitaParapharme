@@ -1,0 +1,85 @@
+.form{
+    margin-top: 15px;
+}
+.formOrder{
+    background-color: #fff;
+    padding-top: 1em;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    width: 90%;
+    margin-left: 25px;
+    box-shadow: 10px 5px 10px #8080809e;
+}
+.flexInput{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.name{
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.note{
+    height: 150px;
+}
+.flexContainerCart{
+    margin-bottom: 50px;
+}
+.flexContainerCart .confirmtotal{
+    width: 400px;
+    min-height: 300px;
+}
+.confirmtotal p{
+    color: red;
+    font-size: medium;
+    margin-top: 5em;
+}
+.confirmtotal p input {
+    width: 15px;
+    height: 15px;
+}
+.useaddress{
+    background-color: #3EBF87;
+    color: white;
+    padding: 5px;
+    border-radius: 15px;
+}
+.useaddress2{
+  background-color: #c43714;
+  color: white;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .formOrder{
+        width: 95%;
+        margin-left: 5px;
+    }
+    .flexContainerCart .confirmtotal{
+        width: 90%;
+        margin-left: 15px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 1091px) {
+    .formOrder{
+        width: 95%;
+        margin-left: 5px;
+    }
+    .flexContainerCart .confirmtotal{
+        width: 90%;
+        margin-left: 15px;
+    }
+    .name{
+        margin-right: 10px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .form{
+        width: 500px;
+    margin-left: -4em;
+    }
+}

@@ -1,0 +1,165 @@
+.userinfoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+}
+.imgInfo{
+    width: 30%;
+    margin-right: 15px;
+}
+.userdetailsInfo{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.userinfoContainer {
+    display: flex;
+   
+    width: 60%;
+   /* margin-left: auto;
+    margin-right: auto;*/
+    margin-top: 150px;
+}
+
+.imgInfo {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+.userdetailsInfo {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3EBF87;
+    border-radius: 15px;
+}
+
+/* Additional style to center content inside .imgInfo */
+.imgInfo h5 {
+    margin: 0; 
+    color: black;
+    margin-top: 10px;
+}
+.flexinput{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.flexinput input{
+    background-color: transparent;
+    color: black;
+    border-radius: 15px;
+    margin-left: 15px;
+}
+
+.imgInfo button{
+    width: 80px;
+    font-weight: bold;
+    background-color: white;
+    color: black;
+    background-color: #3EBF87;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-left: -10px;
+}
+.flexbutton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    width: 150px;
+    border-radius: 15px;
+    border: 1px solid rgb(199, 191, 191);
+    margin-top: 15px;
+}
+.flexbutton button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+}
+@media only screen and (max-width: 767px) {
+    .userinfoContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .imgInfo{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .userdetailsInfo{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;  
+        border-left: none;  
+    }
+    .flexinput{
+        flex-direction: column;
+    }
+    .flexbutton{
+        flex-direction: row;
+    }
+    .flexinput input{
+        margin-left: -2px;
+    }
+    
+}
+@media only screen and (max-width: 1199px) and (min-width: 768px) {
+    .userinfoContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .imgInfo{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .userdetailsInfo{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;  
+        border-left: none;  
+    }
+    .flexinput{
+        flex-direction: column;
+    }
+    .flexbutton{
+        flex-direction: row;
+    }
+    .flexinput input{
+        margin-left: -2px;
+    }
+    
+}
+
+
+.userdetailsInfo {
+    font-size: 1.5rem;
+  }
+  
+  .userDetail {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    color: white;
+  }
+  .saveedit{
+    color: #3EBF87;
+    margin-bottom: 15px;
+    background-color: white;
+    width: 90px;
+    height: 50px;
+    border-radius: 15px;
+  }

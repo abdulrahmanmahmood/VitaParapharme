@@ -1,0 +1,292 @@
+
+.about-head{
+    display: flex;
+    flex-direction: row;
+   
+}
+.about-head .imgabout{
+    width: 45%;
+    height: 400px;
+    background: white;
+    border-radius:  50%;
+    margin-left: -12%;
+    margin-top: -10px;
+}
+
+.imgabout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .imgabout img {
+    width: 200px; 
+    height: 200px; 
+    object-fit: contain;
+    margin-left: 150px;
+  }
+  
+.about-head .infoabout{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.infoabout h5{
+    margin-top: 100px;
+    color: black;
+
+font-family: Inter;
+font-size: 35px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.buybtn{
+    right: 0;
+    position: absolute;
+    bottom: 0;
+    margin: 50px;
+}
+.buybtn button{
+    width: 150px;
+    height: 40px;
+    border-radius: 15px;
+    background-color: white;
+    color: #3EBF87;
+    font-weight: bold;
+}
+.flexabout{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-right: 90px;
+    margin-left: 90px;
+}
+.flexabout .cardabout{
+    background-color: #fff;
+    box-shadow: 10px 5px 10px #8080809e;
+    width: 20%;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 25px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.cardabout .imgcardabout{
+    background-color: #3EBF87;
+    margin-top: 15px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding: 15px;
+}
+.imgcardabout img{
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain;  
+}
+.cardabout .detailscardabout{
+    margin: 5px;
+}
+.cardabout .detailscardabout h3{
+    color: #3EBF87;
+    font-weight: bold;
+    font-size: larger;
+}
+.cardabout .detailscardabout p{
+color: #3EBF87;
+font-family: Inter;
+font-weight: bold;
+font-size: medium;
+font-style: normal;
+line-height: normal;
+}
+
+
+.flexFooter{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.flexFooter .cartfooter{
+    width: 40%;
+}
+.important{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.important h1 , .information h1{
+    color: black;
+font-family: Inter;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+.important .footerlink{
+    color: white;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+.information h2 , .important h2 , .address h2{
+    color: #FFF;
+font-family: Inter;
+font-size: 17px;
+font-style: normal;
+line-height: normal;
+margin-left: 15px;
+}
+
+.flexaddress {
+    display: flex;
+    align-items: center;
+   
+  }
+  
+  .flexaddress img {
+    width: 34px;
+    height: 34px;
+  }
+  .flexphoneemail{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+ .footerPhr{
+    height: 320px;
+    padding-bottom: 10px;
+ }
+ .aboutcontent{
+    margin-bottom: 100px;
+ }
+
+
+
+ @media(max-width: 870px){
+    .about-head{
+        display: flex;
+        flex-direction: column;
+    }
+    .imgabout{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 50px;
+        margin-right: 90px;
+        margin-left: 90px;
+    }
+    .about-head .imgabout {
+        width: 100%;
+        border-bottom-left-radius: 25%;
+        border-bottom-right-radius: 25%;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        margin: 0;
+        height: 200px;
+    }
+    .infoabout h5 {
+        color: black;
+    }
+    .imgabout img {
+        margin-left: 0;
+    }
+    .infoabout{
+        background-color: transparent;
+        width: 100%;
+        height: 350px;
+        display: flex;
+    }
+    .about-head .infoabout{
+        width: 100%;
+        padding: 5px;
+    }
+    .buybtn {
+        margin: 0;
+    }
+    .infoabout h5{
+        color: black;
+        font-size: 25px;
+    }
+    .flexabout{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+    .flexabout .cardabout{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .flexabout .imgcardabout {
+        width: 25%;
+    }
+ }
+ @media(max-width: 570px){
+    .about-head{
+        display: flex;
+        flex-direction: column;
+    }
+    .imgabout{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 50px;
+        margin-right: 90px;
+        margin-left: 90px;
+    }
+    .about-head .imgabout {
+        width: 100%;
+        border-bottom-left-radius: 25%;
+        border-bottom-right-radius: 25%;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        margin: 0;
+        height: 200px;
+    }
+    .infoabout h5 {
+        color: black;
+    }
+    .imgabout img {
+        margin-left: 0;
+    }
+    .infoabout{
+        background-color: transparent;
+        width: 100%;
+        height: 350px;
+        display: flex;
+    }
+    .about-head .infoabout{
+        width: 100%;
+        padding: 5px;
+    }
+    .buybtn {
+        margin: 0;
+    }
+    .infoabout h5{
+        color: black;
+        font-size: 25px;
+    }
+    .flexabout{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+    .flexabout .cardabout{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .flexabout .imgcardabout {
+        width: 30%;
+    }
+ }

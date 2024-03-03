@@ -1,0 +1,16 @@
+/* StarRating.css */
+
+.star-rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .star {
+    color: gold; /* Change the color of the filled stars */
+    font-size: 18px; /* Adjust the size of the stars */
+  }
+  
+  .star.empty {
+    color: #ccc; /* Change the color of the empty stars */
+  }
+  

@@ -1,0 +1,173 @@
+.detailsPage .header-container{
+  margin-bottom: 5px;
+  min-height: 600px;
+}
+.productImg{
+    width: 300px;
+    height: 300px;
+    border-top-right-radius: 150px;
+    border-bottom-left-radius: 150px;
+  }
+  .detailsContent{
+    border-top-left-radius: 150px;
+      border-top-right-radius: 150px;
+      background: linear-gradient(to right, #3EBF87, #52B443CC); 
+  }
+  .flexContent{
+    display: flex;
+    flex-direction: row;
+    margin-top: 3em;
+    /*min-height: 400px;*/
+  }
+  .flexContent .detailsIMG{
+    margin-right: 5em;
+    width: 40%;
+  }
+  .flexContent .detailsINFO{
+   /*min-height: 150px;*/
+    width: 60%;
+    margin-top: 3em;
+  }
+  .detailsIMG img{
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}
+.productFooter{
+  height: 100px;
+  background-color: #3EBF87;
+  border-top-left-radius: 150px;
+  border-top-right-radius: 150px;
+  overflow-y: hidden;
+}
+.flexFooter{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.middlefooter{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50%;
+}
+
+.counter{
+  margin-left: 5em;
+}
+.counter button{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.counter span{
+  font-size: larger;
+  font-weight: bold;
+}
+.review button{
+  background: white; 
+  height: 50px;
+  width: 100px;
+  border-radius: 15px;
+  color: black;
+  margin-left: 5px;
+}
+.cart{
+  margin-right: 2em;
+}
+.detailsflex{
+  display: flex;
+  flex-direction: column;
+}
+.detailsflex .detailsflexabout{
+ /* height: 150px;*/
+}
+.detailsflexabout h1{
+  font-size: large;
+  color: black;
+}
+.detailsflexabout p{
+  text-align: start;
+  color: black;
+}
+.detailsflex .detailsfleximg{
+  /*height: 90%;*/
+}
+.detailsfleximg{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  width: 1500px;
+}
+
+.detailsINFO h1{
+  font-size: large;
+  color: black;
+}
+.detailsINFO span{
+  font-size: medium;
+  color: black;
+}
+.flexnamerate{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #3EBF87;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.flexnamerate h2{
+  color: white;
+}
+
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 15px;
+  margin-top: 35px;
+  
+}
+
+.imgdiv{
+  width: 50%;
+  height: 200px;
+  margin-bottom: 15px;
+  
+}
+.image-container img {
+  width: 90%;
+}
+.ratenum{
+  display: flex;
+  flex-direction: row;
+}
+.ratenum h5{
+  color: white;
+}
+
+
+.detailsIMG {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items vertically */
+}
+
+.small-images-container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  margin-top: 20px; /* Adjust spacing */
+}
+
+.small-img {
+  margin: 0 10px; 
+  cursor: pointer; 
+  max-width: 100px; 
+  height: auto; 
+}
+
+.master-img {
+  max-width: 1000px; 
+}

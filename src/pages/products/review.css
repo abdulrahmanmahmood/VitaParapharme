@@ -1,0 +1,72 @@
+.grey-container{
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    /*background-color: rgb(207, 198, 198);*/
+    background-color: white;
+    height: 100%;
+}
+.flexReview{
+    padding-top: 15px;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    height: 150px;
+    margin-right: 20px;
+    border: 1px solid rgb(187, 174, 174);
+    border-radius: 15px;
+}
+.flexReview p{
+    text-align: start;
+    color: #337429cc;
+    margin-top: -10px;
+}
+.onereview{
+    display: flex;
+    flex-direction: row;
+}
+.infoComment {
+    display: flex;
+     flex-direction: row;
+     position: relative;
+     width: 100%;
+}
+.infoComment h5{
+    font-size: large;
+}
+.infoComment p{
+    color: gray;
+    font-size: 5px;
+}
+.infoComment .stars{
+    position: absolute;
+    right: 0;
+    width: 150px;
+}
+.commentdiv{
+    width: 100%;
+}
+.commentdiv form{
+    width: 100%;
+}
+.commentdiv label {
+    width: 100%;
+}
+.commentdiv textarea{
+    width: 100%;
+    padding-left: 10px;
+}
+.flexReviewRate{
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+.reviewdiv{
+    width: 50%;
+}
+.reviewcomment{
+    margin-left: 65px;
+}
