@@ -93,7 +93,6 @@ function Store() {
   useEffect(() => {
     fetchUserFavourite();
     fetchMianCategory();
-    fetchSubCategory();
   }, []);
 
   const isProductInWishlist = (productId) => {
@@ -438,13 +437,16 @@ function Store() {
       console.log("error in fetching main Category", error);
     }
   };
-  const fetchSubCategory = async () => {
+  const fetchSubCategory = async (id) => {
     try {
-      const response = await axios.get(`${baseUrl}/public/category/all`, {
-        headers: {
-          "Accept-Language": language,
-        },
-      });
+      const response = await axios.get(
+        `${baseUrl}/public/main/category/${id}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
       console.log(
         "success in fetching Sub Categoryies ",
         response.data.data.categories
@@ -495,6 +497,7 @@ function Store() {
   const handleMainCatSelect = (id, name) => {
     console.log("Selected main Category id:", id);
     fetchProductsByMainCat(id);
+    fetchSubCategory(id)
     setSelectedMainCat(id);
     setMainCategoryText(name);
   };
@@ -528,7 +531,7 @@ function Store() {
           <WhatsAppIcon />
 
           <div>
-          <div>
+            <div>
               <div className=" mx-auto mt-10 w-[100%]  px-2 lg:w-[50%] h-[200px] flex flex-row gap-3 text-sm lg:text-lg">
                 <Dropdown className=" w-[50%] lg:w-[30%] h-full  ">
                   <Dropdown.Toggle
@@ -610,11 +613,11 @@ function Store() {
             )}
 
             {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
-              <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 ">
+              <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] lg:w-[90%] ">
                 {products.map((product) => (
                   <div
                     style={{}}
-                    className="relative w-[350px] h-[420px] lg:w-[330px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                    className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                     key={product.id}
                   >
                     <div className="">
@@ -699,7 +702,7 @@ function Store() {
                   productsWithMainCat.map((product) => (
                     <div
                       style={{}}
-                      className="relative w-[350px] h-[420px] lg:w-[370px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                      className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                       key={product.id}
                     >
                       <div className="">
@@ -784,7 +787,7 @@ function Store() {
                   productsWithSubCat.map((product) => (
                     <div
                       style={{}}
-                      className="relative w-[350px] h-[420px] lg:w-[370px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                      className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                       key={product.id}
                     >
                       <div className="">

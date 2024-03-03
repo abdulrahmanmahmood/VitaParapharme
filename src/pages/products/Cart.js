@@ -365,7 +365,7 @@ const updateCartQuantity = async (productId, quantity) => {
       <div className="green-containerr cartGreen ">
       <div className=" testtt">
       <WhatsAppIcon />
-        <div className="header-container">
+        <div className="header-container mt-[100px]">
           <div className="flexContainerCart">
           
           <div className="flexcart">

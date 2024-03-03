@@ -362,37 +362,7 @@ function Home() {
 
   return (
     <div className="     w-full">
-      {/* <div className=" sm:fixed   w-full  h-[100vh]  text-green-500  bg-white   lg:hidden ">
-        <div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
-          <div className="languageInnav rightAlign">
-            <select
-              className="selectLang "
-              value={language}
-              onChange={handleLanguageChange}
-            >
-              <option value="en">English</option>
-              <option value="fr">Française</option>
-              <option value="ar">لغه عربيه</option>
-            </select>
-          </div>
-        </div>
 
-        <div>
-          <img src={logo} className="mx-auto" alt="logo" />
-        </div>
-        <h3 className="py-10  items-center text-center text-rap  ">
-          {translations[language]?.experience}
-        </h3>
-        <h3 className="py-10  items-center text-center text-rap  ">
-          {translations[language]?.download}
-        </h3>
-        <div className="w-20 h-20 mx-auto items-center mt-10 ">
-          <IoLogoGooglePlaystore className="w-20 h-20  text-green-500 rounded-md pl-1  bg-slate-600" />
-        </div>
-        <div className="w-20 h-20 mx-auto items-center mt-10 ">
-          <IoMdAppstore className="w-20 h-20  text-green-500 rounded-md   bg-slate-600" />
-        </div>
-      </div> */}
       <div className="page-container ">
         <NavHeader
           userId={userId}

@@ -328,16 +328,11 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
           <div className="flex flex-col  ">
             <div className="flex flex-row items-center   w-[95%] mx-auto  ">
               <div className=" rounded items-start ">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
+                <div className="flex-1 flex flex-row justify-between">
                   <select
                     value={selectedCategoryId}
                     onChange={(e) => handleSelect(parseInt(e.target.value))}
-                    className="bg-[#61DAA2]  lg:w-12 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
+                    className="flex-1 bg-[#61DAA2]  lg:w-25 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
                   >
                     <option value={null}>{translations[language]?.all}</option>
                     {categories.map((category) => (
@@ -349,7 +344,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                       </option>
                     ))}
                   </select>
-                  <div className="flex flex-row items-baseline mx-auto text-center w-20 text-xs lg:text-lg lg:w-auto">
+                  <div className="flex flex-row items-baseline mx-auto text-center w-15 text-xs lg:text-lg lg:w-25 p-1">
                     <input
                       type="text"
                       placeholder="Search Product"
@@ -357,10 +352,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                       onChange={handleSearchChangeInternal}
                       className="mx-1 lg:px-3 w-[20px]  "
                     />
-                    <FaSearch
-                      className="w-2 lg:w-4 "
-                      onClick={handleSearchSubmit}
-                    />
+                    <div>
+                      <FaSearch
+                        className="w-2 lg:w-4 "
+                        onClick={handleSearchSubmit}
+                      />
+                    </div>
                   </div>
                   <div className="autocom-box">
                     {productExistsInCategory === false && (
@@ -372,151 +369,153 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                 </div>
               </div>
 
-              <div className="mx-auto items-center w-13 h-13 ">
+              <div className=" text-center mx-auto  flex-1 items-center h-13 w-[20%]">
                 <img
                   src={logo}
                   alt="Logo"
-                  className=" items-center text-center  w-13 h-13 "
+                  className=" items-center text-center  w-13 h-13 flex-1 mx-auto "
                 />
               </div>
 
-              <div
-                onClick={handleNotificationsClick}
-                className="block lg:hidden relative overflow-visible"
-              >
-                <IoIosNotificationsOutline className="noteicon" />
-                {readed && notifications.length > 0 ? (
-                  <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
-                    {notifications?.length}
-                  </div>
-                ) : null}
-              </div>
-              <div
-                className=" notification-dropdown-container relative"
-                ref={notificationRef}
-              >
-                {showNotifications && (
-                  <div
-                    className={`flexLanguage ${
-                      direction === "rtl" ? "rtl" : "ltr"
-                    }`}
-                  >
-                    <div className="lg:hidden border border-gray-300 lg:p-4 p-2 shadow-md fixed top-20 right-3 z-10 lg:-mr-20 my-5 lg:w-[100px]  outline-dotted bg-white items-center text-center text-sm ">
-                      {notifications.map((notification) => (
-                        <div
-                          className="notification-item"
-                          key={notification.id}
-                        >
-                          <div>{notification.message}</div>
-                          <div>{notification.time}</div>
-                        </div>
-                      ))}
-                      <div className="items-center mx-auto text-center">
-                        <button
-                          className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                          onClick={handleReadNotifications}
-                        >
-                          Mark As Read
-                        </button>
-                      </div>
+              <div className="">
+                <div
+                  onClick={handleNotificationsClick}
+                  className="block lg:hidden relative overflow-visible"
+                >
+                  <IoIosNotificationsOutline className="noteicon" />
+                  {readed && notifications.length > 0 ? (
+                    <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
+                      {notifications?.length}
                     </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="hidden lg:block lg:items-end ">
-                <div className="">
-                  {!isLoggedIn && (
-                    <div className="logindiv flexlogindiv ">
-                      <div>
-                        {" "}
-                        <img
-                          style={{ width: "20px", height: "20px" }}
-                          src={loginimg}
-                          alt="user"
-                        />{" "}
-                      </div>
-                      <div>
-                        {" "}
-                        <Link to="/authentication">Login</Link>{" "}
+                  ) : null}
+                </div>
+                <div
+                  className=" notification-dropdown-container relative"
+                  ref={notificationRef}
+                >
+                  {showNotifications && (
+                    <div
+                      className={`flexLanguage ${
+                        direction === "rtl" ? "rtl" : "ltr"
+                      }`}
+                    >
+                      <div className="lg:hidden border border-gray-300 lg:p-4 p-2 shadow-md fixed top-20 right-3 z-10 lg:-mr-20 my-5 lg:w-[100px]  outline-dotted bg-white items-center text-center text-sm ">
+                        {notifications.map((notification) => (
+                          <div
+                            className="notification-item"
+                            key={notification.id}
+                          >
+                            <div>{notification.message}</div>
+                            <div>{notification.time}</div>
+                          </div>
+                        ))}
+                        <div className="items-center mx-auto text-center">
+                          <button
+                            className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
+                            onClick={handleReadNotifications}
+                          >
+                            Mark As Read
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className="text-line text-linelogout ">
-                  {isLoggedIn && (
-                    <>
-                      <div
-                        onClick={handleNotificationsClick}
-                        className="relative overflow-visible"
-                      >
-                        <IoIosNotificationsOutline className="noteicon" />
-                        {readed && notifications.length > 0 ? (
-                          <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
-                            {notifications?.length}
-                          </div>
-                        ) : null}
+                <div className=" hidden lg:block lg:items-end ">
+                  <div className="">
+                    {!isLoggedIn && (
+                      <div className="logindiv flexlogindiv ">
+                        <div>
+                          {" "}
+                          <img
+                            style={{ width: "20px", height: "20px" }}
+                            src={loginimg}
+                            alt="user"
+                          />{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          <Link to="/authentication">Login</Link>{" "}
+                        </div>
                       </div>
+                    )}
+                  </div>
 
-                      <div
-                        className="notification-dropdown-container "
-                        ref={notificationRef}
-                      >
-                        {showNotifications && (
-                          <div
-                            className={`flexLanguage ${
-                              direction === "rtl" ? "rtl" : "ltr"
-                            }`}
-                          >
-                            <div className="notification-dropdown -mr-20 my-5 w-[150px] outline-dotted bg-white items-center text-center ">
-                              {notifications.map((notification) => (
-                                <div
-                                  className="notification-item"
-                                  key={notification.id}
-                                >
-                                  <div>{notification.message}</div>
-                                  <div>{notification.time}</div>
+                  <div className="text-line text-linelogout ">
+                    {isLoggedIn && (
+                      <>
+                        <div
+                          onClick={handleNotificationsClick}
+                          className="relative overflow-visible"
+                        >
+                          <IoIosNotificationsOutline className="noteicon" />
+                          {readed && notifications.length > 0 ? (
+                            <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
+                              {notifications?.length}
+                            </div>
+                          ) : null}
+                        </div>
+
+                        <div
+                          className="notification-dropdown-container "
+                          ref={notificationRef}
+                        >
+                          {showNotifications && (
+                            <div
+                              className={`flexLanguage ${
+                                direction === "rtl" ? "rtl" : "ltr"
+                              }`}
+                            >
+                              <div className="notification-dropdown -mr-20 my-5 w-[150px] outline-dotted bg-white items-center text-center ">
+                                {notifications.map((notification) => (
+                                  <div
+                                    className="notification-item"
+                                    key={notification.id}
+                                  >
+                                    <div>{notification.message}</div>
+                                    <div>{notification.time}</div>
+                                  </div>
+                                ))}
+                                <div className="items-center mx-auto text-center">
+                                  <button
+                                    className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
+                                    onClick={handleReadNotifications}
+                                  >
+                                    Mark As Read
+                                  </button>
                                 </div>
-                              ))}
-                              <div className="items-center mx-auto text-center">
-                                <button
-                                  className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                                  onClick={handleReadNotifications}
-                                >
-                                  Mark As Read
-                                </button>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <Link to="/cart" className="cart-link">
-                        <img
-                          style={{
-                            marginRight: "10px",
-                            width: "30px",
-                            height: "30px",
-                          }}
-                          src={cartimg}
-                          alt="cart"
-                        />
-                        {cart.length > 0 && (
-                          <div className="cart-items">{cart.length}</div>
-                        )}
-                      </Link>
-                      <Link>
-                        <div className="user-profile" onClick={toggleSidebar}>
-                          <img
-                            style={{ width: "40px", height: "40px" }}
-                            src={logoutimg}
-                            alt="user"
-                          />
+                          )}
                         </div>
-                      </Link>
-                    </>
-                  )}
+
+                        <Link to="/cart" className="cart-link">
+                          <img
+                            style={{
+                              marginRight: "10px",
+                              width: "30px",
+                              height: "30px",
+                            }}
+                            src={cartimg}
+                            alt="cart"
+                          />
+                          {cart.length > 0 && (
+                            <div className="cart-items">{cart.length}</div>
+                          )}
+                        </Link>
+                        <Link>
+                          <div className="user-profile" onClick={toggleSidebar}>
+                            <img
+                              style={{ width: "40px", height: "40px" }}
+                              src={logoutimg}
+                              alt="user"
+                            />
+                          </div>
+                        </Link>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
