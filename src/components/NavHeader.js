@@ -205,15 +205,17 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
 
   const [showSidebar, setShowSidebar] = useState(false);
+  const sidebarRef = useRef(null);
   const notificationRef = useRef(null);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  const closeSidbar = () => {
-    setShowSidebar(false);
+  const closeSidebar = (e) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+      setShowSidebar(false);
+    }
   };
-
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -291,10 +293,16 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   }, []);
 
   useEffect(() => {
-    // Event listener to close profile dropdown menu when clicking outside
-    document.addEventListener("mousedown", closeSidbar);
+    const closeSidebarOnOutsideClick = (e) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setShowSidebar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", closeSidebarOnOutsideClick);
+
     return () => {
-      document.removeEventListener("click", closeSidbar);
+      document.removeEventListener("mousedown", closeSidebarOnOutsideClick);
     };
   }, []);
 
@@ -585,12 +593,13 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
             </>
           </div>
         </div>
-
-        <SidebarUser
-          isOpen={showSidebar}
-          onClose={toggleSidebar}
-          handleLogout={handleLogout}
-        />
+        <div ref={sidebarRef}>
+          <SidebarUser
+            isOpen={showSidebar}
+            onClose={toggleSidebar}
+            handleLogout={handleLogout}
+          />
+        </div>
       </Navbar>
     </div>
   );

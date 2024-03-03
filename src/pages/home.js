@@ -285,11 +285,14 @@ function Home() {
   };
   const fetchSubCategory = async (id) => {
     try {
-      const response = await axios.get(`${baseUrl}/public/main/category/${id}`, {
-        headers: {
-          "Accept-Language": language,
-        },
-      });
+      const response = await axios.get(
+        `${baseUrl}/public/main/category/${id}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
       console.log(
         "success in fetching Sub Categoryies ",
         response.data.data.categories
@@ -340,7 +343,7 @@ function Home() {
   const handleMainCatSelect = (id, name) => {
     console.log("Selected main Category id:", id);
     fetchProductsByMainCat(id);
-    fetchSubCategory(id)
+    fetchSubCategory(id);
     setSelectedMainCat(id);
     setMainCategoryText(name);
   };
