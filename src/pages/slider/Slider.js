@@ -1,37 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import slide1 from '../../images/slide1.png'
-import slide2 from '../../images/slide2.png'
+import slide1 from "../../images/slide1.png";
+import slide2 from "../../images/slide2.png";
 import "./slider.css";
 import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function Slider() {
-  // const [images, setImages] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${baseUrl}/public/advertisement/all`,
-  //         {
-  //           headers: {
-  //             "Accept-Language": "fr",
-  //           },
-  //         }
-  //       );
-  //       setImages(
-  //         response.data.data.advertisements.map(
-  //           (advertisement) => advertisement.imgUrl
-  //         )
-  //       );
-  //     } catch (error) {
-  //       console.error("Error fetching images:", error);
-  //     }
-  //   };
-
-  //   fetchImages();
-  // }, []);
-const images = [slide1,slide2]
+  const images = [slide1, slide2];
   return (
     <section id="slider" className="mt-0">
       <div
@@ -43,7 +18,9 @@ const images = [slide1,slide2]
           {images.map((imageUrl, index) => (
             <div
               key={index}
-              className={`carousel-item ${index === 0 ? "active" : ""} h-[400px]`}
+              className={`carousel-item ${
+                index === 0 ? "active" : ""
+              } h-[400px]`}
             >
               {imageUrl ? (
                 <img
@@ -54,7 +31,6 @@ const images = [slide1,slide2]
               ) : (
                 <div className="w-full h-[400px]  bg-white"></div>
               )}
-
             </div>
           ))}
         </div>
@@ -88,3 +64,29 @@ const images = [slide1,slide2]
 }
 
 export default Slider;
+
+// const [images, setImages] = useState([]);
+
+// useEffect(() => {
+//   const fetchImages = async () => {
+//     try {
+//       const response = await axios.get(
+//         `${baseUrl}/public/advertisement/all`,
+//         {
+//           headers: {
+//             "Accept-Language": "fr",
+//           },
+//         }
+//       );
+//       setImages(
+//         response.data.data.advertisements.map(
+//           (advertisement) => advertisement.imgUrl
+//         )
+//       );
+//     } catch (error) {
+//       console.error("Error fetching images:", error);
+//     }
+//   };
+
+//   fetchImages();
+// }, []);

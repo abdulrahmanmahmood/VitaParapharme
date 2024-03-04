@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Dropdown } from "react-bootstrap";
 import {
   setLanguage,
   selectLanguage,
@@ -42,6 +43,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryIdTwo, setSelectedCategoryIdTwo] = useState(null);
+  
   const [searchTerm, setSearchTerm] = useState("");
   // const cart = useSelector((state) => state.cart);
   const [cart, setCart] = useState([]);
@@ -86,24 +88,14 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const [selectedCategoryColor, setSelectedCategoryColor] = useState("");
 
-  /*const handleSearchChangeInternal = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-  };*/
+  
 
   const handleSearchChangeInternal = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
   };
 
-  /*const filteredProducts = products.filter((product) => {
-    const matchesSearch = (product.title?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-      (product.descreption?.toLowerCase() || '').includes(searchTerm.toLowerCase());
   
-    const matchesCategory = selectedCategoryId ? product.categoryId === selectedCategoryId : true;
-  
-    return matchesSearch && matchesCategory;
-  });*/
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
@@ -124,35 +116,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setProductExistsInCategory(true);
   };
 
-  /* const handleSearchSubmit = () => {
-    const productsInSelectedCategory = filteredProducts.filter(product => product.categoryId === selectedCategoryId);
   
-    const searchTermLowerCase = searchTerm ? searchTerm.toLowerCase() : '';
-    const productsMatchingSearch = productsInSelectedCategory.filter(product => {
-      const productNameLowerCase = product.title ? product.title.toLowerCase() : '';
-      return productNameLowerCase.includes(searchTermLowerCase);
-    });
-  
-    if (selectedCategoryId !== null) {
-      if (productsMatchingSearch.length === 0) {
-        setShowErrorMessage(true);
-        setProductExistsInCategory(false);
-        setTimeout(() => {
-          setShowErrorMessage(false);
-          setProductExistsInCategory(true);
-        }, 3000);
-      } else {
-        setShowErrorMessage(false);
-        setProductExistsInCategory(true);
-        navigate(`/store?search=${searchTerm}&category=${selectedCategoryId}`);
-      }
-    } else {
-      // Handle the case where no category is selected
-      setShowErrorMessage(false);
-      setProductExistsInCategory(true);
-      navigate(`/store?search=${searchTerm}`);
-    }
-  };*/
 
   const handleSearchSubmit = () => {
     const productsInSelectedCategory = filteredProducts.filter(
@@ -307,6 +271,122 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   }, []);
 
   const direction = useSelector((state) => state.translation.direction);
+
+
+  const [mainCategory, setMainCategory] = useState([]);
+  const [selectedMainCat, setSelectedMainCat] = useState(0);
+  const [subCategory, setSubCategory] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState(0);
+  const [productsWithMainCat, setProductsWithMainCat] = useState([]);
+  const [productsWithSubCat, setProductsWithSubCat] = useState([]);
+  const [mainCategoryText, setMainCategoryText] = useState(
+    translations[language]?.main
+  );
+  const [subCategoryText, setSubCategoryText] = useState(
+    translations[language]?.sub
+  );
+
+  useEffect(() => {
+    fetchMianCategory();
+    setMainCategoryText(
+      translations[language]?.main || translations["en"]?.main
+    );
+    setSubCategoryText(translations[language]?.sub || translations["en"]?.sub);
+  }, [language, translations]);
+
+  const fetchMianCategory = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/public/main/category/all`, {
+        headers: {
+          "Accept-Language": language,
+        },
+      });
+      console.log("success in fetching main Categoryies ", response.data.data);
+      setMainCategory(response.data.data.mainCategories);
+    } catch (error) {
+      console.log("error in fetching main Category", error);
+    }
+  };
+  const fetchSubCategory = async (id) => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/public/main/category/${id}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Sub Categoryies ",
+        response.data.data.categories
+      );
+      setSubCategory(response.data.data.categories);
+    } catch (error) {
+      console.log("error in fetching Sub Category", error);
+    }
+  };
+  const fetchProductsByMainCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/public/product/main/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Main Category ",
+        response.data.data
+      );
+      setProductsWithMainCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Main Category", error);
+    }
+  };
+  const fetchProductsBySubCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/public/product/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Sub Category ",
+        response.data.data
+      );
+      setProductsWithSubCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Sub Category", error);
+    }
+  };
+  const handleMainCatSelect = (id, name) => {
+    console.log("Selected main Category id:", id);
+    fetchProductsByMainCat(id);
+    fetchSubCategory(id);
+    setSelectedMainCat(id);
+    setMainCategoryText(name);
+  };
+  /*const handleSubCatSelect = (id, name) => {
+    console.log("Selected Sub Category id:", id);
+    fetchProductsBySubCat(id);
+    setSelectedSubCat(id);
+    setSubCategoryText(name);
+    
+    navigate(`/store?category=${id}`);
+  };*/
+
+  const handleSubCatSelect = async (id, name) => {
+    console.log("Selected Sub Category id:", id);
+    fetchProductsBySubCat(id);
+    setSelectedSubCat(id);
+    setSubCategoryText(name);
+    navigate(`/store?category=${id}`);
+  }; 
 
   return (
     <div className="fixed z-50 w-full bg-white ">
@@ -569,6 +649,32 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         >
                           {translations[language]?.blog}
                         </Link>
+
+                        <select
+  className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
+  value={mainCategoryText}
+  onChange={(e) => handleMainCatSelect(e.target.value, e.target.text)}
+>
+  <option value="">{mainCategoryText}</option>
+  {mainCategory.map((item) => (
+    <option key={item.categoryId} value={item.categoryId}>
+      {item.name}
+    </option>
+  ))}
+</select>
+
+<select
+  className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
+  value={subCategoryText}
+  onChange={(e) => handleSubCatSelect(e.target.value, e.target.text)}
+>
+  <option value="">{subCategoryText}</option>
+  {subCategory.map((item) => (
+    <option key={item.categoryId} value={item.categoryId}>
+      {item.name}
+    </option>
+  ))}
+</select>
 
                         <Link
                           to="/about"

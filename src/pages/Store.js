@@ -93,6 +93,7 @@ function Store() {
   useEffect(() => {
     fetchUserFavourite();
     fetchMianCategory();
+    fetchSubCategory();
   }, []);
 
   const isProductInWishlist = (productId) => {
@@ -173,10 +174,26 @@ function Store() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    /*const fetchData = async () => {
       try {
         await dispatch(fetchProducts());
-        setSelectedCategoryId(null);
+        setSelectedCategoryId(null); 
+        checkLoggedInStatus();
+      } finally {
+        setLoading(false);
+      }
+    };*/
+
+    const fetchData = async () => {
+      try {
+        const categoryIdFromUrl = queryParams.get("category");
+        if (categoryIdFromUrl) {
+          // Fetch products based on the category ID from the URL
+          await handleCategoryFilter(parseInt(categoryIdFromUrl));
+        } else {
+          // Fetch all products if no category ID is provided in the URL
+          dispatch(fetchProducts());
+        }
         checkLoggedInStatus();
       } finally {
         setLoading(false);
@@ -339,7 +356,9 @@ function Store() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchTermFromUrl = queryParams.get("search") || "";
-  useEffect(() => {
+  const categoryIdFromUrl = queryParams.get("category");
+
+  /*useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(fetchProducts());
@@ -352,11 +371,23 @@ function Store() {
     fetchData();
     setSearchTerm(searchTermFromUrl);
 
-    const categoryIdFromUrl = queryParams.get("category");
-    setSelectedCategoryId(
-      categoryIdFromUrl ? parseInt(categoryIdFromUrl) : null
-    );
-  }, [language, searchTermFromUrl]);
+    const categoryIdFromUrl = queryParams.get('category');
+  setSelectedCategoryId(categoryIdFromUrl ? parseInt(categoryIdFromUrl) : null);
+  }, [language, searchTermFromUrl]);*/
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchProducts(categoryIdFromUrl));
+        checkLoggedInStatus();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    setSearchTerm(searchTermFromUrl);
+  }, [language, searchTermFromUrl, categoryIdFromUrl]);
 
   // ...
 
@@ -437,16 +468,13 @@ function Store() {
       console.log("error in fetching main Category", error);
     }
   };
-  const fetchSubCategory = async (id) => {
+  const fetchSubCategory = async () => {
     try {
-      const response = await axios.get(
-        `${baseUrl}/public/main/category/${id}`,
-        {
-          headers: {
-            "Accept-Language": language,
-          },
-        }
-      );
+      const response = await axios.get(`${baseUrl}/public/category/all`, {
+        headers: {
+          "Accept-Language": language,
+        },
+      });
       console.log(
         "success in fetching Sub Categoryies ",
         response.data.data.categories
@@ -497,7 +525,6 @@ function Store() {
   const handleMainCatSelect = (id, name) => {
     console.log("Selected main Category id:", id);
     fetchProductsByMainCat(id);
-    fetchSubCategory(id)
     setSelectedMainCat(id);
     setMainCategoryText(name);
   };
@@ -519,351 +546,344 @@ function Store() {
       {/* Header Container */}
       <NavHeader
         userId={userId}
-        searchTermm={searchTerm}
-        handleSearchChange={handleSearchChange}
         //filteredProductss={filteredProducts}
         handleProductClick={handleProductClick}
       />
 
       {/* Green Container */}
-      <div className=" bg-[#F8F8F8] mt-[100px]">
+      <div className="bg-[#F8F8F8] mt-[100px]">
         <div className="home-containerr testtt">
           <WhatsAppIcon />
 
           <div>
-            <div>
-              <div className=" mx-auto mt-10 w-[100%]  px-2 lg:w-[50%] h-[200px] flex flex-row gap-3 text-sm lg:text-lg">
-                <Dropdown className=" w-[50%] lg:w-[30%] h-full  ">
-                  <Dropdown.Toggle
-                    style={{ backgroundColor: "#61DAA2" }}
-                    id="dropdown-basic"
-                    className="w-[100%] text-white "
-                  >
-                    {mainCategoryText}
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu
-                    className="w-full px-2 items-center text-center"
-                    style={{ border: "none", outline: "none" }}
-                  >
-                    {mainCategory.map((item) => (
-                      <Dropdown.Item
-                        key={item.categoryId}
-                        value={item.categoryId}
-                        onClick={() =>
-                          handleMainCatSelect(item.categoryId, item.name)
-                        }
-                      >
-                        {item.name}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-
-                <Dropdown className="w-[50%] lg:w-[30%] h-full">
-                  <Dropdown.Toggle
-                    style={{ backgroundColor: "#61DAA2" }}
-                    id="dropdown-basic"
-                    className="w-[100%]"
-                  >
-                    {subCategoryText}
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="w-full px-2 items-center text-center">
-                    {subCategory.map((item) => (
-                      <Dropdown.Item
-                        key={item.categoryId}
-                        value={item.categoryId}
-                        onClick={() =>
-                          handleSubCatSelect(item.categoryId, item.name)
-                        }
-                      >
-                        {item.name}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-
-                <button
-                  className="hidden lg:block  h-10 w-[40%] text-white text-xs lg:text-lg "
+            <div className=" mx-auto mt-10 w-[100%]  px-2 lg:w-[50%] h-[200px] flex flex-row gap-3 text-sm lg:text-lg">
+              <Dropdown className=" w-[50%] lg:w-[30%] h-full  ">
+                <Dropdown.Toggle
                   style={{ backgroundColor: "#61DAA2" }}
-                  onClick={handleDeleteFilters}
+                  id="dropdown-basic"
+                  className="w-[100%] text-white "
                 >
-                  {translations[language]?.clear}
-                </button>
-              </div>
-              <div className="lg:hidden text-center -mt-10">
-                <button
-                  className="  btn h-10 w-[40%] text-white text-xs lg:text-lg "
+                  {mainCategoryText}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu
+                  className="w-full px-2 items-center text-center"
+                  style={{ border: "none", outline: "none" }}
+                >
+                  {mainCategory.map((item) => (
+                    <Dropdown.Item
+                      key={item.categoryId}
+                      value={item.categoryId}
+                      onClick={() =>
+                        handleMainCatSelect(item.categoryId, item.name)
+                      }
+                    >
+                      {item.name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <Dropdown className="w-[50%] lg:w-[30%] h-full">
+                <Dropdown.Toggle
                   style={{ backgroundColor: "#61DAA2" }}
-                  onClick={handleDeleteFilters}
+                  id="dropdown-basic"
+                  className="w-[100%]"
                 >
-                  {translations[language]?.clear}
-                </button>
-              </div>
+                  {subCategoryText}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="w-full px-2 items-center text-center">
+                  {subCategory.map((item) => (
+                    <Dropdown.Item
+                      key={item.categoryId}
+                      value={item.categoryId}
+                      onClick={() =>
+                        handleSubCatSelect(item.categoryId, item.name)
+                      }
+                    >
+                      {item.name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <button
+                className="hidden lg:block  h-10 w-[40%] text-white text-xs lg:text-lg "
+                style={{ backgroundColor: "#61DAA2" }}
+                onClick={handleDeleteFilters}
+              >
+                {translations[language]?.clear}
+              </button>
             </div>
           </div>
 
           <div className="store-flex">
-            {loading && (
-              <div
-                className="loading-spinner"
-                style={{ width: "50px", height: "50px", marginTop: "10px" }}
-              ></div>
-            )}
-
             {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
               <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] lg:w-[90%] ">
-                {products.map((product) => (
-                  <div
-                    style={{}}
-                    className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
-                    key={product.id}
-                  >
-                    <div className="">
-                      <div className="flex flex-col absolute right-4 top-4 gap-2">
-                        <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2.5 overflow-hidden text-center  rounded-full">
-                          {" "}
-                          <FaHeart
-                            onClick={() =>
-                              handleAddToFavorites(product.productId)
-                            }
-                            style={{
-                              color: isProductInWishlist(product.productId)
-                                ? "red"
-                                : "#3EBF87",
-                            }}
-                            className="text-center  text-xl"
-                          />
-                        </div>
-                        <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2  overflow-hidden text-center  rounded-full">
-                          <FaEye
-                            onClick={() => handleDetailsClick(product)}
-                            className="text-[#3EBF87]   text-2xl text-center    "
-                          />
-                        </div>
-                      </div>
+                {products.map((product) => {
+                  const matchesSearch = product.name
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+                  const matchesPriceRange =
+                    product.price >= priceRange.min &&
+                    product.price <= priceRange.max;
+                  const matchesRating = ratingFilter
+                    ? Math.floor(product.rating) === ratingFilter
+                    : true;
+                  const matchesCategory =
+                    !categoryIdFromUrl ||
+                    product.categoryId === parseInt(categoryIdFromUrl);
 
-                      <div className="w-[70%] h-[70%] text-center items-center mx-auto  my-3">
-                        <Link to={`/home/product/${product.productId}`}>
-                          <img
-                            src={product.pictures[0]}
-                            alt="Product poster"
-                            className="object-fill  w-[200px] h-[200px] mx-auto my-auto "
-                          />
-                        </Link>
-                      </div>
-                      <div className=" ">
-                        <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
-                          {product.name}
-                        </h2>
-
-                        <div className="w-[40%] ml-5 flex flex-row">
-                          <StarRating
-                            initialRating={product.rating}
-                            isClickable={false}
-                          />
-                          <h5>({product.reviews})</h5>
-                        </div>
-                        <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
-                          {product.discount && (
-                            <div className="mx-3 text-xl my-1">
-                              {product.afterDiscount} $
-                            </div>
-                          )}
-                          {product.discount && (
-                            <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                              {product.price} $
-                            </div>
-                          )}
-                          {!product.discount && (
-                            <div className=" mx-3 text-xl my-1">
-                              {product.price} $
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
-                        onClick={() =>
-                          handleAddToCart(product.productId, product)
-                        }
+                  if (
+                    matchesRating &&
+                    matchesPriceRange &&
+                    matchesSearch &&
+                    matchesCategory
+                  ) {
+                    return (
+                      <div
+                        style={{}}
+                        className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                        key={product.id}
                       >
-                        add to cart
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                        <div className="">
+                          <div className="flex flex-col absolute right-4 top-4 gap-2">
+                            <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2.5 overflow-hidden text-center  rounded-full">
+                              <FaHeart
+                                onClick={() =>
+                                  handleAddToFavorites(product.productId)
+                                }
+                                style={{
+                                  color: isProductInWishlist(product.productId)
+                                    ? "red"
+                                    : "#3EBF87",
+                                }}
+                                className="text-center  text-xl"
+                              />
+                            </div>
+                            <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2  overflow-hidden text-center  rounded-full">
+                              <FaEye
+                                onClick={() => handleDetailsClick(product)}
+                                className="text-[#3EBF87]   text-2xl text-center    "
+                              />
+                            </div>
+                          </div>
+
+                          <div className="w-[70%] h-[70%] text-center items-center mx-auto  my-3">
+                            <Link to={`/home/product/${product.productId}`}>
+                              <img
+                                src={product.pictures[0]}
+                                alt="Product poster"
+                                className="object-fill  w-[200px] h-[200px] mx-auto my-auto "
+                              />
+                            </Link>
+                          </div>
+                          <div className=" ">
+                            <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
+                              {product.name}
+                            </h2>
+
+                            <div className="w-[40%] ml-5 flex flex-row">
+                              <StarRating
+                                initialRating={product.rating}
+                                isClickable={false}
+                              />
+                              <h5>({product.reviews})</h5>
+                            </div>
+                            <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
+                              {product.discount && (
+                                <div className="mx-3 text-xl my-1">
+                                  {product.afterDiscount} $
+                                </div>
+                              )}
+                              {product.discount && (
+                                <div className="line-through text-gray-400 mx-3 text-xl my-1">
+                                  {product.price} $
+                                </div>
+                              )}
+                              {!product.discount && (
+                                <div className=" mx-3 text-xl my-1">
+                                  {product.price} $
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <button
+                            className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
+                            onClick={() =>
+                              handleAddToCart(product.productId, product)
+                            }
+                          >
+                            add to cart
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  } else {
+                    return null; // or any other fallback UI if needed
+                  }
+                })}
               </div>
             )}
+
             {!loading && selectedMainCat > 0 && selectedSubCat === 0 && (
-              <div className="card-container">
+              <div className="card-store">
                 {productsWithMainCat.length > 0 &&
-                  productsWithMainCat.map((product) => (
-                    <div
-                      style={{}}
-                      className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
-                      key={product.id}
-                    >
-                      <div className="">
-                        <div className="flex flex-col absolute right-4 top-4 gap-2">
-                          <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2.5 overflow-hidden text-center  rounded-full">
-                            {" "}
-                            <FaHeart
+                  productsWithMainCat.map((product) => {
+                    const matchesSearch = product.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase());
+                    const matchesPriceRange =
+                      product.price >= priceRange.min &&
+                      product.price <= priceRange.max;
+
+                    const matchesRating = ratingFilter
+                      ? Math.floor(product.rating) === ratingFilter
+                      : true;
+
+                    if (matchesRating && matchesPriceRange && matchesSearch) {
+                      return (
+                        <div className="cards" key={product.productId}>
+                          <div className="card-body">
+                            <div className="card-icons">
+                              <FaHeart
+                                onClick={() =>
+                                  handleAddToFavorites(product.productId)
+                                }
+                                style={{
+                                  color: isProductInWishlist(product.productId)
+                                    ? "red"
+                                    : "#3EBF87",
+                                }}
+                              />
+                              <FaEye
+                                className="cart-iconPro"
+                                onClick={() => handleDetailsClick(product)}
+                              />
+                            </div>
+                            <div className="card-imgstore">
+                              <Link to={`/home/product/${product.productId}`}>
+                                <img
+                                  src={product.pictures[0]}
+                                  alt="Product poster"
+                                />
+                              </Link>
+                            </div>
+                            <div className="card-info card-infoStore">
+                              <h2>{product.name}</h2>
+                              <div className="rate">
+                                <StarRating
+                                  initialRating={product.rating}
+                                  isClickable={false}
+                                />
+                                <h5>({product.reviews})</h5>
+                              </div>
+                              <div className="price">
+                                {product.discount && (
+                                  <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+                                )}
+                                {product.discount && (
+                                  <div className="old-price">{`$${product.price}`}</div>
+                                )}
+                                {!product.discount && (
+                                  <div className="price">{`$${product.price}`}</div>
+                                )}
+                              </div>
+                            </div>
+                            <button
+                              className="proBtn"
                               onClick={() =>
-                                handleAddToFavorites(product.productId)
+                                handleAddToCart(product.productId, product)
                               }
-                              style={{
-                                color: isProductInWishlist(product.productId)
-                                  ? "red"
-                                  : "#3EBF87",
-                              }}
-                              className="text-center  text-xl"
-                            />
-                          </div>
-                          <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2  overflow-hidden text-center  rounded-full">
-                            <FaEye
-                              onClick={() => handleDetailsClick(product)}
-                              className="text-[#3EBF87]   text-2xl text-center    "
-                            />
+                            >
+                              add to cart
+                            </button>
                           </div>
                         </div>
-
-                        <div className="w-[70%] h-[70%] text-center items-center mx-auto  my-3">
-                          <Link to={`/home/product/${product.productId}`}>
-                            <img
-                              src={product.pictures[0]}
-                              alt="Product poster"
-                              className="object-fill  w-[200px] h-[200px] mx-auto my-auto "
-                            />
-                          </Link>
-                        </div>
-                        <div className=" ">
-                          <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
-                            {product.name}
-                          </h2>
-
-                          <div className="w-[40%] ml-5 flex flex-row">
-                            <StarRating
-                              initialRating={product.rating}
-                              isClickable={false}
-                            />
-                            <h5>({product.reviews})</h5>
-                          </div>
-                          <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
-                            {product.discount && (
-                              <div className="mx-3 text-xl my-1">
-                                {product.afterDiscount} $
-                              </div>
-                            )}
-                            {product.discount && (
-                              <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                                {product.price} $
-                              </div>
-                            )}
-                            {!product.discount && (
-                              <div className=" mx-3 text-xl my-1">
-                                {product.price} $
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <button
-                          className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
-                          onClick={() =>
-                            handleAddToCart(product.productId, product)
-                          }
-                        >
-                          add to cart
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                      );
+                    }
+                  })}
               </div>
             )}
+
             {!loading && selectedMainCat > 0 && selectedSubCat > 0 && (
-              <div className="card-container">
+              <div className="card-store">
                 {productsWithSubCat.length > 0 &&
-                  productsWithSubCat.map((product) => (
-                    <div
-                      style={{}}
-                      className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
-                      key={product.id}
-                    >
-                      <div className="">
-                        <div className="flex flex-col absolute right-4 top-4 gap-2">
-                          <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2.5 overflow-hidden text-center  rounded-full">
-                            {" "}
-                            <FaHeart
+                  productsWithSubCat.map((product) => {
+                    const matchesSearch = product.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase());
+                    const matchesPriceRange =
+                      product.price >= priceRange.min &&
+                      product.price <= priceRange.max;
+
+                    const matchesRating = ratingFilter
+                      ? Math.floor(product.rating) === ratingFilter
+                      : true;
+
+                    if (matchesRating && matchesPriceRange && matchesSearch) {
+                      return (
+                        <div className="cards" key={product.productId}>
+                          <div className="card-body">
+                            <div className="card-icons">
+                              <FaHeart
+                                onClick={() =>
+                                  handleAddToFavorites(product.productId)
+                                }
+                                style={{
+                                  color: isProductInWishlist(product.productId)
+                                    ? "red"
+                                    : "#3EBF87",
+                                }}
+                              />
+                              <FaEye
+                                className="cart-iconPro"
+                                onClick={() => handleDetailsClick(product)}
+                              />
+                            </div>
+                            <div className="card-imgstore">
+                              <Link to={`/home/product/${product.productId}`}>
+                                <img
+                                  src={product.pictures[0]}
+                                  alt="Product poster"
+                                />
+                              </Link>
+                            </div>
+                            <div className="card-info card-infoStore">
+                              <h2>{product.name}</h2>
+                              <div className="rate">
+                                <StarRating
+                                  initialRating={product.rating}
+                                  isClickable={false}
+                                />
+                                <h5>({product.reviews})</h5>
+                              </div>
+                              <div className="price">
+                                {product.discount && (
+                                  <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+                                )}
+                                {product.discount && (
+                                  <div className="old-price">{`$${product.price}`}</div>
+                                )}
+                                {!product.discount && (
+                                  <div className="price">{`$${product.price}`}</div>
+                                )}
+                              </div>
+                            </div>
+                            <button
+                              className="proBtn"
                               onClick={() =>
-                                handleAddToFavorites(product.productId)
+                                handleAddToCart(product.productId, product)
                               }
-                              style={{
-                                color: isProductInWishlist(product.productId)
-                                  ? "red"
-                                  : "#3EBF87",
-                              }}
-                              className="text-center  text-xl"
-                            />
-                          </div>
-                          <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2  overflow-hidden text-center  rounded-full">
-                            <FaEye
-                              onClick={() => handleDetailsClick(product)}
-                              className="text-[#3EBF87]   text-2xl text-center    "
-                            />
+                            >
+                              add to cart
+                            </button>
                           </div>
                         </div>
-
-                        <div className="w-[70%] h-[70%] text-center items-center mx-auto  my-3">
-                          <Link to={`/home/product/${product.productId}`}>
-                            <img
-                              src={product.pictures[0]}
-                              alt="Product poster"
-                              className="object-fill  w-[200px] h-[200px] mx-auto my-auto "
-                            />
-                          </Link>
-                        </div>
-                        <div className=" ">
-                          <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
-                            {product.name}
-                          </h2>
-
-                          <div className="w-[40%] ml-5 flex flex-row">
-                            <StarRating
-                              initialRating={product.rating}
-                              isClickable={false}
-                            />
-                            <h5>({product.reviews})</h5>
-                          </div>
-                          <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
-                            {product.discount && (
-                              <div className="mx-3 text-xl my-1">
-                                {product.afterDiscount} $
-                              </div>
-                            )}
-                            {product.discount && (
-                              <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                                {product.price} $
-                              </div>
-                            )}
-                            {!product.discount && (
-                              <div className=" mx-3 text-xl my-1">
-                                {product.price} $
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <button
-                          className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
-                          onClick={() =>
-                            handleAddToCart(product.productId, product)
-                          }
-                        >
-                          add to cart
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                      );
+                    }
+                  })}
               </div>
             )}
 
