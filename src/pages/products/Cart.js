@@ -4,21 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteFromCart } from "../../rtk/slices/Cart-slice";
 import { useEffect } from "react";
 import NavHeader from "../../components/NavHeader";
-import {  useState} from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { setLanguage , selectLanguage , selectTranslations } from "../../rtk/slices/Translate-slice";
-import logo from '../../images/Vita Logo2.png' ;
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  setLanguage,
+  selectLanguage,
+  selectTranslations,
+} from "../../rtk/slices/Translate-slice";
+import logo from "../../images/Vita Logo2.png";
 import { FaTrash } from "react-icons/fa";
 import { setSearchTerm } from "../../rtk/slices/Search-slice";
 import { selectToken } from "../../rtk/slices/Auth-slice";
-import { FaHeart, FaShoppingCart, FaEye } from 'react-icons/fa';
-import { FaPlus , FaMinus } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaEye } from "react-icons/fa";
+import { FaPlus, FaMinus } from "react-icons/fa";
 import axios from "axios";
-import { Modal  } from "react-bootstrap";
-import './cart.css';
+import { Modal } from "react-bootstrap";
+import "./cart.css";
 import WhatsAppIcon from "../../components/Whatsapp";
-import email from "../../images/Email icon.png"
+import email from "../../images/Email icon.png";
 import address from "../../images/Location icon.png";
 import phone from "../../images/phone icon.png";
 import Footer from "../../components/Footer";
@@ -31,88 +35,84 @@ function Cart() {
   const translations = useSelector(selectTranslations);
   //const cart = useSelector(state => state.cart);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   const cartProducts = useSelector((state) => state.cart);
 
   const [showModal, setShowModal] = useState(false);
-const [modalMessage, setModalMessage] = useState('');
-const [itemToDelete, setItemToDelete] = useState(null);
-const [wishlist, setWishlist] = useState([]);
+  const [modalMessage, setModalMessage] = useState("");
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [wishlist, setWishlist] = useState([]);
 
-const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => setShowModal(false);
 
+  const handleDeleteFromCart = (productId) => {
+    setModalMessage("Are you sure you want to delete this item from the cart?");
+    setShowModal(true);
+    setItemToDelete(productId);
+  };
 
+  const handleDeleteConfirmation = async () => {
+    await handleDeleteItem(itemToDelete);
+    setShowModal(false);
+  };
 
-const handleDeleteFromCart = (productId) => {
-  setModalMessage("Are you sure you want to delete this item from the cart?");
-  setShowModal(true);
-  setItemToDelete(productId);
-};
-
-const handleDeleteConfirmation = async () => {
-  await handleDeleteItem(itemToDelete);
-  setShowModal(false);
-};
-
-  
-const handleIncrement = async (productId) => {
-  setCart((prevCart) => {
-    return prevCart.map((item) => {
-      if (item.productId === productId) {
-        const updatedQuantity = item.quantity + 1;
-        const updatedPrice = totalPrice + item.productPrice; // Update total price
-        setTotalPrice(updatedPrice); // Update total price state
-        updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
-        return { ...item, quantity: updatedQuantity };
-      }
-      return item;
+  const handleIncrement = async (productId) => {
+    setCart((prevCart) => {
+      return prevCart.map((item) => {
+        if (item.productId === productId) {
+          const updatedQuantity = item.quantity + 1;
+          const updatedPrice = totalPrice + item.productPrice; // Update total price
+          setTotalPrice(updatedPrice); // Update total price state
+          updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
+          return { ...item, quantity: updatedQuantity };
+        }
+        return item;
+      });
     });
-  });
-};
+  };
 
-const handleDecrement = async (productId) => {
-  setCart((prevCart) => {
-    return prevCart.map((item) => {
-      if (item.productId === productId && item.quantity > 1) {
-        const updatedQuantity = item.quantity - 1;
-        const updatedPrice = totalPrice - item.productPrice; // Update total price
-        setTotalPrice(updatedPrice); // Update total price state
-        updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
-        return { ...item, quantity: updatedQuantity };
-      }
-      return item;
+  const handleDecrement = async (productId) => {
+    setCart((prevCart) => {
+      return prevCart.map((item) => {
+        if (item.productId === productId && item.quantity > 1) {
+          const updatedQuantity = item.quantity - 1;
+          const updatedPrice = totalPrice - item.productPrice; // Update total price
+          setTotalPrice(updatedPrice); // Update total price state
+          updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
+          return { ...item, quantity: updatedQuantity };
+        }
+        return item;
+      });
     });
-  });
-};
+  };
 
-const updateCartQuantity = async (productId, quantity) => {
-  try {
-    await axios.put(
-      `${baseUrl}/user/cart/update`,
-      { productId, quantity },
-      {
-        headers: {
-          'Authorization': `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-          'Accept-Language': language,
-        },
-      }
-    );
-    console.log('Cart quantity updated successfully.');
-  } catch (error) {
-    console.error('Error updating cart quantity:', error.message);
-  }
-};
-
+  const updateCartQuantity = async (productId, quantity) => {
+    try {
+      await axios.put(
+        `${baseUrl}/user/cart/update`,
+        { productId, quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log("Cart quantity updated successfully.");
+    } catch (error) {
+      console.error("Error updating cart quantity:", error.message);
+    }
+  };
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term.toLowerCase());
   };
 
- /* const filteredProducts = allProducts.filter((product) =>
+  /* const filteredProducts = allProducts.filter((product) =>
     product.name.toLowerCase().includes(searchTerm)
   );*/
 
@@ -120,14 +120,10 @@ const updateCartQuantity = async (productId, quantity) => {
     navigate(`/home/product/${productId}`);
   };
 
-  
-
-
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     dispatch(setLanguage(selectedLanguage));
   };
-
 
   /*const totalprice = cart.reduce((acc, product) => {
     acc += product.price * product.quantity;
@@ -140,16 +136,14 @@ const updateCartQuantity = async (productId, quantity) => {
   const handleDeleteFromCart = (productId) => {
     dispatch(deleteFromCart({ id: productId }));
   };*/
-  
 
   const handleConfirmClick = () => {
-    navigate('/order/confirm');
-    
+    navigate("/order/confirm");
   };
 
   const [cart, setCart] = useState([]);
 
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
   const bearerToken = useSelector(selectToken);
   const [numItems, setNumItems] = useState(0);
 
@@ -157,8 +151,8 @@ const updateCartQuantity = async (productId, quantity) => {
     try {
       const response = await axios.get(`${baseUrl}/user/cart/my`, {
         headers: {
-          'Authorization': `Bearer ${bearerToken}`,
-          'Accept-Language': language,
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
         },
       });
 
@@ -167,28 +161,30 @@ const updateCartQuantity = async (productId, quantity) => {
       if (cartData && cartData.cart) {
         setCart(cartData.cart.cartItems || []);
         calculateTotalPrice(cartData.cart.cartItems);
-        console.log('Success fetch carts', cartData.cart.cartItems);
+        console.log("Success fetch carts", cartData.cart.cartItems);
       } else {
-        console.error('Error fetching user cart: Unexpected response structure');
+        console.error(
+          "Error fetching user cart: Unexpected response structure"
+        );
       }
-      console.log('success fetch carts', response.data.data.cart.cartItems);
+      console.log("success fetch carts", response.data.data.cart.cartItems);
     } catch (error) {
-      console.error('Error fetching user cart:', error);
+      console.error("Error fetching user cart:", error);
     }
   };
-  
+
   const handleDeleteItem = async (productId) => {
     try {
       await axios.delete(`${baseUrl}/user/cart/remove/${productId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
-          'Accept-Language': language,
+          "Accept-Language": language,
         },
       });
       await fetchUserCart();
-      console.log('success delete from cart ', productId);
+      console.log("success delete from cart ", productId);
     } catch (error) {
-      console.error('Error deleting product from cart:', error);
+      console.error("Error deleting product from cart:", error);
     }
   };
 
@@ -197,14 +193,12 @@ const updateCartQuantity = async (productId, quantity) => {
     setItemToDelete(null);
   };
 
-
   const calculateTotalPrice = (cartItems) => {
     const totalPrice = cartItems.reduce((acc, item) => {
       return acc + item.productPrice * item.quantity;
     }, 0);
     setTotalPrice(totalPrice);
   };
-
 
   /*const handleAddToFavorites = async (productId) => {
     try {
@@ -229,7 +223,7 @@ const updateCartQuantity = async (productId, quantity) => {
   const isProductInWishlist = (productId) => {
     return wishlist.some((item) => item.productId === productId);
   };
-  
+
   const handleAddToFavorites = async (productId) => {
     try {
       if (isProductInWishlist(productId)) {
@@ -256,15 +250,12 @@ const updateCartQuantity = async (productId, quantity) => {
 
   const handleDeleteFromWishlist = async (productId) => {
     try {
-      await axios.delete(
-        `${baseUrl}/user/wishlist/remove/${productId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Accept-Language": language,
-          },
-        }
-      );
+      await axios.delete(`${baseUrl}/user/wishlist/remove/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
       await fetchUserFavourite();
     } catch (error) {
       console.error("Error deleting product from wishlist:", error);
@@ -272,7 +263,6 @@ const updateCartQuantity = async (productId, quantity) => {
   };
 
   const fetchUserFavourite = async () => {
-  
     try {
       const response = await axios.get(`${baseUrl}/user/wishlist/my`, {
         headers: {
@@ -281,21 +271,24 @@ const updateCartQuantity = async (productId, quantity) => {
           "Accept-Language": language,
         },
       });
-  
+
       const favouriteData = response.data.data;
-  
+
       if (favouriteData && favouriteData.wishlist) {
         setWishlist(favouriteData.wishlist.wishlistItems || []);
-        console.log('Success fetch wishlist', favouriteData.wishlist.wishlistItems);
+        console.log(
+          "Success fetch wishlist",
+          favouriteData.wishlist.wishlistItems
+        );
       } else {
-        console.error('Error fetching user favourite: Unexpected response structure');
+        console.error(
+          "Error fetching user favourite: Unexpected response structure"
+        );
       }
     } catch (error) {
-      console.error('Error fetching user cart:', error);
+      console.error("Error fetching user cart:", error);
     }
   };
-
-  
 
   useEffect(() => {
     fetchUserCart();
@@ -308,36 +301,34 @@ const updateCartQuantity = async (productId, quantity) => {
       setQuantity(cart[0].quantity);
     }
   }, [cart]);
- 
 
   const [updatedCart, setUpdatedCart] = useState([]);
 
   const handleSave = async (productId, product) => {
-    
     const cartItem = {
       productId: productId,
-      quantity: product.quantity, 
+      quantity: product.quantity,
     };
-  
+
     try {
       const response = await axios.put(
         `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-            'Accept-Language': language,
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+            "Accept-Language": language,
           },
         }
       );
-  
-      console.log('Product added to cart:', response.data);
+
+      console.log("Product added to cart:", response.data);
       await fetchUserCart();
       setQuantity(quantity);
       setTotalPrice(totalPrice);
     } catch (error) {
-      console.error('Error adding product to cart:', error.message);
+      console.error("Error adding product to cart:", error.message);
     }
   };
 
@@ -351,10 +342,10 @@ const updateCartQuantity = async (productId, quantity) => {
       setSelectedProducts([...selectedProducts, productId]);
     }
   };
-  
-  return(
+
+  return (
     <div>
-       <NavHeader
+      <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         //filteredProducts={filteredProducts}
@@ -363,92 +354,120 @@ const updateCartQuantity = async (productId, quantity) => {
       />
 
       <div className="green-containerr cartGreen ">
-      <div className=" testtt">
-      <WhatsAppIcon />
-        <div className="header-container mt-[100px]">
-          <div className="flexContainerCart">
-          
-          <div className="flexcart">
-          {cart?.map((product) => (<div className="productcart" key={product.productId}>
-              <div className="flexOnecart">
-                <div className="imgcart">
-                <Image
-                  src={product.pictureUrl}
-                  alt="Product poster"
-                  style={{ width: '150px', height: '150px' , objectFit: 'contain' }}
-  />
-                </div>
-                <div className="infocartone">
-                  <div  className="namecart" ><h4>{product.productName}</h4></div>
-                  <h5>{product.productPrice}$</h5>
-                  <h5>{translations[language]?.quantity} : {product.quantity}</h5>
+        <div className=" testtt">
+          <WhatsAppIcon />
+          <div className="mt-[200px] w-[95%] lg:w-[90%] mx-auto ">
+            <div className="flex flex-col lg:flex-row  justify-between">
+              <div className="">
+                {cart?.map((product) => (
+                  <div
+                    className="w-full lg:w-100 h-30 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-3 text-center  rounded-[50px] mx-auto my-3"
+                    key={product.productId}
+                  >
+                    <div className="flex flex-col lg:flex-row gap-3 ">
+                      <div className="flex flex-row relative w-full lg:w-[280px] h-[190px] ">
+                        <div className="bg-[#3EBF87] w-[150px] h-[150px] rounded-full mx-auto" />
+                        <Image
+                          src={product.pictureUrl}
+                          alt="Product poster"
+                          className="right-20 absolute lg:right-0 rounded-lg w-[140px] h-[120px] top-[5%] object-contain"
+                        />
+                      </div>
+                      <div className="w-full lg:w-[50%] text-center pt-3 ">
+                        <div className="text-center uppercase text-[#3EBF87] font-bold">
+                          <h4>{product.productName}</h4>
+                        </div>
+                        <h5 className="text-center lg:text-left ml-2 my-3 text-[#696767] text-3xl font-bold leaading-9 font-inter ">
+                          {product.productPrice}$
+                        </h5>
+                        <h5 className="text-[#696767] text-center lg:text-left my-2">
+                          {translations[language]?.quantity} :{" "}
+                          {product.quantity}
+                        </h5>
 
-                  <div className="countercart">
-                  <button
-    style={{ backgroundColor: '#3EBF87', color: 'white' }}
-    onClick={() => handleDecrement(product.productId)}
-  >
-    <FaMinus />
-  </button>
-  <span>{product.quantity}</span>
-  <button
-    style={{ backgroundColor: '#3EBF87', color: 'white' }}
-    onClick={() => handleIncrement(product.productId)}
-  >
-    <FaPlus />
-  </button>
-  
-                </div>
-                </div>
-                <div className="infocarttwo">
-                  <div className="namecart" >
-                  
-              <FaTrash style={{color: 'red' , fontSize:'20px'}} 
-              onClick={() => handleDeleteFromCart(product.productId)}/>
-                  </div>
-                  <div className="namecart" >
-                  
-              <FaHeart 
-              style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
-              onClick={() => handleAddToFavorites(product.productId)} />
-                  </div>
-                  
-                  {/*<button onClick={() => console.log("Selected products:", selectedProducts)}>
+                        <div className="flex flex-row w-[30%] mx-auto  lg:w-[95%]  justify-between text-left mt-2 p-2 lg:ml-2 ">
+                          <button
+                            className="bg-[#3EBF87] text-white p-1 rounded "
+                            onClick={() => handleDecrement(product.productId)}
+                          >
+                            <FaMinus />
+                          </button>
+                          <span>{product.quantity}</span>
+                          <button
+                            className="bg-[#3EBF87] text-white p-1 rounded "
+                            style={{
+                              color: "white",
+                            }}
+                            onClick={() => handleIncrement(product.productId)}
+                          >
+                            <FaPlus />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="absolute lg:static right-10">
+                        <div className="">
+                          <FaTrash
+                            className="text-[#B3B8B8] text-2xl  my-3"
+                            onClick={() =>
+                              handleDeleteFromCart(product.productId)
+                            }
+                          />
+                        </div>
+                        <div className="namecart">
+                          <FaHeart
+                            style={{
+                              color: isProductInWishlist(product.productId)
+                                ? "red"
+                                : "#3EBF87",
+                            }}
+                            onClick={() =>
+                              handleAddToFavorites(product.productId)
+                            }
+                            className="text-2xl "
+                          />
+                        </div>
+
+                        {/*<button onClick={() => console.log("Selected products:", selectedProducts)}>
                     Checkout
   </button>*/}
-
-                  
-                </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div> ))}
+              <div className=" w-[100%] lg:w-[30%]  h-[250px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
+                <h4 className="m-3 text-[#3ebf87]">
+                  {translations[language]?.totalprice}:
+                </h4>
+                <h4 className="text-center text-[#3ebf87]">
+                  {totalPrice.toFixed(2)} $
+                </h4>
+
+                <button
+                  className="uppercase absolute text-2xl  bg-[#3ebf87] text-white w-50 h-10 rounded-3xl right-10 bottom-6"
+                  onClick={handleConfirmClick}
+                >
+                  {translations[language]?.confirm}
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="total">
-          <h4>{translations[language]?.totalprice} {totalPrice.toFixed(2)}</h4>
-              
-              <button className="confirmbtn" onClick={handleConfirmClick}>{translations[language]?.confirm}</button>
-            </div>
-            </div>
         </div>
+        <Footer />
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Body>{modalMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCancelDeletion}>
+              No
+            </Button>
+            <Button variant="primary" onClick={handleDeleteConfirmation}>
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
-      <Footer />
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Body>{modalMessage}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancelDeletion}>
-            No
-          </Button>
-          <Button variant="primary" onClick={handleDeleteConfirmation}>
-            Yes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
     </div>
   );
 }
 
 export default Cart;
-
-
-
-

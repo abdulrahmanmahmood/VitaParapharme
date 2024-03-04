@@ -43,7 +43,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryIdTwo, setSelectedCategoryIdTwo] = useState(null);
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   // const cart = useSelector((state) => state.cart);
   const [cart, setCart] = useState([]);
@@ -88,14 +88,10 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const [selectedCategoryColor, setSelectedCategoryColor] = useState("");
 
-  
-
   const handleSearchChangeInternal = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
   };
-
-  
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
@@ -115,8 +111,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setShowErrorMessage(false);
     setProductExistsInCategory(true);
   };
-
-  
 
   const handleSearchSubmit = () => {
     const productsInSelectedCategory = filteredProducts.filter(
@@ -272,7 +266,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
   const direction = useSelector((state) => state.translation.direction);
 
-
   const [mainCategory, setMainCategory] = useState([]);
   const [selectedMainCat, setSelectedMainCat] = useState(0);
   const [subCategory, setSubCategory] = useState([]);
@@ -386,7 +379,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setSelectedSubCat(id);
     setSubCategoryText(name);
     navigate(`/store?category=${id}`);
-  }; 
+  };
 
   return (
     <div className="fixed z-50 w-full bg-white ">
@@ -651,30 +644,40 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         </Link>
 
                         <select
-  className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
-  value={mainCategoryText}
-  onChange={(e) => handleMainCatSelect(e.target.value, e.target.text)}
->
-  <option value="">{mainCategoryText}</option>
-  {mainCategory.map((item) => (
-    <option key={item.categoryId} value={item.categoryId}>
-      {item.name}
-    </option>
-  ))}
-</select>
+                          className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
+                          value={mainCategoryText}
+                          onChange={(e) =>
+                            handleMainCatSelect(e.target.value, e.target.text)
+                          }
+                        >
+                          <option value="">{mainCategoryText}</option>
+                          {mainCategory.map((item) => (
+                            <option
+                              key={item.categoryId}
+                              value={item.categoryId}
+                            >
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
 
-<select
-  className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
-  value={subCategoryText}
-  onChange={(e) => handleSubCatSelect(e.target.value, e.target.text)}
->
-  <option value="">{subCategoryText}</option>
-  {subCategory.map((item) => (
-    <option key={item.categoryId} value={item.categoryId}>
-      {item.name}
-    </option>
-  ))}
-</select>
+                        <select
+                          className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
+                          value={subCategoryText}
+                          onChange={(e) =>
+                            handleSubCatSelect(e.target.value, e.target.text)
+                          }
+                        >
+                          <option value="">{subCategoryText}</option>
+                          {subCategory.map((item) => (
+                            <option
+                              key={item.categoryId}
+                              value={item.categoryId}
+                            >
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
 
                         <Link
                           to="/about"

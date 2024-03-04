@@ -221,29 +221,27 @@ function Blog() {
                         </button>
                       </div>
                       <div className="w-[80%] lg:w-[50%]  p-2">
-                  
-                          <div>
-                            {/* {isCopied && (
+                        <div>
+                          {/* {isCopied && (
                               <span
                                 style={{ marginLeft: "5px", color: "#3A7E89" }}
                               >
                                 Link copied!
                               </span>
                             )} */}
-                            {/* <input
+                          {/* <input
                               ref={pageLinkRef}
                               type="text"
                               readOnly
                               value={window.location.href}
                               style={{ position: "absolute", left: "-9999px" }}
                             /> */}
-                          </div>
-                          <p className=" content-start text-left">
-                            {selectedBlog
-                              ? selectedBlog.content
-                              : blogs[0].content}
-                          </p>
-                
+                        </div>
+                        <p className=" content-start text-left">
+                          {selectedBlog
+                            ? selectedBlog.content
+                            : blogs[0].content}
+                        </p>
                       </div>
                     </div>
                   </div>
