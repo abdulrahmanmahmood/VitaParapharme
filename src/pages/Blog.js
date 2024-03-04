@@ -195,7 +195,7 @@ function Blog() {
             ></div>
           )}
           {!loading && (
-            <div className="w-[90%] outline-dashed mx-auto mt-5">
+            <div className="w-[90%] mx-auto mt-5">
               {blogs.length > 0 && (
                 <div>
                   <div className="">
@@ -203,7 +203,7 @@ function Blog() {
                       {selectedBlog ? selectedBlog.title : blogs[0].title}
                     </h4>
                     <div className="flex flex-col lg:flex-row gap-5 items-center ">
-                      <div className="w-[80%] lg:w-[50%] h-[400px] mx-auto relative">
+                      <div className="w-[80%] lg:w-[50%] h-[400px]  mx-auto relative">
                         <img
                           src={
                             selectedBlog
@@ -220,35 +220,30 @@ function Blog() {
                           Read Article
                         </button>
                       </div>
-                      <div className="">
-                        <div className="">
+                      <div className="w-[80%] lg:w-[50%]  p-2">
+                  
                           <div>
-                            {isCopied && (
+                            {/* {isCopied && (
                               <span
                                 style={{ marginLeft: "5px", color: "#3A7E89" }}
                               >
                                 Link copied!
                               </span>
-                            )}
-                            <input
+                            )} */}
+                            {/* <input
                               ref={pageLinkRef}
                               type="text"
                               readOnly
                               value={window.location.href}
                               style={{ position: "absolute", left: "-9999px" }}
-                            />
+                            /> */}
                           </div>
-                        </div>
-                        <div>
-                          {/*<h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>*/}
-                        </div>
-
-                        <h6>
-                          {selectedBlog
-                            ? selectedBlog.content
-                            : blogs[0].content.substring(0, 600)}
-                          ...
-                        </h6>
+                          <p className=" content-start text-left">
+                            {selectedBlog
+                              ? selectedBlog.content
+                              : blogs[0].content}
+                          </p>
+                
                       </div>
                     </div>
                   </div>
