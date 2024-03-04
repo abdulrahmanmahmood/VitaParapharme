@@ -199,8 +199,11 @@ function Blog() {
               {blogs.length > 0 && (
                 <div>
                   <div className="">
+                    <h4 className="text-center w-[90%]  mx-auto my-4 font-bold text-3xl  capitalize">
+                      {selectedBlog ? selectedBlog.title : blogs[0].title}
+                    </h4>
                     <div className="flex flex-col lg:flex-row gap-5 items-center ">
-                      <div className="w-[80%] lg:w-[50%] h-[400px] mx-auto">
+                      <div className="w-[80%] lg:w-[50%] h-[400px] mx-auto relative">
                         <img
                           src={
                             selectedBlog
@@ -208,8 +211,14 @@ function Blog() {
                               : blogs[0].pictureUrl
                           }
                           alt="Blog poster"
-                          className="w-[100%] h-[100%] object-fill rounded-3xl mx-auto"
+                          className="w-[100%] h-[100%] object-fill rounded-3xl mx-auto "
                         />
+                        <button
+                          onClick={() => handleBlogClick(blogs[0])}
+                          className="p-2 w-[170px] h-[60px] bottom-5  right-5 bg-[#61DAA2] text-white rounded-2xl font-bold absolute"
+                        >
+                          Read Article
+                        </button>
                       </div>
                       <div className="">
                         <div className="">
@@ -233,23 +242,13 @@ function Blog() {
                         <div>
                           {/*<h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>*/}
                         </div>
-                        <h5>
-                          {selectedBlog ? selectedBlog.title : blogs[0].title}
-                        </h5>
+
                         <h6>
                           {selectedBlog
                             ? selectedBlog.content
                             : blogs[0].content.substring(0, 600)}
                           ...
                         </h6>
-                        <div className="w-[130px] h-[150px] text-center items-center">
-                          <button
-                            onClick={() => handleBlogClick(blogs[0])}
-                            className="p-5 w-[100%] h-[100%] bg-[#61DAA2] text-white"
-                          >
-                            read article
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </div>
