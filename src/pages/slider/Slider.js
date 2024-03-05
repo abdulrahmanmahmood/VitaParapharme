@@ -11,7 +11,7 @@ function Slider() {
     <section id="slider" className="mt-0">
       <div
         id="carouselExampleControls"
-        className="w-full "
+        className="carousel slide"
         data-bs-ride="carousel"
       >
         <div className="carousel-inner">
@@ -25,7 +25,7 @@ function Slider() {
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  className="w-full h-full  object-fill bg-white"
+                  className="w-full h-full rounded object-fill bg-white"
                   alt={`slider-${index}`}
                 />
               ) : (
