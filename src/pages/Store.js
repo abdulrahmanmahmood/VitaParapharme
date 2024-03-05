@@ -174,7 +174,6 @@ function Store() {
   };
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const categoryIdFromUrl = queryParams.get("category");
@@ -546,7 +545,6 @@ function Store() {
         <div className="home-containerr testtt">
           <WhatsAppIcon />
 
-
           <div className="store-flex">
             {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
               <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] lg:w-[90%] ">
@@ -655,8 +653,6 @@ function Store() {
                 })}
               </div>
             )}
-
-
 
             <div className="storeside">
               <p></p>
