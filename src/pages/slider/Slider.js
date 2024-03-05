@@ -11,21 +11,21 @@ function Slider() {
     <section id="slider" className="mt-0">
       <div
         id="carouselExampleControls"
-        className="carousel slide"
+        className="w-full "
         data-bs-ride="carousel"
       >
         <div className="carousel-inner">
           {images.map((imageUrl, index) => (
             <div
               key={index}
-              className={`carousel-item ${
-                index === 0 ? "active" : ""
+              className={` carousel-item ${
+                index === 0 ? "active " : ""
               } h-[400px]`}
             >
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  className="w-full h-full object-contain bg-white"
+                  className="w-full h-full  object-fill bg-white"
                   alt={`slider-${index}`}
                 />
               ) : (
