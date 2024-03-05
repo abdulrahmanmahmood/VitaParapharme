@@ -94,7 +94,7 @@ function MyOrders() {
       <div className="page-container">
         <NavHeader />
 
-        <div className="green-containerr">
+        <div className="green-containerr mt-[200px] mx-auto">
           <div className="home-containerr home-order testtt">
             <WhatsAppIcon />
             <div className="myprdersParagraph  ">

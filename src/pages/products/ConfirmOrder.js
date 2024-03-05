@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
@@ -22,7 +21,7 @@ import { selectToken } from "../../rtk/slices/Auth-slice";
 import { Modal } from "react-bootstrap";
 import "./confirmOrder.css";
 import WhatsAppIcon from "../../components/Whatsapp";
-import email from "../../images/Email icon.png"
+import email from "../../images/Email icon.png";
 import addresss from "../../images/Location icon.png";
 import phone from "../../images/phone icon.png";
 import Footer from "../../components/Footer";
@@ -95,15 +94,12 @@ function ConfirmOrder() {
 
   const fetchUserAddresses = async () => {
     try {
-      const response = await axios.get(
-        `${baseUrl}/user/address/all`,
-        {
-          headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Accept-Language': language,
-          },
-        }
-      );
+      const response = await axios.get(`${baseUrl}/user/address/all`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
       // console.log("addreses", response.data);
       setAdress(response.data.data.addresses);
     } catch (error) {
@@ -123,8 +119,8 @@ function ConfirmOrder() {
         {},
         {
           headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Accept-Language': language,
+            Authorization: `Bearer ${bearerToken}`,
+            "Accept-Language": language,
           },
         }
       );
@@ -136,15 +132,15 @@ function ConfirmOrder() {
         console.log("Error submitting order:", response.data);
 
         if (response.data && response.data.message) {
-          navigate('/order');
+          navigate("/order");
         } else {
           console.error("Unknown error:", response.data);
         }
       }
-      console.log("addressid " , addressId); 
-     } catch (error) {
+      console.log("addressid ", addressId);
+    } catch (error) {
       console.error("Error submitting form:", error);
-      console.log("addressid " , addressId); 
+      console.log("addressid ", addressId);
     }
   };
 
@@ -160,8 +156,8 @@ function ConfirmOrder() {
         newAddress,
         {
           headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Accept-Language': language,
+            Authorization: `Bearer ${bearerToken}`,
+            "Accept-Language": language,
           },
         }
       );
@@ -197,8 +193,8 @@ function ConfirmOrder() {
         `${baseUrl}/user/address/delete/${addressId}`,
         {
           headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Accept-Language': language,
+            Authorization: `Bearer ${bearerToken}`,
+            "Accept-Language": language,
           },
         }
       );
@@ -211,15 +207,12 @@ function ConfirmOrder() {
 
   const getCounries = async () => {
     try {
-      const response = await axios.get(
-        `${baseUrl}/public/country/all`,
-        {
-          headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Accept-Language': language,
-          },
-        }
-      );
+      const response = await axios.get(`${baseUrl}/public/country/all`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
       console.log("countries>>", response.data.data.countries);
       setCountries(response.data.data.countries);
     } catch (error) {
@@ -235,87 +228,87 @@ function ConfirmOrder() {
         handleProductClick={handleProductClick}
       />
 
-      <Container style={{ marginTop: "50px" }}>
-      <div className=" testtt">
-      <WhatsAppIcon />
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th className="p-4">{translations[language]?.country}</th>
-              <th className="p-4">{translations[language]?.city}</th>
-              <th className="p-4">{translations[language]?.region}</th>
-              <th className="p-4">{translations[language]?.street}</th>
-              <th className="p-4">{translations[language]?.zipcode}</th>
-              <th className="p-4">{translations[language]?.action}</th>
-              <th className="p-4">{translations[language]?.delete}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {address.map((item) => (
+      <Container style={{ marginTop: "200px" }}>
+        <div className=" testtt">
+          <WhatsAppIcon />
+          <Table striped bordered hover size="sm">
+            <thead>
               <tr>
-                <td>{item.country}</td>
-                <td>{item.city}</td>
-                <td>{item.region}</td>
-                <td>{item.street}</td>
-                <td>{item.zipCode}</td>
-                <td>
-                  <button
-                    onClick={() => handleSubmit(item.addressId)}
-                    className="useaddress"
-                  >
-                    {translations[language]?.confirmorder}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => handleDeleteAddress(item.addressId)}
-                    className="useaddress2"
-                  >
-                    {translations[language]?.deleteadd}
-                  </button>
-                </td>
+                <th className="p-4">{translations[language]?.country}</th>
+                <th className="p-4">{translations[language]?.city}</th>
+                <th className="p-4">{translations[language]?.region}</th>
+                <th className="p-4">{translations[language]?.street}</th>
+                <th className="p-4">{translations[language]?.zipcode}</th>
+                <th className="p-4">{translations[language]?.action}</th>
+                <th className="p-4">{translations[language]?.delete}</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <div>
-          {address.length > 4 ? (
-            <h3>Max addresses 5</h3>
-          ) : (
-            <button
-              className="useaddress"
-              onClick={() => setShowForm(!showForm)}
-            >
-              {translations[language]?.addaddress}
-            </button>
-          )}
+            </thead>
+            <tbody>
+              {address.map((item) => (
+                <tr>
+                  <td>{item.country}</td>
+                  <td>{item.city}</td>
+                  <td>{item.region}</td>
+                  <td>{item.street}</td>
+                  <td>{item.zipCode}</td>
+                  <td>
+                    <button
+                      onClick={() => handleSubmit(item.addressId)}
+                      className="useaddress"
+                    >
+                      {translations[language]?.confirmorder}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleDeleteAddress(item.addressId)}
+                      className="useaddress2"
+                    >
+                      {translations[language]?.deleteadd}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <div>
+            {address.length > 4 ? (
+              <h3>Max addresses 5</h3>
+            ) : (
+              <button
+                className="useaddress"
+                onClick={() => setShowForm(!showForm)}
+              >
+                {translations[language]?.addaddress}
+              </button>
+            )}
 
-          {showForm && (
-            <>
-              <Table striped bordered hover size="sm" className="mt-4">
-                <thead>
-                  <tr>
-                    <th className="p-4">{translations[language]?.country}</th>
-                    <th className="p-4">{translations[language]?.city}</th>
-                    <th className="p-4">{translations[language]?.region}</th>
-                    <th className="p-4">{translations[language]?.street}</th>
-                    <th className="p-4">{translations[language]?.zipcode}</th>
-                    <th>action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <select
-                        className="form-select"
-                        aria-label="Default select example"
-                        onChange={(e) => handleInputChange(e, "country")}
-                        value={"MOROCCO"}
-                      >
-                        <option value="MOROCCO" key={"MOROCCO"}>
-                          Morocco
-                        </option>
-                        {/* {Object.keys(countries).map((countryKey) => (
+            {showForm && (
+              <>
+                <Table striped bordered hover size="sm" className="mt-4">
+                  <thead>
+                    <tr>
+                      <th className="p-4">{translations[language]?.country}</th>
+                      <th className="p-4">{translations[language]?.city}</th>
+                      <th className="p-4">{translations[language]?.region}</th>
+                      <th className="p-4">{translations[language]?.street}</th>
+                      <th className="p-4">{translations[language]?.zipcode}</th>
+                      <th>action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          onChange={(e) => handleInputChange(e, "country")}
+                          value={"MOROCCO"}
+                        >
+                          <option value="MOROCCO" key={"MOROCCO"}>
+                            Morocco
+                          </option>
+                          {/* {Object.keys(countries).map((countryKey) => (
                           <option
                             key={countryKey}
                             value={countries[countryKey]}
@@ -323,50 +316,50 @@ function ConfirmOrder() {
                             {countries[countryKey]}
                           </option>
                         ))} */}
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        onChange={(e) => handleInputChange(e, "city")}
-                        value={newAddress.city}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        onChange={(e) => handleInputChange(e, "region")}
-                        value={newAddress.region}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        onChange={(e) => handleInputChange(e, "street")}
-                        value={newAddress.street}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        onChange={(e) => handleInputChange(e, "zipCode")}
-                        value={newAddress.zipCode}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="useaddress"
-                        onClick={() => addNewAddress()}
-                      >
-                        {translations[language]?.saveadd}
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </>
-          )}
-        </div>
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          onChange={(e) => handleInputChange(e, "city")}
+                          value={newAddress.city}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          onChange={(e) => handleInputChange(e, "region")}
+                          value={newAddress.region}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          onChange={(e) => handleInputChange(e, "street")}
+                          value={newAddress.street}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          onChange={(e) => handleInputChange(e, "zipCode")}
+                          value={newAddress.zipCode}
+                        />
+                      </td>
+                      <td>
+                        <button
+                          className="useaddress"
+                          onClick={() => addNewAddress()}
+                        >
+                          {translations[language]?.saveadd}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </>
+            )}
+          </div>
         </div>
       </Container>
 
@@ -387,4 +380,3 @@ function ConfirmOrder() {
   );
 }
 export default ConfirmOrder;
-
