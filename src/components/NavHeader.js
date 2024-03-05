@@ -407,11 +407,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                     onChange={(e) => handleSelect(parseInt(e.target.value))}
                     className="flex-1 bg-[#61DAA2]  lg:w-25 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
                   >
-                    <option value={null}>{translations[language]?.all}</option>
+                    <option value={null} className="text-center">{translations[language]?.all}</option>
                     {categories.map((category) => (
                       <option
                         key={category.categoryId}
                         value={category.categoryId}
+                        className="text-center border"
                       >
                         {category.name}
                       </option>
@@ -498,18 +499,19 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                 <div className=" hidden lg:block lg:items-end ">
                   <div className="">
                     {!isLoggedIn && (
-                      <div className="logindiv flexlogindiv ">
+                      <div className="w-[100px] h-[40px] flex flex-row items-center  bg-[#61DAA2] p-2 overflow-hidden rounded-2xl ">
                         <div>
                           {" "}
                           <img
-                            style={{ width: "20px", height: "20px" }}
+                          
                             src={loginimg}
                             alt="user"
+                            className="w-[40px] h-[15px] object-contain  mx-auto"
                           />{" "}
                         </div>
                         <div>
-                          {" "}
-                          <Link to="/authentication">Login</Link>{" "}
+                    
+                          <Link to="/authentication" className="text-center text-white no-underline my-auto font-bold">Login</Link>{" "}
                         </div>
                       </div>
                     )}

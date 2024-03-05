@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import slide1 from "../../images/slide1.png";
 import slide2 from "../../images/slide2.png";
-import "./slider.css";
 import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function Slider() {
