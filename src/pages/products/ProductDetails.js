@@ -176,28 +176,28 @@ useEffect(() => {
         handleProductClick={handleProductClick}
       />
 
-        <div className="green-containerr">
+        <div className="bg-gray-50 bottom-0 overflow-y-hidden">
           
-          <div className="header-container flexContent">
-            <div className="detailsflex">
+          <div className="mb-20 relative top-12 lg:top-0 lg:mx-12 overflow-y-hidden md:px-5 sm:px-2 flex flex-row mt-12">
+            <div className="flex flex-col">
 
-            <div className="detailsflexabout">
-            <div  className="flexnamerate">
-                <div className="">
-                  <h2>
+            <div className="">
+            <div  className="flex flex-row justify-between bg-[#3EBF87] rounded-lg p-2 mt-32">
+                <div className="mt-2">
+                  <h2 className="text-white">
                   {productDetails && productDetails.name}
                   
                   </h2>
                 </div>
                 
-                <div className="ratenum">
+                <div className="flex flex-row">
   {selectedProduct && selectedProduct.rating !== undefined ? (
     <>
       <StarRating
         initialRating={selectedProduct.rating}
         isClickable={false}
       /> 
-      <h5 style={{marginTop: '10px'}}>({selectedProduct.reviews})</h5>
+      <h5 className="text-white mt-4">({selectedProduct.reviews})</h5>
     </>
   ) : (
     <p>Loading...</p>
@@ -205,86 +205,74 @@ useEffect(() => {
 </div>
                 <div >
   {productDetails && productDetails.discount ? (
-    <>
-      <h2 className="discounted-price">{`$${productDetails.afterDiscount}`}</h2>
-      <div style={{color:'white'}} className="old-price">{`$${productDetails.price}`}</div>
-    </>
+    <div className="">
+      <h2 className="text-white">{`$${productDetails.afterDiscount}`}</h2>
+      <div  className="text-lg line-through text-white">{`$${productDetails.price}`}</div>
+    </div>
   ) : (
-    <h2>{`$${productDetails && productDetails.price}`}</h2>
+    <h2 className="text-white">{`$${productDetails && productDetails.price}`}</h2>
   )}
 </div>
 
                
               </div>
-              {/*<h1 style={{marginTop:'15px'}}>{translations[language]?.aboutpro} </h1>*/}
-              <p style={{width: '100%' , wordWrap: 'break-word'}}>
-              <div
-    className="product-details-content"
-    dangerouslySetInnerHTML={{ __html: aboutProductHTML }}
-  />
-
+              <h1 className="text-md text-black mt-[10px]">{translations[language]?.aboutpro} </h1>
+              <p className=" text-md font-bold w-full overflow-wrap break-word text-left text-black">
+              {productDetails && productDetails.description}
               </p>
               
             </div>
-            <div className="detailsfleximg">
-        <div className="detailsIMG">
-          <div className="master-img">
-            {masterImage && <img src={masterImage} alt="Master" />}
+            <div className="flex flex-row justify-between w-full w-[100%]">
+        <div className="  w-[50%] flex flex-col items-center">
+          <div className="max-w-screen-md">
+            {masterImage && <img className="w-48 h-48 object-contain" src={masterImage} alt="Master" />}
           </div>
-          <div className="small-images-container">
+          <div className="flex justify-center mt-5">
   {smallImages.map((smallImg, index) => (
-    <div key={index} className="small-img" onClick={() => handleImageClick(smallImg)}>
+    <div key={index} className="mx-2 cursor-pointer max-w-xs h-auto" onClick={() => handleImageClick(smallImg)}>
       <img src={smallImg} alt={`Small ${index}`} />
     </div>
   ))}
 </div>
         </div>
 
-        <div className="detailsINFO">
-              {/*<h1>{translations[language]?.productdet} </h1>*/}
+        <div className="ml-6 w-[50%] mt-12">
+              <h1 className="text-lg text-black">{translations[language]?.productdet} </h1>
               <p>
-              <div
-    className="product-details-content"
-    dangerouslySetInnerHTML={{ __html: productDetailsHTML }}
-  />
+              {productDetails && productDetails.about}
               </p>
             </div>
         </div>
 
             </div>
           </div>
-          <div className="productFooter">
-            <div className="header-container flexFooter">
-              <div className="review">
-                <button onClick={() => handleDetailsClick()}>Review</button>
-              </div>
-              <div className="middlefooter">
-              
-                
-                <div >
-                  
-                  {productDetails ? ( 
-             <h1>   {productDetails.price * quantity} $ </h1>
-      ) : (
-        <p>Loading...</p>
-      )}
-                  
-                </div>
-                <div className="counter">
-                  <button style={{backgroundColor:'transparent' , color : 'white'}} onClick={handleDecrement}>
-                    <FaMinus />
-                  </button>
-                  <span>{quantity}</span>
-                  <button style={{backgroundColor:'transparent' , color : 'white'}} onClick={handleIncrement}>
-                    <FaPlus />
-                  </button>
-                </div>
-              </div>
-              <div className="review cart">
-                <button onClick={() => handleAddToCart(productDetails.productId, productDetails)}>Add to Cart</button>
-              </div>
-            </div>
-          </div>
+          <div className="bg-[#3EBF87] rounded-t-full overflow-hidden">
+  <div className="px-4 py-2 ">
+    <div className="flex flex-row  md:flex-row md:items-center justify-between">
+      <button className="bg-white h-12 w-20 rounded-lg text-black font-bold mb-2 md:mb-0 mr-2 mt-3" onClick={() => handleDetailsClick()}>Review</button>
+      <div className="flex items-center mb-2 md:mb-0">
+        <div className="text-white md:mr-4">
+          {productDetails ? ( 
+            <h1 className=" ">{productDetails.price * quantity} $</h1>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+        <div className="flex items-center">
+          <button className="text-white md:mr-2" onClick={handleDecrement}>
+            <FaMinus />
+          </button>
+          <span className="md:text-lg md:font-bold   text-white">{quantity}</span>
+          <button className="text-white ml-2" onClick={handleIncrement}>
+            <FaPlus />
+          </button>
+        </div>
+      </div>
+      <button className="bg-white h-12 w-24 rounded-lg text-black font-bold ml-1 mt-3" onClick={() => handleAddToCart(productDetails.productId, productDetails)}>Add to Cart</button>
+    </div>
+  </div>
+</div>
+
           
         </div>
     

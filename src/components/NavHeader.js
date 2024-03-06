@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import logo from "../images/Vita Logo2.png";
 import loginimg from "../images/loginIcon.png";
 import logoutimg from "../images/logouticon.png";
@@ -13,6 +13,8 @@ import { Link, Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown } from "react-bootstrap";
+import { RiArrowDropDownLine } from "react-icons/ri";
+
 import {
   setLanguage,
   selectLanguage,
@@ -29,10 +31,12 @@ import { clearWishlist } from "../rtk/slices/Wishlist-slice";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { selectToken } from "../rtk/slices/Auth-slice";
 import { baseUrl } from "../rtk/slices/Product-slice";
+import $ from "jquery";
 
 function NavHeader({ userId, handleProductClick, cartunmber }) {
   const dispatch = useDispatch();
   const language = useSelector(selectLanguage);
+  const [allCategories, setAllCategories] = useState([]);
   const translations = useSelector(selectTranslations);
   const allProducts = useSelector((state) => state.products);
   const bearerToken = useSelector(selectToken);
@@ -42,7 +46,8 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedCategoryIdTwo, setSelectedCategoryIdTwo] = useState(null);
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
+  const [selectedMainCategoryId, setSelectedMainCategoryId] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
   // const cart = useSelector((state) => state.cart);
@@ -80,6 +85,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     checkLoggedInStatus();
     fetchCategories();
     fetchNotifications();
+    fetchMainSubCategories();
   }, [language]);
 
   const handleLanguageChange = (e) => {
@@ -153,9 +159,13 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     handleCategoryFilter(categoryId);
   };
 
-  const handleSelectTwo = (categoryId) => {
-    setSelectedCategoryIdTwo(categoryId);
+  const handleSelectSubCategory = (categoryId) => {
+    setSelectedSubCategoryId(categoryId);
     navigate(`/store?category=${categoryId}`);
+  };
+  const handleSelectMainCategory = (categoryId) => {
+    setSelectedMainCategoryId(categoryId);
+    navigate(`/store?Maincategory=${categoryId}`);
   };
 
   const handleCategoryFilter = (categoryId) => {
@@ -165,7 +175,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [showSidebar, setShowSidebar] = useState(false);
   const sidebarRef = useRef(null);
   const notificationRef = useRef(null);
-
+  const categoriesRef = useRef(null);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -176,6 +186,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showtheDropDown, setShowtheDropDown] = useState(false);
 
   const handleNotificationsClick = () => {
     setShowNotifications(!showNotifications);
@@ -230,6 +241,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setReaded(true);
     setShowNotifications(!showNotifications);
   };
+
   useEffect(() => {
     const closeNotificationsOnOutsideClick = (e) => {
       if (
@@ -247,6 +259,19 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
         "mousedown",
         closeNotificationsOnOutsideClick
       );
+    };
+  }, []);
+  useEffect(() => {
+    const closeCategories = (e) => {
+      if (categoriesRef.current && !categoriesRef.current?.contains(e.target)) {
+        setShowtheDropDown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", closeCategories);
+
+    return () => {
+      document.removeEventListener("mousedown", closeCategories);
     };
   }, []);
 
@@ -287,6 +312,26 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setSubCategoryText(translations[language]?.sub || translations["en"]?.sub);
   }, [language, translations]);
 
+  const fetchMainSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/public/main-sub/category/all`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching All sub and main Categories ",
+        response.data.data
+      );
+      setAllCategories(response.data.data.mainCategories);
+    } catch (error) {
+      console.log("error in fetching main Category", error);
+    }
+  };
+
   const fetchMianCategory = async () => {
     try {
       const response = await axios.get(`${baseUrl}/public/main/category/all`, {
@@ -294,10 +339,10 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
           "Accept-Language": language,
         },
       });
-      console.log("success in fetching main Categoryies ", response.data.data);
+      console.log("success in fetching All Categories  ", response.data.data);
       setMainCategory(response.data.data.mainCategories);
     } catch (error) {
-      console.log("error in fetching main Category", error);
+      console.log("error infetching All Categories ", error);
     }
   };
   const fetchSubCategory = async (id) => {
@@ -364,14 +409,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setSelectedMainCat(id);
     setMainCategoryText(name);
   };
-  /*const handleSubCatSelect = (id, name) => {
-    console.log("Selected Sub Category id:", id);
-    fetchProductsBySubCat(id);
-    setSelectedSubCat(id);
-    setSubCategoryText(name);
-    
-    navigate(`/store?category=${id}`);
-  };*/
 
   const handleSubCatSelect = async (id, name) => {
     console.log("Selected Sub Category id:", id);
@@ -380,6 +417,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     setSubCategoryText(name);
     navigate(`/store?category=${id}`);
   };
+  const [nestedListId, setNestedListId] = useState(0);
 
   return (
     <div className="fixed z-50 w-full bg-white ">
@@ -407,7 +445,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                     onChange={(e) => handleSelect(parseInt(e.target.value))}
                     className="flex-1 bg-[#61DAA2]  lg:w-25 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
                   >
-                    <option value={null} className="text-center">{translations[language]?.all}</option>
+                    <option value={null} className="text-center">
+                      {translations[language]?.all}
+                    </option>
                     {categories.map((category) => (
                       <option
                         key={category.categoryId}
@@ -503,15 +543,18 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         <div>
                           {" "}
                           <img
-                          
                             src={loginimg}
                             alt="user"
                             className="w-[40px] h-[15px] object-contain  mx-auto"
                           />{" "}
                         </div>
                         <div>
-                    
-                          <Link to="/authentication" className="text-center text-white no-underline my-auto font-bold">Login</Link>{" "}
+                          <Link
+                            to="/authentication"
+                            className="text-center text-white no-underline my-auto font-bold"
+                          >
+                            Login
+                          </Link>{" "}
                         </div>
                       </div>
                     )}
@@ -595,7 +638,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
               </div>
             </div>
 
-            <>
+            <div className="">
               <div className="mx-auto items-center text-center w-full  ">
                 <div className=" mx-auto outline-dotted">
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -604,7 +647,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                     className="w-full"
                   >
                     <div className="w-full">
-                      <div className="  text-center items-center  mx-auto flex flex-col   lg:flex-row lg:content-between my-2 lg:my-0 gap-5 w-full ">
+                      <div className="  text-center items-center  mx-auto flex flex-col   lg:flex-row lg:content-between my-2 lg:my-0 gap-5 w-full  ">
                         <Link to="/cart" className="block lg:hidden cart-link">
                           <img
                             style={{
@@ -622,7 +665,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                             </div>
                           )}
                         </Link>
-
                         <Link
                           to="/home"
                           className="items-center mx-auto  text-black font-bold text-xl  "
@@ -645,41 +687,13 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                           {translations[language]?.blog}
                         </Link>
 
-                        <select
-                          className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
-                          value={mainCategoryText}
-                          onChange={(e) =>
-                            handleMainCatSelect(e.target.value, e.target.text)
-                          }
+                        <Link
+                          className="items-center mx-auto text-black font-bold text-xl"
+                          style={{ textDecoration: "none" }}
+                          onClick={() => setShowtheDropDown(true)}
                         >
-                          <option value="">{mainCategoryText}</option>
-                          {mainCategory.map((item) => (
-                            <option
-                              key={item.categoryId}
-                              value={item.categoryId}
-                            >
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-
-                        <select
-                          className="w-[10%] lg:w-[10%] h-full text-black font-bold text-xl"
-                          value={subCategoryText}
-                          onChange={(e) =>
-                            handleSubCatSelect(e.target.value, e.target.text)
-                          }
-                        >
-                          <option value="">{subCategoryText}</option>
-                          {subCategory.map((item) => (
-                            <option
-                              key={item.categoryId}
-                              value={item.categoryId}
-                            >
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
+                          {translations[language]?.categories}
+                        </Link>
 
                         <Link
                           to="/about"
@@ -700,9 +714,106 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                   </Navbar.Collapse>
                 </div>
               </div>
-            </>
+              {/* {showtheDropDown && (
+                <div className="left-1/2 fixed w-40 bg-white">
+                  <div className="relative">
+                    {allCategories?.map((category) => (
+                      <div key={category.name}>
+                        {category.subCategories &&
+                        category.subCategories.length > 0 ? (
+                          <div>
+                            <select id="" className="">
+                              <option value="">{category.name}</option>
+                              {category.subCategories.map((item) => (
+                                <option
+                                  key={item.categoryId}
+                                  value={item.categoryId}
+                                >
+                                  {item.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : (
+                          <p className="font-semibold px-4">{category.name}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )} */}
+
+              {showtheDropDown && (
+                <div
+                  className="left-1/2 fixed w-40 bg-white rounded-xl"
+                  ref={categoriesRef}
+                >
+                  <div className="">
+                    {allCategories?.map((category) => (
+                      <div key={category.name}>
+                        {category.subCategories.length > 0 ? (
+                          <div className="">
+                            <div
+                              className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default ${
+                                nestedListId === category.categoryId
+                                  ? "bg-[#3EBF87]"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                setNestedListId(category.categoryId)
+                              }
+                            >
+                              {category.name}{" "}
+                              <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
+                            </div>
+                            {nestedListId === category.categoryId && (
+                              <div className="fixed bg-white border ml-[160px] rounded-xl">
+                                <ul className="list-none text-left p-2 w-full ">
+                                  {category.subCategories.map((subCategory) => (
+                                    <li
+                                      key={subCategory.name}
+                                      className="hover:bg-[#3EBF87] p-2 rounded cursor-default"
+                                      onClick={() =>
+                                        handleSelectSubCategory(
+                                          subCategory.categoryId,
+                                          subCategory.name
+                                        )
+                                      }
+                                    >
+                                      {subCategory.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p
+                            className={`font-semibold text-center text-xl p-1 m-1 cursor-default ${
+                              nestedListId === category.categoryId
+                                ? "bg-[#3EBF87]"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNestedListId(category.categoryId);
+                              handleSelectMainCategory(
+                                category.categoryId,
+                                category.name
+                              );
+                            }}
+                          >
+                            {category.name}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
         <div ref={sidebarRef}>
           <SidebarUser
             isOpen={showSidebar}

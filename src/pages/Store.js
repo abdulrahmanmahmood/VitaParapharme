@@ -261,6 +261,8 @@ function Store() {
   };*/
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedMainCategoryId, setSelectedMainCategoryId] = useState(null);
+
   /* const handleCategoryFilter = (categoryId) => {
     setSelectedCategoryId(categoryId);
      
@@ -308,17 +310,6 @@ function Store() {
     dispatch(fetchProducts());
   };
 
-  /*const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    //const matchesCategory = selectedCategoryId ? product.categoryId === selectedCategoryId : true;
-    const matchesPriceRange =
-      product.price >= priceRange.min && product.price <= priceRange.max;
-    
-    const matchesRating = ratingFilter
-      ? product.rating >= ratingFilter && product.rating < ratingFilter + 1
-      : true;
-    return matchesSearch  && matchesPriceRange && matchesRating ;
-  });*/
 
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
@@ -347,23 +338,8 @@ function Store() {
   const queryParams = new URLSearchParams(location.search);
   const searchTermFromUrl = queryParams.get("search") || "";
   const categoryIdFromUrl = queryParams.get("category");
+  const mainCategoryIdFromUrl = queryParams.get('Maincategory');
 
-  /*useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(fetchProducts());
-        checkLoggedInStatus();
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-    setSearchTerm(searchTermFromUrl);
-
-    const categoryIdFromUrl = queryParams.get('category');
-  setSelectedCategoryId(categoryIdFromUrl ? parseInt(categoryIdFromUrl) : null);
-  }, [language, searchTermFromUrl]);*/
 
   useEffect(() => {
     const fetchData = async () => {
@@ -379,7 +355,6 @@ function Store() {
     setSearchTerm(searchTermFromUrl);
   }, [language, searchTermFromUrl, categoryIdFromUrl]);
 
-  // ...
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
