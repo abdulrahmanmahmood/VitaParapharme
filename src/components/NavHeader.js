@@ -742,14 +742,14 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
               {showtheDropDown && (
                 <div
-                  className={`left-1/2  w-[30%] bg-white rounded-xl ${
+                  className={`left-1/2  w-[30%]  ${
                     showtheDropDown ? "fixed" : "hidden"
                   } `}
                   ref={categoriesRef}
                   onMouseLeave={() => setShowtheDropDown(false)}
 
                 >
-                  <div className="w-[50%]">
+                  <div className="w-[50%]  bg-white rounded-xl">
                     {allCategories?.map((category) => (
                       <div key={category.name}
                       
