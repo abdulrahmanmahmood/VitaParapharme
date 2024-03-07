@@ -339,12 +339,13 @@ function Store() {
   const searchTermFromUrl = queryParams.get("search") || "";
   const categoryIdFromUrl = queryParams.get("category");
   const mainCategoryIdFromUrl = queryParams.get('Maincategory');
+  
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(fetchProducts(categoryIdFromUrl));
+        await dispatch(fetchProducts());
         checkLoggedInStatus();
       } finally {
         setLoading(false);

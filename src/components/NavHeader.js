@@ -46,7 +46,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
   const [selectedMainCategoryId, setSelectedMainCategoryId] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -160,12 +159,10 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
 
   const handleSelectSubCategory = (categoryId) => {
-    setSelectedSubCategoryId(categoryId);
     navigate(`/store?category=${categoryId}`);
   };
   const handleSelectMainCategory = (categoryId) => {
-    setSelectedMainCategoryId(categoryId);
-    navigate(`/store?Maincategory=${categoryId}`);
+    navigate(`/store?category=${categoryId}`);
   };
 
   const handleCategoryFilter = (categoryId) => {
@@ -690,7 +687,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         <Link
                           className="items-center mx-auto text-black font-bold text-xl"
                           style={{ textDecoration: "none" }}
-                          onClick={() => setShowtheDropDown(true)}
+                          onMouseEnter={() => setShowtheDropDown(true)}
                         >
                           {translations[language]?.categories}
                         </Link>
@@ -745,16 +742,24 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
               {showtheDropDown && (
                 <div
-                  className="left-1/2 fixed w-40 bg-white rounded-xl"
+                  className={`left-1/2  w-[30%] bg-white rounded-xl ${
+                    showtheDropDown ? "fixed" : "hidden"
+                  } `}
                   ref={categoriesRef}
+                  onMouseLeave={() => setShowtheDropDown(false)}
+
                 >
-                  <div className="">
+                  <div className="w-[50%]">
                     {allCategories?.map((category) => (
-                      <div key={category.name}>
+                      <div key={category.name}
+                      
+                      >
                         {category.subCategories.length > 0 ? (
-                          <div className="">
+                          <div className=""
+
+                          >
                             <div
-                              className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default ${
+                              className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
                                 nestedListId === category.categoryId
                                   ? "bg-[#3EBF87]"
                                   : ""
@@ -762,12 +767,19 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                               onClick={() =>
                                 setNestedListId(category.categoryId)
                               }
+                              onMouseEnter={() =>
+                                setNestedListId(category.categoryId)
+                              }
+
                             >
                               {category.name}{" "}
                               <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
                             </div>
                             {nestedListId === category.categoryId && (
-                              <div className="fixed bg-white border ml-[160px] rounded-xl">
+                              <div
+                                className="fixed bg-white border ml-[190px] -mt-5 rounded-xl"
+                                onMouseLeave={() => setNestedListId(-1)}
+                              >
                                 <ul className="list-none text-left p-2 w-full ">
                                   {category.subCategories.map((subCategory) => (
                                     <li
@@ -801,6 +813,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                 category.name
                               );
                             }}
+                            onMouseEnter={() =>
+                              setNestedListId(category.categoryId)
+                            }
                           >
                             {category.name}
                           </p>
