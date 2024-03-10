@@ -17,7 +17,7 @@ function Slider() {
           {images.map((imageUrl, index) => (
             <div
               key={index}
-              className={` carousel-item h-[500px] ${
+              className={` carousel-item lg:h-[500px] h-[400px] ${
                 index === 0 ? "active " : ""
               } h-[400px]`}
             >
