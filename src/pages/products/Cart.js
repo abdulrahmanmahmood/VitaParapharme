@@ -440,7 +440,7 @@ function Cart() {
                   </div>
                 ))}
               </div>
-              <div className=" w-[100%] lg:w-[35%]  h-[350px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
+              <div className=" w-[100%] lg:w-[35%]  h-[400px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
                 <h4 className="m-3 text-[#3ebf87]">
                   {translations[language]?.totalprice}:
                 </h4>
@@ -481,7 +481,7 @@ function Cart() {
                   className="uppercase absolute text-2xl  bg-[#3ebf87] text-white w-50 h-10 rounded-3xl right-10 bottom-6"
                   onClick={handleConfirmClick}
                   disabled={confirmButtonDisabled}
-                  >
+                >
                   {translations[language]?.confirm}
                 </button>
               </div>

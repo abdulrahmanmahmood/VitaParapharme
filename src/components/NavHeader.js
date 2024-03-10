@@ -779,9 +779,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
               {showtheDropDown && (
                 <div
-                  className={`left-1/2  w-[30%]  ${
-                    showtheDropDown ? "fixed" : "hidden"
-                  } `}
+                className={` w-[30%] ${
+                  showtheDropDown ? "fixed" : "hidden"
+                } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
                   ref={categoriesRef}
                   onMouseLeave={() => setShowtheDropDown(false)}
                 >
@@ -808,7 +808,11 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                             </div>
                             {nestedListId === category.categoryId && (
                               <div
-                                className="fixed bg-white border ml-[15%] -mt-5 rounded-xl"
+                                className={`fixed bg-white border  -mt-5 rounded-xl
+                                ${direction === "rtl" ? "mr-[15%]" : "ml-[15%] "}
+                                
+                                
+                                `}
                                 onMouseLeave={() => setNestedListId(-1)}
                               >
                                 <ul className="list-none text-left p-2 w-full ">
