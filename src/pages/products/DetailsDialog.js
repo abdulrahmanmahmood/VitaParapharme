@@ -45,20 +45,20 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
     };
 
     try {
-      const response = await axios.put(
-        `${baseUrl}/user/cart/update`,
-        cartItem,
-        {
+      setModalMessage("product added to cart");
+
+      const response = await axios
+        .put(`${baseUrl}/user/cart/update`, cartItem, {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
             "Content-Type": "application/json",
           },
-        }
-      );
+        })
+        .then(setShowModal(true));
 
       console.log("Product added to cart:", response.data);
       setAddedToCart(true); // Set addedToCart to true when item is successfully added to cart
-      setQuantity(0);
+      setQuantity(1);
     } catch (error) {
       console.error("Error adding product to cart:", error.message);
     }

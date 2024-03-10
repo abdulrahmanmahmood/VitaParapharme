@@ -362,7 +362,6 @@ function Home() {
 
   return (
     <div className="     w-full">
-
       <div className="page-container ">
         <NavHeader
           userId={userId}
@@ -483,12 +482,12 @@ function Home() {
               </div>
             )}
 
-
             <div className="w-fulll items-center text-center">
-              <button className="bg-[#61DAA2] lg:w-25 lg:h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
-              onClick={()=>navigate('/store')}
+              <button
+                className="bg-[#61DAA2] lg:w-25 lg:h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
+                onClick={() => navigate("/store")}
               >
-                Show More
+                {translations[language]?.showMore}
               </button>
             </div>
             <div

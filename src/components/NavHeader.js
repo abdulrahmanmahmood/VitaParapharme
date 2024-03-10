@@ -654,6 +654,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                           </Link>
 
                           {showMopDropDown && (
+                            
                             <div
                               className={` text-center  w-[30%] text-[12px] shadow-lg border-2 border-gray-200 mx-auto ${
                                 showMopDropDown ? "fixed" : "hidden"

@@ -137,15 +137,12 @@ function Cart() {
     dispatch(deleteFromCart({ id: productId }));
   };*/
 
-  const handleConfirmClick = () => {
-    navigate("/order/confirm");
-  };
-
   const [cart, setCart] = useState([]);
 
   const [promoCode, setPromoCode] = useState("");
   const bearerToken = useSelector(selectToken);
   const [numItems, setNumItems] = useState(0);
+  const [confirmDisabled, setConfirmDisabled] = useState(true); // State to control the disabled status of the confirm button
 
   const fetchUserCart = async () => {
     try {
@@ -333,15 +330,22 @@ function Cart() {
   };
 
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
-  const handleCheckboxChange = (productId) => {
-    // Toggle the selection state of the product
-    if (selectedProducts.includes(productId)) {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-    } else {
-      setSelectedProducts([...selectedProducts, productId]);
+  const handleCheckboxChange = () => {
+    // Toggle the checkbox state
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
+
+  const handleConfirmClick = () => {
+    // Handle the confirm click only if the checkbox is checked
+    if (isCheckboxChecked) {
+      navigate("/order/confirm");
     }
   };
+
+  // Set the confirm button disabled state based on the checkbox state
+  const confirmButtonDisabled = !isCheckboxChecked;
 
   return (
     <div>
@@ -436,7 +440,7 @@ function Cart() {
                   </div>
                 ))}
               </div>
-              <div className=" w-[100%] lg:w-[35%]  h-[250px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
+              <div className=" w-[100%] lg:w-[35%]  h-[350px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
                 <h4 className="m-3 text-[#3ebf87]">
                   {translations[language]?.totalprice}:
                 </h4>
@@ -444,10 +448,40 @@ function Cart() {
                   {totalPrice.toFixed(2)} $
                 </h4>
 
+                <h5 className="text-[#3ebf87] font-bold mt-3">
+                  {translations[language]?.paiement}
+                </h5>
+                <p className="text-[#3ebf87]   ">
+                  {translations[language]?.personal}
+                  <span className="text-xlg font-bold text-[#3ebf87]">
+                    <Link
+                      to="/privacy-policy"
+                      className="text-2xlg font-bold text-[#5e9ff9] no-underline m-1"
+                    >
+                      {translations[language]?.privacypolicy}
+                    </Link>
+                  </span>
+                </p>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="agreeTerms"
+                    onChange={handleCheckboxChange}
+                    checked={isCheckboxChecked}
+                  />
+                  <label
+                    htmlFor="agreeTerms"
+                    className="ml-2 text-[#3ebf87] font-bold"
+                  >
+                    {translations[language]?.agree}
+                  </label>
+                </div>
+
                 <button
                   className="uppercase absolute text-2xl  bg-[#3ebf87] text-white w-50 h-10 rounded-3xl right-10 bottom-6"
                   onClick={handleConfirmClick}
-                >
+                  disabled={confirmButtonDisabled}
+                  >
                   {translations[language]?.confirm}
                 </button>
               </div>
