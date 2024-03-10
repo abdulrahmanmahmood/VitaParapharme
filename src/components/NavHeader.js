@@ -654,7 +654,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                           </Link>
 
                           {showMopDropDown && (
-                            
                             <div
                               className={` text-center  w-[30%] text-[12px] shadow-lg border-2 border-gray-200 mx-auto ${
                                 showMopDropDown ? "fixed" : "hidden"
@@ -779,9 +778,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
               {showtheDropDown && (
                 <div
-                className={` w-[30%] ${
-                  showtheDropDown ? "fixed" : "hidden"
-                } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
+                  className={` w-[30%] ${
+                    showtheDropDown ? "fixed" : "hidden"
+                  } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
                   ref={categoriesRef}
                   onMouseLeave={() => setShowtheDropDown(false)}
                 >
@@ -804,12 +803,20 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                               }
                             >
                               {category.name}{" "}
-                              <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
+                              <RiArrowDropDownLine
+                                className={`transform items-end ml-auto my-auto text-3xl ${
+                                  direction === "rtl"
+                                    ? "rotate-90"
+                                    : "-rotate-90"
+                                }`}
+                              />{" "}
                             </div>
                             {nestedListId === category.categoryId && (
                               <div
                                 className={`fixed bg-white border  -mt-5 rounded-xl
-                                ${direction === "rtl" ? "mr-[15%]" : "ml-[15%] "}
+                                ${
+                                  direction === "rtl" ? "mr-[15%]" : "ml-[15%] "
+                                }
                                 
                                 
                                 `}
