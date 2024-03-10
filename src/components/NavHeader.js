@@ -96,6 +96,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const handleSearchChangeInternal = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
+    if (e.key === "Enter") {
+      handleSearchSubmit();
+    }
   };
 
   const filteredProducts = products.filter((product) => {
@@ -184,6 +187,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showtheDropDown, setShowtheDropDown] = useState(false);
+  const [showMopDropDown, setshowmopDropDown] = useState(false);
 
   const handleNotificationsClick = () => {
     setShowNotifications(!showNotifications);
@@ -421,7 +425,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       <div className={`flexLanguage  ${direction === "rtl" ? "rtl" : "ltr"}`}>
         <div className="languageInnav rightAlign ">
           <select
-            className="selectLang"
+            className="bg-[#61DAA2] border border-white border-opacity-50 outline-none text-white flex items-center mr-28"
             value={language}
             onChange={handleLanguageChange}
           >
@@ -434,13 +438,13 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       <Navbar collapseOnSelect expand="lg">
         <div className="w-full ">
           <div className="flex flex-col  ">
-            <div className="flex flex-row items-center   w-[95%] mx-auto  ">
+            <div className="flex flex-row items-center w-[100%]  lg:w-[95%] mx-auto  h-[70px] ">
               <div className=" rounded items-start ">
-                <div className="flex-1 flex flex-row justify-between">
+                <div className="hidden lg:flex flex-1  flex-row justify-between">
                   <select
                     value={selectedCategoryId}
                     onChange={(e) => handleSelect(parseInt(e.target.value))}
-                    className="flex-1 bg-[#61DAA2]  lg:w-25 rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
+                    className="flex-1 bg-[#61DAA2] w-[70px] lg:w-[150px] rounded-lg h-5 lg:h-7 text-white text-xs  lg:text-lg"
                   >
                     <option value={null} className="text-center">
                       {translations[language]?.all}
@@ -455,14 +459,16 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                       </option>
                     ))}
                   </select>
-                  <div className="flex flex-row items-baseline mx-auto text-center w-15 text-xs lg:text-lg lg:w-25 p-1">
-                    <input
-                      type="text"
-                      placeholder="Search Product"
-                      value={searchTerm}
-                      onChange={handleSearchChangeInternal}
-                      className="mx-1 lg:px-3 w-[20px]  "
-                    />
+                  <div className="flex  flex-row items-baseline mx-auto text-center ml-2 lg:-ml-[20px] text-xs lg:text-lg lg:w-25 lg:p-1">
+                    <form onSubmit={handleSearchSubmit} className="m-0 p-0 ">
+                      <input
+                        type="text"
+                        placeholder="Search Product"
+                        value={searchTerm}
+                        onChange={handleSearchChangeInternal}
+                        className="lg:mx-1 lg:px-3 lg:w-[20px] w-[10px]  "
+                      />
+                    </form>
                     <div>
                       <FaSearch
                         className="w-2 lg:w-4 "
@@ -480,164 +486,127 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                 </div>
               </div>
 
-              <div className=" text-center mx-auto  flex-1 items-center h-13 w-[20%]">
+              <div className=" items-baseline  text-center  lg:mx-auto lg:ml-[18%] ml-[10px] mr-auto lg:h-13 w-[60px] h-[60px] lg:w-[20%]  ">
                 <img
                   src={logo}
                   alt="Logo"
-                  className=" items-center text-center  w-13 h-13 flex-1 mx-auto "
+                  className=" items-baseline lg:items-center my-auto text-center w-[60px] h-[60px] lg:w-[100px] lg:h-13 flex-1 mx-auto  object-fill"
                 />
               </div>
 
-              <div className="">
-                <div
-                  onClick={handleNotificationsClick}
-                  className="block lg:hidden relative overflow-visible"
-                >
-                  <IoIosNotificationsOutline className="noteicon" />
-                  {readed && notifications.length > 0 ? (
-                    <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
-                      {notifications?.length}
-                    </div>
-                  ) : null}
+              <div className="flex flex-row items-baseline mx-auto text-center mt-[16px] w-[30%] lg:hidden text-xs">
+                <input
+                  type="text"
+                  placeholder="Search Product"
+                  value={searchTerm}
+                  onChange={handleSearchChangeInternal}
+                  className=" w-[20px]  "
+                />
+                <div>
+                  <FaSearch className="w-4  " onClick={handleSearchSubmit} />
                 </div>
-                <div
-                  className=" notification-dropdown-container relative"
-                  ref={notificationRef}
-                >
-                  {showNotifications && (
-                    <div
-                      className={`flexLanguage ${
-                        direction === "rtl" ? "rtl" : "ltr"
-                      }`}
-                    >
-                      <div className="lg:hidden border border-gray-300 lg:p-4 p-2 shadow-md fixed top-20 right-3 z-10 lg:-mr-20 my-5 lg:w-[100px]  outline-dotted bg-white items-center text-center text-sm ">
-                        {notifications.map((notification) => (
-                          <div
-                            className="notification-item"
-                            key={notification.id}
-                          >
-                            <div>{notification.message}</div>
-                            <div>{notification.time}</div>
-                          </div>
-                        ))}
-                        <div className="items-center mx-auto text-center">
-                          <button
-                            className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                            onClick={handleReadNotifications}
-                          >
-                            Mark As Read
-                          </button>
-                        </div>
+              </div>
+
+              <div className="  lg:block lg:items-end ">
+                <div className="">
+                  {!isLoggedIn && (
+                    <div className="lg:w-[100px] w-[50px] lg:h-[40px] h-[20px] rounded-md flex   flex-row items-center  bg-[#61DAA2] lg:p1 overflow-hidden lg:rounded-2xl ">
+                      <div>
+                        {" "}
+                        <img
+                          src={loginimg}
+                          alt="user"
+                          className="lg:w-[40px] w-[20px] lg:h-[15px] h-[8px] object-contain  lg:mx-auto"
+                        />{" "}
+                      </div>
+                      <div>
+                        <Link
+                          to="/authentication"
+                          className="text-center text-[12px] lg:text-xl text-white no-underline my-auto lg:font-bold"
+                        >
+                          Login
+                        </Link>{" "}
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className=" hidden lg:block lg:items-end ">
-                  <div className="">
-                    {!isLoggedIn && (
-                      <div className="w-[100px] h-[40px] flex flex-row items-center  bg-[#61DAA2] p-2 overflow-hidden rounded-2xl ">
-                        <div>
-                          {" "}
-                          <img
-                            src={loginimg}
-                            alt="user"
-                            className="w-[40px] h-[15px] object-contain  mx-auto"
-                          />{" "}
-                        </div>
-                        <div>
-                          <Link
-                            to="/authentication"
-                            className="text-center text-white no-underline my-auto font-bold"
-                          >
-                            Login
-                          </Link>{" "}
-                        </div>
+                <div className="text-line text-linelogout ">
+                  {isLoggedIn && (
+                    <>
+                      <div
+                        onClick={handleNotificationsClick}
+                        className="relative overflow-visible"
+                      >
+                        <IoIosNotificationsOutline className="lg:text-[40px] lg:mr-[15px]  text-[25px]  mr-[5px] mt-[7px]" />
+                        {readed && notifications.length > 0 ? (
+                          <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
+                            {notifications?.length}
+                          </div>
+                        ) : null}
                       </div>
-                    )}
-                  </div>
 
-                  <div className="text-line text-linelogout ">
-                    {isLoggedIn && (
-                      <>
-                        <div
-                          onClick={handleNotificationsClick}
-                          className="relative overflow-visible"
-                        >
-                          <IoIosNotificationsOutline className="noteicon" />
-                          {readed && notifications.length > 0 ? (
-                            <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
-                              {notifications?.length}
-                            </div>
-                          ) : null}
-                        </div>
-
-                        <div
-                          className="notification-dropdown-container "
-                          ref={notificationRef}
-                        >
-                          {showNotifications && (
-                            <div
-                              className={`flexLanguage ${
-                                direction === "rtl" ? "rtl" : "ltr"
-                              }`}
-                            >
-                              <div className="notification-dropdown -mr-20 my-5 w-[150px] outline-dotted bg-white items-center text-center ">
-                                {notifications.map((notification) => (
-                                  <div
-                                    className="notification-item"
-                                    key={notification.id}
-                                  >
-                                    <div>{notification.message}</div>
-                                    <div>{notification.time}</div>
-                                  </div>
-                                ))}
-                                <div className="items-center mx-auto text-center">
-                                  <button
-                                    className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                                    onClick={handleReadNotifications}
-                                  >
-                                    Mark As Read
-                                  </button>
+                      <div
+                        className="notification-dropdown-container "
+                        ref={notificationRef}
+                      >
+                        {showNotifications && (
+                          <div
+                            className={`flexLanguage ${
+                              direction === "rtl" ? "rtl" : "ltr"
+                            }`}
+                          >
+                            <div className="notification-dropdown -mr-20 my-5 w-[150px] bg-white items-center text-center ">
+                              {notifications.map((notification) => (
+                                <div
+                                  className="notification-item"
+                                  key={notification.id}
+                                >
+                                  <div>{notification.message}</div>
+                                  <div>{notification.time}</div>
                                 </div>
+                              ))}
+                              <div className="items-center mx-auto text-center">
+                                <button
+                                  className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
+                                  onClick={handleReadNotifications}
+                                >
+                                  Mark As Read
+                                </button>
                               </div>
                             </div>
-                          )}
-                        </div>
-
-                        <Link to="/cart" className="cart-link">
-                          <img
-                            style={{
-                              marginRight: "10px",
-                              width: "30px",
-                              height: "30px",
-                            }}
-                            src={cartimg}
-                            alt="cart"
-                          />
-                          {cart.length > 0 && (
-                            <div className="cart-items">{cart.length}</div>
-                          )}
-                        </Link>
-                        <Link>
-                          <div className="user-profile" onClick={toggleSidebar}>
-                            <img
-                              style={{ width: "40px", height: "40px" }}
-                              src={logoutimg}
-                              alt="user"
-                            />
                           </div>
-                        </Link>
-                      </>
-                    )}
-                  </div>
+                        )}
+                      </div>
+
+                      <Link to="/cart" className="cart-link">
+                        <img
+                          className="lg:w-[30px] lg:h-[30px] lg:mr-[10px] w-[20px] h-[20px] mr-[5px]"
+                          src={cartimg}
+                          alt="cart"
+                        />
+                        {cart.length > 0 && (
+                          <div className="cart-items">{cart.length}</div>
+                        )}
+                      </Link>
+                      <Link>
+                        <div className="user-profile" onClick={toggleSidebar}>
+                          <img
+                            className="lg:w-[40px] lg:h-[40px] w-[20px] h-[20px] "
+                            src={logoutimg}
+                            alt="user"
+                          />
+                        </div>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
 
             <div className="">
               <div className="mx-auto items-center text-center w-full  ">
-                <div className=" mx-auto outline-dotted">
+                <div className=" mx-auto ">
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse
                     id="responsive-navbar-nav"
@@ -645,23 +614,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                   >
                     <div className="w-full">
                       <div className="  text-center items-center  mx-auto flex flex-col   lg:flex-row lg:content-between my-2 lg:my-0 gap-5 w-full  ">
-                        <Link to="/cart" className="block lg:hidden cart-link">
-                          <img
-                            style={{
-                              marginRight: "10px",
-                              width: "30px",
-                              height: "30px",
-                            }}
-                            className="block lg:hidden"
-                            src={cartimg}
-                            alt="cart"
-                          />
-                          {cart.length > 0 && (
-                            <div className="cart-items lg:hidden">
-                              {cart.length}
-                            </div>
-                          )}
-                        </Link>
                         <Link
                           to="/home"
                           className="items-center mx-auto  text-black font-bold text-xl  "
@@ -685,13 +637,97 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         </Link>
 
                         <Link
-                          className="items-center mx-auto text-black font-bold text-xl"
+                          className="hidden lg:block items-center mx-auto text-black font-bold text-xl"
                           style={{ textDecoration: "none" }}
                           onMouseEnter={() => setShowtheDropDown(true)}
                         >
                           {translations[language]?.categories}
                         </Link>
 
+                        <div>
+                          <Link
+                            className="block lg:hidden items-center mx-auto text-black font-bold text-xl "
+                            style={{ textDecoration: "none" }}
+                            onClick={() => setshowmopDropDown(!showMopDropDown)}
+                          >
+                            {translations[language]?.categories}
+                          </Link>
+
+                          {showMopDropDown && (
+                            <div
+                              className={` text-center  w-[30%] text-[12px] shadow-lg border-2 border-gray-200 mx-auto ${
+                                showMopDropDown ? "fixed" : "hidden"
+                              } `}
+                            >
+                              <div className="w-[95%] mt-3 text-[12px] bg-white rounded-xl mx-auto">
+                                {allCategories?.map((category) => (
+                                  <div key={category.name}>
+                                    {category.subCategories.length > 0 ? (
+                                      <div className="">
+                                        <div
+                                          className={`font-semibold text-center text-[12px] flex flex-row px-3 cursor-default  ${
+                                            nestedListId === category.categoryId
+                                              ? "bg-[#3EBF87]"
+                                              : ""
+                                          }`}
+                                          onClick={() =>
+                                            setNestedListId(category.categoryId)
+                                          }
+                                        >
+                                          {category.name}{" "}
+                                          <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
+                                        </div>
+                                        {nestedListId ===
+                                          category.categoryId && (
+                                          <div className="fixed bg-white text-[10px]  border ml-[25%] w-[40%] rounded">
+                                            <ul className="list-none text-left  px-2 py-1 text-[12px] w-[100%]  pb-1 pt-2 ">
+                                              {category.subCategories.map(
+                                                (subCategory) => (
+                                                  <li
+                                                    key={subCategory.name}
+                                                    className="hover:bg-[#3EBF87] px-1 my-2 mx-auto rounded cursor-default"
+                                                    onClick={() =>
+                                                      handleSelectSubCategory(
+                                                        subCategory.categoryId,
+                                                        subCategory.name
+                                                      )
+                                                    }
+                                                  >
+                                                    {subCategory.name}
+                                                  </li>
+                                                )
+                                              )}
+                                            </ul>
+                                          </div>
+                                        )}
+                                      </div>
+                                    ) : (
+                                      <p
+                                        className={`font-semibold text-center text-[12px] p-1 m-1 cursor-default ${
+                                          nestedListId === category.categoryId
+                                            ? "bg-[#3EBF87]"
+                                            : ""
+                                        }`}
+                                        onClick={() => {
+                                          setNestedListId(category.categoryId);
+                                          handleSelectMainCategory(
+                                            category.categoryId,
+                                            category.name
+                                          );
+                                        }}
+                                        onMouseEnter={() =>
+                                          setNestedListId(category.categoryId)
+                                        }
+                                      >
+                                        {category.name}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                         <Link
                           to="/about"
                           className="items-center mx-auto  text-black font-bold text-xl "
@@ -747,17 +783,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                   } `}
                   ref={categoriesRef}
                   onMouseLeave={() => setShowtheDropDown(false)}
-
                 >
                   <div className="w-[50%]  bg-white rounded-xl">
                     {allCategories?.map((category) => (
-                      <div key={category.name}
-                      
-                      >
+                      <div key={category.name}>
                         {category.subCategories.length > 0 ? (
-                          <div className=""
-
-                          >
+                          <div className="">
                             <div
                               className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
                                 nestedListId === category.categoryId
@@ -770,14 +801,13 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                               onMouseEnter={() =>
                                 setNestedListId(category.categoryId)
                               }
-
                             >
                               {category.name}{" "}
                               <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
                             </div>
                             {nestedListId === category.categoryId && (
                               <div
-                                className="fixed bg-white border ml-[190px] -mt-5 rounded-xl"
+                                className="fixed bg-white border ml-[15%] -mt-5 rounded-xl"
                                 onMouseLeave={() => setNestedListId(-1)}
                               >
                                 <ul className="list-none text-left p-2 w-full ">

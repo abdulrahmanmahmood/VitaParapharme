@@ -156,13 +156,13 @@ function Blog() {
   };
 
   return (
-    <div className="page-container">
+    <div className="">
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         handleProductClick={handleProductClick}
       />
-
+  
       <div className="mt-[150px]">
         <div className="">
           <div className="border-black border-[1px] lg:py-2  border-solid w-[80%] lg:w-[50%] h-30 mx-auto mt-6 rounded-xl">
@@ -177,7 +177,7 @@ function Blog() {
                 <FaSearch className="text-xl" />
               </button>
             </form>
-
+  
             <div className="autocom-box autocom-blog">
               {productExistsInCategory === false && (
                 <div className="error-message">
@@ -187,7 +187,7 @@ function Blog() {
             </div>
           </div>
           <WhatsAppIcon />
-
+  
           {loading && (
             <div
               className="loading-spinner"
@@ -196,7 +196,7 @@ function Blog() {
           )}
           {!loading && (
             <div className="w-[90%] mx-auto mt-5">
-              {blogs.length > 0 && (
+              {blogs.length > 0 ? (
                 <div>
                   <div className="">
                     <h4 className="text-center w-[90%]  mx-auto my-4 font-bold text-3xl  capitalize">
@@ -295,20 +295,23 @@ function Blog() {
                     ))}
                   </div>
                 </div>
+              ) : (
+                <div className="text-center my-8 p-3 text-2xl w-[60%] py-3 shadow-md  h-[100px] border-1 mx-auto">There are no articles.</div>
               )}
             </div>
           )}
         </div>
-
-        <Footer />
+  
         <DialogBlog
           isOpen={detailsOpen}
           onCancel={handleCancelDetails}
           blogContent={dialogBlogContent}
         />
       </div>
+      <Footer />
     </div>
   );
+  
 }
 
 export default Blog;

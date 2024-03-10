@@ -102,7 +102,7 @@ const translationSlice = createSlice({
         "confirmorder" : "confirm order in this address",
         "deleteadd" : "Delete this address",
         "addaddress" : "add new address",
-        "saveadd" : "Save Address",
+        "saveadd" : "Save This Address",
         "orderstatus" : "Order Status" ,
         "show" : "Show Details",
         "hide" : "hide details",

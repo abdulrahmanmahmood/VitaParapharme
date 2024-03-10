@@ -8,15 +8,17 @@ import axios from "axios";
 import { selectToken } from "../../rtk/slices/Auth-slice";
 import { baseUrl } from "../../rtk/slices/Product-slice";
 import "./detailsDialog.css";
+import { Link } from "react-router-dom";
 
 const DetailsDialog = ({ isOpen, onCancel, product }) => {
   const dispatch = useDispatch();
   const bearerToken = useSelector(selectToken);
   const isUserLoggedIn = useSelector(selectToken) !== null;
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false); // State to track if item is added to cart
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -55,6 +57,7 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
       );
 
       console.log("Product added to cart:", response.data);
+      setAddedToCart(true); // Set addedToCart to true when item is successfully added to cart
       setQuantity(0);
     } catch (error) {
       console.error("Error adding product to cart:", error.message);
@@ -74,6 +77,9 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
       window.removeEventListener("click", handleOutsideClick);
     };
   }, [isOpen, onCancel]);
+  useEffect(() => {
+    setAddedToCart(false);
+  }, [isOpen]);
 
   return (
     <>
@@ -82,11 +88,13 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
           <div className="flex justify-between bg-gradient-to-r from-green-500 to-green-400 p-5 rounded-lg shadow-lg w-full sm:w-[600px] h-[600px] relative">
             <div className="flex flex-col items-center w-full">
               <div className="w-[50%] h-[50%] my-3">
-                <img
-                  className="object-fill  w-[100%] h-[100%] mx-auto my-auto"
-                  src={product.pictures[0]}
-                  alt="Product poster"
-                />
+                <Link to={`/home/product/${product.productId}`}>
+                  <img
+                    className="object-fill  w-[100%] h-[100%] mx-auto my-auto"
+                    src={product.pictures[0]}
+                    alt="Product poster"
+                  />
+                </Link>
               </div>
               <div className="h-100 bg-white rounded-t-3xl text-center sm:w-full">
                 <h1>{product.name || product.productName}</h1>
@@ -120,12 +128,17 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
                   </div>
                   <div className="">
                     <button
-                      className="mb-1 bg-[#3EBF87] h-12 w-28 rounded-lg text-white ml-2"
+                      className={`mb-1 h-12 w-28 rounded-lg text-white ml-2 ${
+                        addedToCart ? "bg-gray-400" : "bg-[#3EBF87]"
+                      }`}
                       onClick={() =>
-                        handleAddToCart(product.productId, product)
+                        addedToCart
+                          ? null
+                          : handleAddToCart(product.productId, product)
                       }
                     >
-                      Add to Cart
+                      {addedToCart ? "Added" : "Add to Cart"}{" "}
+                      {/* Conditional rendering of button text */}
                     </button>
                   </div>
                 </div>

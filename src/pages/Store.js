@@ -310,7 +310,6 @@ function Store() {
     dispatch(fetchProducts());
   };
 
-
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
   };
@@ -338,9 +337,7 @@ function Store() {
   const queryParams = new URLSearchParams(location.search);
   const searchTermFromUrl = queryParams.get("search") || "";
   const categoryIdFromUrl = queryParams.get("category");
-  const mainCategoryIdFromUrl = queryParams.get('Maincategory');
-  
-
+  const mainCategoryIdFromUrl = queryParams.get("Maincategory");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -355,7 +352,6 @@ function Store() {
     fetchData();
     setSearchTerm(searchTermFromUrl);
   }, [language, searchTermFromUrl, categoryIdFromUrl]);
-
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -547,7 +543,7 @@ function Store() {
                     return (
                       <div
                         style={{}}
-                        className="relative w-[330px] h-[420px] lg:w-[270px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                        className="relative w-70 h-[420px] lg:w-90 lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                         key={product.id}
                       >
                         <div className="">

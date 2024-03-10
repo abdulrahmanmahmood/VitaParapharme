@@ -43,6 +43,8 @@ function ConfirmOrder() {
     street: "",
     zipCode: "",
   });
+  const [formError, setFormError] = useState("");
+
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
@@ -150,6 +152,16 @@ function ConfirmOrder() {
   };
 
   const addNewAddress = async () => {
+    if (
+      newAddress.city === "" ||
+      newAddress.region === "" ||
+      newAddress.street === "" ||
+      newAddress.zipCode === ""
+    ) {
+      setFormError("Please fill in all required fields.");
+      return; // Don't proceed with adding the address
+    }
+
     try {
       const response = await axios.post(
         `${baseUrl}/user/address/new`,
@@ -231,135 +243,277 @@ function ConfirmOrder() {
       <Container style={{ marginTop: "200px" }}>
         <div className=" testtt">
           <WhatsAppIcon />
-          <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th className="p-4">{translations[language]?.country}</th>
-                <th className="p-4">{translations[language]?.city}</th>
-                <th className="p-4">{translations[language]?.region}</th>
-                <th className="p-4">{translations[language]?.street}</th>
-                <th className="p-4">{translations[language]?.zipcode}</th>
-                <th className="p-4">{translations[language]?.action}</th>
-                <th className="p-4">{translations[language]?.delete}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {address.map((item) => (
-                <tr>
-                  <td>{item.country}</td>
-                  <td>{item.city}</td>
-                  <td>{item.region}</td>
-                  <td>{item.street}</td>
-                  <td>{item.zipCode}</td>
-                  <td>
-                    <button
-                      onClick={() => handleSubmit(item.addressId)}
-                      className="useaddress"
-                    >
-                      {translations[language]?.confirmorder}
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDeleteAddress(item.addressId)}
-                      className="useaddress2"
-                    >
-                      {translations[language]?.deleteadd}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <div>
-            {address.length > 4 ? (
-              <h3>Max addresses 5</h3>
-            ) : (
-              <button
-                className="useaddress"
-                onClick={() => setShowForm(!showForm)}
-              >
-                {translations[language]?.addaddress}
-              </button>
-            )}
 
-            {showForm && (
-              <>
-                <Table striped bordered hover size="sm" className="mt-4">
-                  <thead>
-                    <tr>
-                      <th className="p-4">{translations[language]?.country}</th>
-                      <th className="p-4">{translations[language]?.city}</th>
-                      <th className="p-4">{translations[language]?.region}</th>
-                      <th className="p-4">{translations[language]?.street}</th>
-                      <th className="p-4">{translations[language]?.zipcode}</th>
-                      <th>action</th>
+          <div>
+            {address.length > 4 ? <h3>Max addresses 5</h3> : null}
+
+            {address.length < 5 && (
+              <div className="lg:w-[70%] w-[95%] border-1 px-10 mx-auto pt-10 pb-5 rounded-3xl shadow-slate-400 shadow-md mt-4">
+                <div className="">
+                  <h5 className="text-center text-[#3EBF87] text-2xl">
+                    Add New Address
+                  </h5>
+                  <div className="relative mb-3 p-3">
+                    <label
+                      htmlFor="country"
+                      className="form-label absolute top-3 left-20 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[#3EBF87] text-2xl capitalize"
+                    >
+                      {translations[language]?.country}
+                    </label>
+                    <select
+                      className="form-select ring-1 ring-[#3EBF87] ring-offset-4 ring-offset-white"
+                      id="country"
+                      aria-label="Default select example"
+                      onChange={(e) => handleInputChange(e, "country")}
+                      value={"MOROCCO"}
+                    >
+                      <option value="MOROCCO" key={"MOROCCO"}>
+                        Morocco
+                      </option>
+                      {/* {Object.keys(countries).map((countryKey) => (
+          <option
+            key={countryKey}
+            value={countries[countryKey]}
+          >
+            {countries[countryKey]}
+          </option>
+        ))} */}
+                    </select>
+                  </div>
+
+                  <div className="relative mb-3 p-3">
+                    <label
+                      htmlFor="city"
+                      className="form-label absolute top-3 left-20 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[#3EBF87] text-2xl capitalize"
+                    >
+                      {translations[language]?.city}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control ring-1 ring-[#3EBF87] ring-offset-4 ring-offset-white"
+                      id="city"
+                      onChange={(e) => handleInputChange(e, "city")}
+                      value={newAddress.city}
+                    />
+                  </div>
+
+                  <div className="relative mb-3 p-3">
+                    <label
+                      htmlFor="region"
+                      className="form-label absolute top-3 left-20 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[#3EBF87] text-2xl capitalize"
+                    >
+                      {translations[language]?.region}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control ring-1 ring-[#3EBF87] ring-offset-4 ring-offset-white"
+                      id="region"
+                      onChange={(e) => handleInputChange(e, "region")}
+                      value={newAddress.region}
+                    />
+                  </div>
+
+                  <div className="relative mb-3 p-3">
+                    <label
+                      htmlFor="street"
+                      className="form-label absolute top-3 left-20 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[#3EBF87] text-2xl capitalize"
+                    >
+                      {translations[language]?.street}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control ring-1 ring-[#3EBF87] ring-offset-4 ring-offset-white"
+                      id="street"
+                      onChange={(e) => handleInputChange(e, "street")}
+                      value={newAddress.street}
+                    />
+                  </div>
+
+                  <div className="relative mb-3 p-3">
+                    <label
+                      htmlFor="zipCode"
+                      className="form-label absolute top-3 left-20 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[#3EBF87] text-2xl capitalize"
+                    >
+                      {translations[language]?.zipcode}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control ring-1 ring-[#3EBF87] ring-offset-4 ring-offset-white"
+                      id="zipCode"
+                      onChange={(e) => handleInputChange(e, "zipCode")}
+                      value={newAddress.zipCode}
+                    />
+                  </div>
+                  {formError && <p className="text-red-500">{formError}</p>}
+
+                  <button
+                    className="p-3 bg-[#61DAA2] text-white rounded-xl text-xl"
+                    onClick={() => addNewAddress()}
+                  >
+                    {translations[language]?.saveadd}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          {address.length > 0 && (
+            <div className="hidden lg:block my-5">
+              <h3 className="text-center p-2 ">Your Old Addresses</h3>
+
+              <div className="overflow-x-auto">
+                <table className="table-fixed border border-1 w-full md:w-[80%] mx-auto rounded-xl">
+                  <thead className="rounded">
+                    <tr className="border-1 ">
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.country}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.city}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.region}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.street}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.zipcode}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.action}
+                      </th>
+                      <th className="p-3 text-center border-r ">
+                        {translations[language]?.delete}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <select
-                          className="form-select"
-                          aria-label="Default select example"
-                          onChange={(e) => handleInputChange(e, "country")}
-                          value={"MOROCCO"}
-                        >
-                          <option value="MOROCCO" key={"MOROCCO"}>
-                            Morocco
-                          </option>
-                          {/* {Object.keys(countries).map((countryKey) => (
-                          <option
-                            key={countryKey}
-                            value={countries[countryKey]}
+                    {address.map((item) => (
+                      <tr className="border-b">
+                        <td className="p-3 text-center border-r">
+                          {item.country}
+                        </td>
+                        <td className="p-3 text-center border-r">
+                          {item.city}
+                        </td>
+                        <td className="p-3 text-center border-r">
+                          {item.region}
+                        </td>
+                        <td className="p-3 text-center border-r">
+                          {item.street}
+                        </td>
+                        <td className="p-3 text-center border-r">
+                          {item.zipCode}
+                        </td>
+                        <td className="p-1 text-center border-r">
+                          <button
+                            onClick={() => handleSubmit(item.addressId)}
+                            className="bg-[#3EBF87] text-white p-1 rounded-2xl m-2 "
                           >
-                            {countries[countryKey]}
-                          </option>
-                        ))} */}
-                        </select>
+                            {translations[language]?.confirmorder}
+                          </button>
+                        </td>
+                        <td className="p-1 text-center border-r">
+                          <button
+                            onClick={() => handleDeleteAddress(item.addressId)}
+                            className="bg-[#c43714] text-white p-1 rounded-xl mt-2  "
+                          >
+                            {translations[language]?.deleteadd}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+          {address.length > 0 && (
+            <div className="my-5 overflow-x-auto block lg:hidden">
+              <h3 className="text-center p-2 ">Your Old Addresses</h3>
+
+              <table className="table-fixed border border-1 w-[80%] mx-auto rounded-xl">
+                <thead>
+                  <tr>
+                    <th className="p-3">{translations[language]?.header}</th>
+                    {address.map((item, index) => (
+                      <th key={`address_${index}`} className="p-3">
+                        {`Address ${index + 1}`}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="p-3">{translations[language]?.country}</td>
+                    {address.map((item, index) => (
+                      <td key={`country_${index}`} className="p-3">
+                        {item.country}
                       </td>
-                      <td>
-                        <input
-                          type="text"
-                          onChange={(e) => handleInputChange(e, "city")}
-                          value={newAddress.city}
-                        />
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.city}</td>
+                    {address.map((item, index) => (
+                      <td key={`city_${index}`} className="p-3">
+                        {item.city}
                       </td>
-                      <td>
-                        <input
-                          type="text"
-                          onChange={(e) => handleInputChange(e, "region")}
-                          value={newAddress.region}
-                        />
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.region}</td>
+                    {address.map((item, index) => (
+                      <td key={`region_${index}`} className="p-3">
+                        {item.region}
                       </td>
-                      <td>
-                        <input
-                          type="text"
-                          onChange={(e) => handleInputChange(e, "street")}
-                          value={newAddress.street}
-                        />
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.street}</td>
+                    {address.map((item, index) => (
+                      <td key={`street_${index}`} className="p-3">
+                        {item.street}
                       </td>
-                      <td>
-                        <input
-                          type="text"
-                          onChange={(e) => handleInputChange(e, "zipCode")}
-                          value={newAddress.zipCode}
-                        />
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.zipcode}</td>
+                    {address.map((item, index) => (
+                      <td key={`zipcode_${index}`} className="p-3">
+                        {item.zipCode}
                       </td>
-                      <td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.action}</td>
+                    {address.map((item, index) => (
+                      <td key={`action_${index}`} className="p-3">
                         <button
-                          className="useaddress"
-                          onClick={() => addNewAddress()}
+                          onClick={() => handleSubmit(item.addressId)}
+                          className="bg-[#3EBF87] text-white p-1 rounded-2xl m-2"
                         >
-                          {translations[language]?.saveadd}
+                          {translations[language]?.confirmorder}
                         </button>
                       </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </>
-            )}
-          </div>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3">{translations[language]?.delete}</td>
+                    {address.map((item, index) => (
+                      <td key={`delete_${index}`} className="p-3">
+                        <button
+                          onClick={() => handleDeleteAddress(item.addressId)}
+                          className="bg-[#c43714] text-white p-1 rounded-xl mt-2"
+                        >
+                          {translations[language]?.deleteadd}
+                        </button>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </Container>
 

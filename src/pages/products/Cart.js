@@ -16,7 +16,7 @@ import logo from "../../images/Vita Logo2.png";
 import { FaTrash } from "react-icons/fa";
 import { setSearchTerm } from "../../rtk/slices/Search-slice";
 import { selectToken } from "../../rtk/slices/Auth-slice";
-import { FaHeart, FaShoppingCart, FaEye } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
@@ -361,22 +361,23 @@ function Cart() {
               <div className="">
                 {cart?.map((product) => (
                   <div
-                    className="w-full lg:w-100 h-30 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-3 text-center  rounded-[50px] mx-auto my-3"
+                    className="w-full lg:w-110 h-30 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-3 text-center  rounded-[50px] mx-auto my-3 "
                     key={product.productId}
                   >
-                    <div className="flex flex-col lg:flex-row gap-3 ">
+                    <div className="flex flex-col lg:flex-row gap-3  ">
                       <div className="flex flex-row relative w-full lg:w-[280px] h-[190px] ">
                         <div className="bg-[#3EBF87] w-[150px] h-[150px] rounded-full mx-auto" />
                         <Image
                           src={product.pictureUrl}
                           alt="Product poster"
-                          className="right-20 absolute lg:right-0 rounded-lg w-[140px] h-[120px] top-[5%] object-contain"
+                          className="right-20 absolute lg:right-12 rounded-lg w-[140px] h-[120px] top-[5%] object-contain"
                         />
                       </div>
                       <div className="w-full lg:w-[50%] text-center pt-3 ">
                         <div className="text-center uppercase text-[#3EBF87] font-bold">
                           <h4>{product.productName}</h4>
                         </div>
+
                         <h5 className="text-center lg:text-left ml-2 my-3 text-[#696767] text-3xl font-bold leaading-9 font-inter ">
                           {product.productPrice}$
                         </h5>
@@ -404,7 +405,7 @@ function Cart() {
                           </button>
                         </div>
                       </div>
-                      <div className="absolute lg:static right-10">
+                      <div className="absolute lg:static right-2">
                         <div className="">
                           <FaTrash
                             className="text-[#B3B8B8] text-2xl  my-3"
@@ -413,7 +414,7 @@ function Cart() {
                             }
                           />
                         </div>
-                        <div className="namecart">
+                        <div className=" mr-2  absolute">
                           <FaHeart
                             style={{
                               color: isProductInWishlist(product.productId)
@@ -423,7 +424,7 @@ function Cart() {
                             onClick={() =>
                               handleAddToFavorites(product.productId)
                             }
-                            className="text-2xl "
+                            className="text-xl "
                           />
                         </div>
 
@@ -435,7 +436,7 @@ function Cart() {
                   </div>
                 ))}
               </div>
-              <div className=" w-[100%] lg:w-[30%]  h-[250px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
+              <div className=" w-[100%] lg:w-[35%]  h-[250px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
                 <h4 className="m-3 text-[#3ebf87]">
                   {translations[language]?.totalprice}:
                 </h4>

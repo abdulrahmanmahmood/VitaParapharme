@@ -372,7 +372,7 @@ function Home() {
           handleProductClick={handleProductClick}
         />
 
-        <div className="green-containerr mt-[100px]">
+        <div className="green-containerr mt-[80px]">
           <div className="home-containerr testtt">
             <WhatsAppIcon />
             <Slider />
@@ -485,7 +485,7 @@ function Home() {
 
 
             <div className="w-fulll items-center text-center">
-              <button className="bg-[#61DAA2] w-25 h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
+              <button className="bg-[#61DAA2] lg:w-25 lg:h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
               onClick={()=>navigate('/store')}
               >
                 Show More

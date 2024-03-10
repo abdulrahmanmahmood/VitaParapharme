@@ -13,11 +13,11 @@ function Slider() {
         className="carousel slide"
         data-bs-ride="carousel"
       >
-        <div className="carousel-inner">
+        <div className="carousel-inner ">
           {images.map((imageUrl, index) => (
             <div
               key={index}
-              className={` carousel-item ${
+              className={` carousel-item h-[500px] ${
                 index === 0 ? "active " : ""
               } h-[400px]`}
             >

@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
-import { FaPlus, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
-import DeleteDialog from './Actions/DeleteDialog';
-import './dashboard.css';
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { FaPlus, FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import DeleteDialog from "./Actions/DeleteDialog";
+import "./dashboard.css";
 
 const Products = () => {
-
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
   const handleAddProClick = () => {
-    navigate('/product/add');
+    navigate("/product/add");
   };
 
   const handleEditCatClick = () => {
-    navigate('/product/edit');
+    navigate("/product/edit");
   };
 
   const handledetailsCatClick = () => {
-    navigate('/product/details');
+    navigate("/product/details");
   };
 
   const handleDeleteClick = (product) => {
@@ -38,13 +36,15 @@ const Products = () => {
   const handleConfirmDelete = () => {
     if (productToDelete) {
       axios
-        .delete(`https://mostafaben.bsite.net/api/Products/${productToDelete.id}`)
+        .delete(
+          `https://mostafaben.bsite.net/api/Products/${productToDelete.id}`
+        )
         .then((res) => {
-          console.log('product deleted successfully:', res.data);
+          console.log("product deleted successfully:", res.data);
           getProducts(); // Call getProducts to update the table after deletion
         })
         .catch((error) => {
-          console.error('Error deleting product:', error);
+          console.error("Error deleting product:", error);
         });
 
       setProductToDelete(null);
@@ -58,17 +58,15 @@ const Products = () => {
 
   const getProducts = () => {
     axios
-      .get('https://mostafaben.bsite.net/api/Products')
+      .get("https://mostafaben.bsite.net/api/Products")
       .then((res) => {
         setProducts(res.data);
         console.log(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       });
   };
-
- 
 
   return (
     <div className="container">
@@ -76,14 +74,13 @@ const Products = () => {
         <div className="card-header">
           <h4>
             products
-            <div className='addadmin' onClick={handleAddProClick}>
-              <FaPlus size={30} color="green" style={{ marginRight: '5px' }} />
+            <div className="addadmin" onClick={handleAddProClick}>
+              <FaPlus size={30} color="green" style={{ marginRight: "5px" }} />
             </div>
           </h4>
         </div>
         <div className="card-body">
           <table className="table table-bordered">
-         
             <thead>
               <tr>
                 <th>ID</th>
@@ -102,19 +99,18 @@ const Products = () => {
                   <tr key={product.id}>
                     <td>{product.id}</td>
                     <td>
-                    {product.poster && (
-  
-    
-    <img
-      src={`data:image/png;base64,${product.poster}`}
-      alt="Product poster"
-      style={{ maxWidth: '100px', maxHeight: '100px' }}
-      onError={(e) => console.error('Error loading image:', e)}
-    />
-  
-)}
-</td>
-                    
+                      {product.poster && (
+                        <img
+                          src={`data:image/png;base64,${product.poster}`}
+                          alt="Product poster"
+                          style={{ maxWidth: "100px", maxHeight: "100px" }}
+                          onError={(e) =>
+                            console.error("Error loading image:", e)
+                          }
+                        />
+                      )}
+                    </td>
+
                     <td>{product.title}</td>
                     <td>{product.price}</td>
                     <td>{product.rate}</td>
@@ -155,7 +151,6 @@ const Products = () => {
         onCancel={handleCancelDelete}
         onConfirm={handleConfirmDelete}
       />
-      
     </div>
   );
 };

@@ -15,7 +15,7 @@ function Footer() {
   const translations = useSelector(selectTranslations);
   return (
     <>
-      <div className="bg-[#3EBF87] text-white p-3 text-center">
+      <div className="bg-[#3EBF87] text-white p-3 text-center bottom-0">
         <div className=" header-container ">
           <div className="flex flex-col lg:flex-row gap-3 ">
             <div className="cartfooter text-start">
