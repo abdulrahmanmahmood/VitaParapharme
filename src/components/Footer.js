@@ -13,11 +13,17 @@ import { Link } from "react-router-dom";
 function Footer() {
   const language = useSelector(selectLanguage);
   const translations = useSelector(selectTranslations);
+  const direction = language === "ar" ? "rtl" : "ltr"; // Determine language direction
+
   return (
     <>
       <div className="bg-[#3EBF87] text-white p-3 text-center bottom-0">
         <div className=" header-container ">
-          <div className="flex flex-col lg:flex-row gap-3 ">
+          <div
+            className={`flex flex-col lg:flex-row gap-3 ${
+              direction === "rtl" ? "lg:flex-row-reverse" : ""
+            }`}
+          >
             <div className="cartfooter text-start">
               <div className="important">
                 <h1>{translations[language]?.important}</h1>

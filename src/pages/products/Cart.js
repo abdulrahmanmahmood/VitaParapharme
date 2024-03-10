@@ -374,7 +374,7 @@ function Cart() {
                         <Image
                           src={product.pictureUrl}
                           alt="Product poster"
-                          className="right-20 absolute lg:right-12 rounded-lg w-[140px] h-[120px] top-[5%] object-contain"
+                          className="right-20 absolute lg:right-14  rounded-full w-[140px] h-[120px] top-[5%] object-contain"
                         />
                       </div>
                       <div className="w-full lg:w-[50%] text-center pt-3 ">

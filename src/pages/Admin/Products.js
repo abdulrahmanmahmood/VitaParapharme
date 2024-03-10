@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { FaPlus, FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import DeleteDialog from "./Actions/DeleteDialog";
-import "./dashboard.css";
 
 const Products = () => {
   const navigate = useNavigate();

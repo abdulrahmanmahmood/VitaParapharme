@@ -521,9 +521,15 @@ function Store() {
             {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
               <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] lg:w-[90%] ">
                 {products.map((product) => {
-                  const matchesSearch = product.name
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
+                  const matchesSearch =
+                    product.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()) ||
+                    (product.description &&
+                      product.description
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()));
+
                   const matchesPriceRange =
                     product.price >= priceRange.min &&
                     product.price <= priceRange.max;

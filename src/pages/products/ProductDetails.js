@@ -19,7 +19,6 @@ import {
   selectTranslations,
 } from "../../rtk/slices/Translate-slice";
 import { Editor } from "@tinymce/tinymce-react";
-import "./ProductDetails.css";
 import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function ProductDetails() {
@@ -64,7 +63,7 @@ function ProductDetails() {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const allProducts = useSelector((state) => state.products);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -155,71 +154,48 @@ function ProductDetails() {
   }, [productDetails]);
 
   return (
-    <div className="detailsPage">
+    <div className="flex flex-col h-screen relative bg-white/90 ">
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         handleProductClick={handleProductClick}
       />
 
-      <div className="bg-gray-50 bottom-0 overflow-y-hidden">
-        <div className="mb-20 relative top-12 lg:top-0 lg:mx-12 overflow-y-hidden md:px-5 sm:px-2 flex flex-row mt-12">
-          <div className="flex flex-col">
-            <div className="">
-              <div className="flex flex-row justify-between bg-[#3EBF87] rounded-lg p-2 mt-32">
-                <div className="mt-2">
-                  <h2 className="text-white">
-                    {productDetails && productDetails.name}
-                  </h2>
-                </div>
+      <div className="w-full h-[90%] mt-[180px] ">
+        <div className="block lg:hidden text-center items-center mx-auto w-[24%] my-3 ">
+          <div className="flex flex-row lg:mx-3 text-center items-center">
+            <StarRating
+              initialRating={selectedProduct?.rating}
+              isClickable={false}
+              className="lg:mx-3 text-center"
+            />
+            <h5 className=" text-[#696767] mt-4 text-center ">
+              ({selectedProduct?.reviews})
+            </h5>
+          </div>
+        </div>
 
-                <div className="flex flex-row">
-                  {selectedProduct && selectedProduct.rating !== undefined ? (
-                    <>
-                      <StarRating
-                        initialRating={selectedProduct.rating}
-                        isClickable={false}
-                      />
-                      <h5 className="text-white mt-4">
-                        ({selectedProduct.reviews})
-                      </h5>
-                    </>
-                  ) : (
-                    <p>Loading...</p>
-                  )}
-                </div>
-                <div>
-                  {productDetails && productDetails.discount ? (
-                    <div className="">
-                      <h2 className="text-white">{`$${productDetails.afterDiscount}`}</h2>
-                      <div className="text-lg line-through text-white">{`$${productDetails.price}`}</div>
-                    </div>
-                  ) : (
-                    <h2 className="text-white">{`$${
-                      productDetails && productDetails.price
-                    }`}</h2>
-                  )}
-                </div>
-              </div>
-              <h1 className="text-md text-black mt-[10px]">
-                {translations[language]?.aboutpro}{" "}
-              </h1>
-              <p className=" text-md font-bold w-full overflow-wrap break-word text-left text-black">
-                {productDetails && productDetails.description}
-              </p>
-            </div>
-            <div className="flex flex-row justify-between  w-[100%]">
-              <div className="  w-[50%] flex flex-col items-center">
-                <div className="max-w-screen-md">
-                  {masterImage && (
+        <div className="  bg-white/90 mb-20">
+          <div className=" relative   h-[100%] my-auto ">
+            <div className="flex flex-col lg:flex-row justify-between  w-[100%] my-auto ">
+              <div className=" w-[90%] lg:w-[50%] flex flex-col items-center h-[90%] my-auto">
+                {masterImage && (
+                  <div className="hidden  lg:flex flex-row w-[350px] my-auto  h-[350px] bg-gray-400 rounded-full">
+                    <div className="items-center" />
                     <img
-                      className="w-48 h-48 object-contain"
+                      className=" w-[220px] h-[200px] object-contain lg:ml-[6%] absolute lg:mt-[4%] "
                       src={masterImage}
                       alt="Master"
                     />
-                  )}
-                </div>
-                <div className="flex justify-center mt-5">
+                  </div>
+                )}
+
+                <img
+                  className="lg:hidden w-[220px] h-[200px] object-contain mx-auto items-center "
+                  src={masterImage}
+                  alt="Master"
+                />
+                <div className="flex justify-center mt-1">
                   {smallImages.map((smallImg, index) => (
                     <div
                       key={index}
@@ -232,8 +208,19 @@ function ProductDetails() {
                 </div>
               </div>
 
-              <div className="ml-6 w-[50%] mt-12">
-                <h1 className="text-lg text-black">
+              <div className="ml-6 w-[90%] lg:w-[50%] mr-8 text-center  h-[100%] mt-5">
+                <h2 className="text-black lg:font-bold text-3xl">
+                  {productDetails && productDetails.name}
+                </h2>
+
+                <h1 className="text-xl text-black text-center my-3 lg:font-bold">
+                  {translations[language]?.aboutpro}{" "}
+                </h1>
+                <p className=" ">
+                  {productDetails && productDetails.description}
+                </p>
+
+                <h1 className="text-xl text-black text-center my-3 lg:font-bold ">
                   {translations[language]?.productdet}{" "}
                 </h1>
                 <p>{productDetails && productDetails.about}</p>
@@ -241,40 +228,59 @@ function ProductDetails() {
             </div>
           </div>
         </div>
-        <div className="bg-[#3EBF87] rounded-t-full overflow-hidden">
+
+        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
           <div className="px-4 py-2 ">
             <div className="flex flex-row  md:flex-row md:items-center justify-between">
               <button
-                className="bg-white h-12 w-20 rounded-lg text-black font-bold mb-2 md:mb-0 mr-2 mt-3"
+                className="bg-[#61DAA2] lg:h-14 lg:w-40 w-20 h-8 rounded-full text-[12px]  text-white lg:text-2xl  lg:font-bold lg:mb-2 mb-1  lg:ml-10 lg:mt-1"
                 onClick={() => handleDetailsClick()}
               >
                 Review
               </button>
-              <div className="flex items-center mb-2 md:mb-0">
-                <div className="text-white md:mr-4">
+              <div className=" flex items-center lg:mb-2 mb-0">
+                <div className="hidden lg:block">
+                  <div className="flex flex-row lg:mx-3">
+                    <StarRating
+                      initialRating={selectedProduct?.rating}
+                      isClickable={false}
+                      className="lg:mx-3"
+                    />
+                    <h5 className=" text-[#696767] mt-4">
+                      ({selectedProduct?.reviews})
+                    </h5>
+                  </div>
+                </div>
+
+                <div className="text-[#696767] lg:mr-4">
                   {productDetails ? (
-                    <h1 className=" ">{productDetails.price * quantity} $</h1>
+                    <h1 className="text-[14px] lg:text-2xl ">
+                      {productDetails.price * quantity} $
+                    </h1>
                   ) : (
                     <p>Loading...</p>
                   )}
                 </div>
-                <div className="flex items-center">
+                <div className="flex  items-center">
                   <button
-                    className="text-white md:mr-2"
+                    className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1"
                     onClick={handleDecrement}
                   >
                     <FaMinus />
                   </button>
-                  <span className="md:text-lg md:font-bold   text-white">
+                  <span className="md:text-lg md:font-bold  mx-3 text-2xl text-black">
                     {quantity}
                   </span>
-                  <button className="text-white ml-2" onClick={handleIncrement}>
+                  <button
+                    className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1 "
+                    onClick={handleIncrement}
+                  >
                     <FaPlus />
                   </button>
                 </div>
               </div>
               <button
-                className="bg-white h-12 w-24 rounded-lg text-black font-bold ml-1 mt-3"
+                className="bg-[#61DAA2] lg:h-14 lg:w-40 w-20 text-[12px] h-8 rounded-full mb-1  text-white lg:text-2xl  lg:font-bold lg:mb-2   lg:mr-10 lg:mt-1"
                 onClick={() =>
                   handleAddToCart(productDetails.productId, productDetails)
                 }
@@ -284,21 +290,21 @@ function ProductDetails() {
             </div>
           </div>
         </div>
-      </div>
 
-      <ReviewDialog
-        isOpen={detailsOpen}
-        onCancel={handleCancelDetails}
-        productId={productId}
-      />
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Body>{modalMessage}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <ReviewDialog
+          isOpen={detailsOpen}
+          onCancel={handleCancelDetails}
+          productId={productId}
+        />
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Body>{modalMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 }
