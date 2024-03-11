@@ -290,15 +290,12 @@ function ProductDetails() {
             </div>
           </div>
         </div>
-
-        <ReviewDialog
-          isOpen={detailsOpen}
-          onCancel={handleCancelDetails}
-          productId={productId}
-
-        />
-
-        
+  
+          <ReviewDialog
+            isOpen={detailsOpen}
+            onCancel={()=>setDetailsOpen(false)}
+            productId={productId}
+          />
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Body>{modalMessage}</Modal.Body>
           <Modal.Footer>

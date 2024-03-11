@@ -180,10 +180,10 @@ const ReviewDialog = ({ isOpen, onCancel, productId }) => {
   };
 
   return (
-    <div className="">
+    <div className=" ">
       {isOpen && (
         <div
-          className="popup fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-50 shadow-md flex flex-col justify-center items-center p-4 w-full max-w-md sm:max-w-lg md:max-w-xl "
+          className=" fixed top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-50 shadow-md flex flex-col justify-center items-center p-4 w-full max-w-md sm:max-w-lg md:max-w-xl "
           onClick={handleOverlayClick}
         >
           <div className=" w-full h-full bg-[#3EBF87] rounded-lg  shadow-lg p-4">

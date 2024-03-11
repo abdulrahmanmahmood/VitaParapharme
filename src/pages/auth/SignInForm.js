@@ -329,7 +329,7 @@ const SignInForm = () => {
         dispatch(setEmail(result.data.data.email));
         localStorage.setItem('token', result.data.data.token);
         localStorage.setItem('email', result.data.data.email);
-        navigate('/home');
+        navigate('/');
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.message) {
