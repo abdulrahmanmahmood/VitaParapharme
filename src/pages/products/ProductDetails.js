@@ -295,7 +295,10 @@ function ProductDetails() {
           isOpen={detailsOpen}
           onCancel={handleCancelDetails}
           productId={productId}
+
         />
+
+        
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Body>{modalMessage}</Modal.Body>
           <Modal.Footer>

@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom'; // Change the import here
 import 'react-toastify/dist/ReactToastify.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,20 +14,21 @@ import Sign from './pages/auth/Sign';
 import store from './rtk/Store';
 import { Provider } from 'react-redux';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
-    <Provider store={store}>
-    <div dir={store.getState().translation.direction}>
-    <App />
-    </div>
-    </Provider>
-    </HashRouter>
-  </React.StrictMode>
+    <BrowserRouter> {/* Change HashRouter to BrowserRouter here */}
+      <Provider store={store}>
+        <div dir={store.getState().translation.direction}>
+          <App />
+        </div>
+      </Provider>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 reportWebVitals();
+
 
 /*import React from 'react';
 import ReactDOM from 'react-dom';

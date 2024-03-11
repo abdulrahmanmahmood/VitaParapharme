@@ -101,7 +101,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     }
   };
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products?.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -121,12 +121,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
 
   const handleSearchSubmit = () => {
-    const productsInSelectedCategory = filteredProducts.filter(
+    const productsInSelectedCategory = filteredProducts?.filter(
       (product) => product.categoryId === selectedCategoryId
     );
 
     const searchTermLowerCase = searchTerm ? searchTerm.toLowerCase() : "";
-    const productsMatchingSearch = productsInSelectedCategory.filter(
+    const productsMatchingSearch = productsInSelectedCategory?.filter(
       (product) => {
         const productNameLowerCase = product.name
           ? product.name.toLowerCase()
@@ -615,7 +615,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                     <div className="w-full">
                       <div className="  text-center items-center  mx-auto flex flex-col   lg:flex-row lg:content-between my-2 lg:my-0 gap-5 w-full  ">
                         <Link
-                          to="/home"
+                          to="/"
                           className="items-center mx-auto  text-black font-bold text-xl  "
                           style={{ textDecoration: "none" }}
                         >

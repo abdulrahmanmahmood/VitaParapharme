@@ -38,6 +38,7 @@ import BlogDetails from "./pages/BlogDetails";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Notification from "./pages/Notification";
 import { useSelector } from "react-redux";
+import Terms from "./pages/Termis";
 
 function App() {
   const direction = useSelector((state) => state.translation.direction);
@@ -45,7 +46,7 @@ function App() {
     <div className={`flexLanguage ${direction === 'rtl' ? 'rtl' : 'ltr'} App`}>
       <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/store" element={<Store />} />
       <Route path="/brand" element={<Brand />} />
@@ -60,6 +61,7 @@ function App() {
       <Route path="/order/confirm" element={<ConfirmOrder/>} />
       <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
       <Route path="/notification" element={<Notification />} />
+      <Route path="/terms" element={<Terms/>} />
       <Route
           path="/home/product/:productId"
           element={<ProductDetails /> }  />

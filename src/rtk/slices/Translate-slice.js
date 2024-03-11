@@ -141,9 +141,10 @@ const translationSlice = createSlice({
         paiement: "Paiement when receiving",
         personal:
           "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy",
-        agree: "I agree to the terms and conditions and the privacy policy",
-        privacypolicy: "privacy policy",
-        termsand: "Terms and conditions",
+        agree: "I agree to the",
+        and:"and",
+        privacypolicy: "the privacy policy",
+        termsand: "terms and conditions",
         welcometo: "Welcome to Et Vitapara!",
         adjust:
           "These terms and conditions define the settings and adjustments for use of the Vitapara site, available at the address: https://vitaparapharma.com/.",
@@ -219,7 +220,24 @@ const translationSlice = createSlice({
         acc: "We do not guarantee the accuracy of the information provided on this site, nor its completeness or accuracy; further, we make no promise that the site will remain available or that the materials on the site will be updated.",
         disc: "Disclaimer",
         max: "To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. This discharge does not contain:",
+        draft:
+          "Draft clear and comprehensive terms and conditions for your website. Include information about product pricing, shipping policies, return and refund policies, and any disclaimers. Clearly state the terms of use for visitors to your site.",
+        create:
+          "Create a privacy policy that outlines how you collect, use, and protect customer information. Address aspects like data storage, security measures, and whether you share information with third parties. Compliance with data protection laws such as GDPR (General Data Protection Regulation) is crucial.",
+        payment: "Payment Card Industry Data Security Standard (PCI DSS):",
+        handle:
+          "If you handle credit card transactions, comply with PCI DSS standards to ensure the secure processing of payment information. This involves maintaining a secure network, protecting cardholder data, and regularly monitoring and testing systems.",
+        electronic: "Electronic Commerce Regulations:",
+        your: "Familiarize yourself with and adhere to electronic commerce regulations in your jurisdiction. These regulations may cover issues such as electronic contracts, electronic signatures, and consumer rights in online transactions.",
+        protec: "Intellectual Property Protection:",
+        ensure:
+          "Ensure that you have the right to use any trademarks, copyrights, or intellectual property associated with your business. Respect the intellectual property rights of others, and consider registering your own trademarks if applicable.",
+        acces: "Accessibility Compliance:",
+        ensurethree:
+          "Ensure that your website is accessible to individuals with disabilities, complying with accessibility standards such as the Americans with Disabilities Act (ADA) or the Web Content Accessibility Guidelines (WCAG).",
         showMore: "Show More",
+        CartEmpty: "Your cart is empty. You can shop now from",
+        here: "ici",
       },
       fr: {
         home: "Maison",
@@ -359,8 +377,8 @@ const translationSlice = createSlice({
         paiement: "Paiement à réception",
         personal:
           "Vos données personnelles seront utilisées pour traiter votre commande, soutenir votre expérience sur ce site Web et à d'autres fins décrites dans notre politique de confidentialité.",
-        agree:
-          "J'accepte les termes et conditions et la politique de confidentialité",
+          agree: "Je suis d'accord avec",
+          and: "et",
         privacypolicy: "politique de confidentialité",
         termsand: "Conditions générales",
         welcometo: "Bienvenue à Et Vitapara!",
@@ -440,7 +458,26 @@ const translationSlice = createSlice({
         acc: "Nous ne garantissons pas l'exactitude des informations fournies sur ce site, ni leur exhaustivité ou leur précision; de plus, nous ne promettons pas que le site restera disponible ou que les matériaux présents sur le site seront mis à jour.",
         disc: "Désistement",
         max: "Dans la mesure permise par la loi applicable, nous excluons toutes représentations, garanties et conditions relatives à notre site web et à l'utilisation de ce site. Cette décharge ne contient pas :",
+        draft:
+          "Rédigez des conditions générales claires et complètes pour votre site Web. Incluez des informations sur le prix des produits, les politiques d'expédition, les politiques de retour et de remboursement et toute clause de non-responsabilité. Énoncez clairement les conditions d’utilisation pour les visiteurs de votre site.",
+        create:
+          "Créez une politique de confidentialité qui décrit la manière dont vous collectez, utilisez et protégez les informations client. Abordez des aspects tels que le stockage des données, les mesures de sécurité et la question de savoir si vous partagez des informations avec des tiers. Le respect des lois sur la protection des données telles que le RGPD (Règlement Général sur la Protection des Données) est crucial.",
+        payment:
+          "Norme de sécurité des données du secteur des cartes de paiement (PCI DSS) :",
+        handle:
+          "Si vous traitez des transactions par carte de crédit, respectez les normes PCI DSS pour garantir le traitement sécurisé des informations de paiement. Cela implique de maintenir un réseau sécurisé, de protéger les données des titulaires de carte et de surveiller et tester régulièrement les systèmes.",
+        electronic: "Règlements sur le commerce électronique :",
+        your: "Familiarisez-vous avec et respectez les réglementations en matière de commerce électronique dans votre juridiction. Ces réglementations peuvent couvrir des questions telles que les contrats électroniques, les signatures électroniques et les droits des consommateurs dans les transactions en ligne.",
+        protec: "Protection de la propriété intellectuelle:",
+        ensure:
+          "Assurez-vous que vous avez le droit d’utiliser les marques commerciales, les droits d’auteur ou la propriété intellectuelle associés à votre entreprise. Respectez les droits de propriété intellectuelle d’autrui et envisagez d’enregistrer vos propres marques, le cas échéant.",
+        acces: "Conformité en matière d'accessibilité :",
+        ensurethree:
+          "Assurez-vous que votre site Web est accessible aux personnes handicapées, en respectant les normes d'accessibilité telles que l'Americans with Disabilities Act (ADA) ou les Web Content Accessibility Guidelines (WCAG).",
         showMore: "montre plus",
+        CartEmpty:
+          "Votre panier est vide. Vous pouvez magasiner dès maintenant à partir de",
+        here: "ici",
       },
       ar: {
         home: "الرئيسيه",
@@ -577,8 +614,10 @@ const translationSlice = createSlice({
         personal:
           "سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك عبر هذا الموقع، ولأغراض أخرى موضحة في سياسة الخصوصية الخاصة بنا",
         agree: "أوافق على الشروط والأحكام وسياسة الخصوصية",
+        and: "و",
+
         privacypolicy: "سياسة الخصوصية",
-        termsand: "شروط عامة",
+        termsand: "الشروط عامة",
         welcometo: "مرحبا بك في Vitapara!",
         adjust:
           "تحدد هذه الشروط والأحكام القواعد واللوائح الخاصة باستخدام موقع Et Vitapara، المتاح على: https://vitaparapharma.com/.",
@@ -654,8 +693,25 @@ const translationSlice = createSlice({
         acc: "نحن لا نضمن دقة المعلومات المقدمة على هذا الموقع، ولا اكتمالها أو دقتها؛ علاوة على ذلك، فإننا لا نقدم أي وعد بأن الموقع سيظل متاحًا أو سيتم تحديث المواد الموجودة على الموقع.",
         disc: "تنصل",
         max: "إلى الحد الأقصى الذي يسمح به القانون المعمول به، نستبعد جميع الإقرارات والضمانات والشروط المتعلقة بموقعنا الإلكتروني واستخدام هذا الموقع. لا يحتوي هذا التفريغ على:",
+        draft:
+          "قم بصياغة شروط وأحكام واضحة وشاملة لموقعك على الويب. قم بتضمين معلومات حول أسعار المنتجات وسياسات الشحن وسياسات الإرجاع واسترداد الأموال وأي إخلاء مسؤولية. اذكر بوضوح شروط الاستخدام لزوار موقعك.",
+        create:
+          "قم بإنشاء سياسة خصوصية توضح كيفية جمع معلومات العملاء واستخدامها وحمايتها. تناول جوانب مثل تخزين البيانات، والتدابير الأمنية، وما إذا كنت تشارك المعلومات مع أطراف ثالثة. يعد الامتثال لقوانين حماية البيانات مثل اللائحة العامة لحماية البيانات (GDPR) أمرًا بالغ الأهمية.",
+        payment: "معيار أمان بيانات صناعة بطاقات الدفع (PCI DSS):",
+        handle:
+          "إذا كنت تتعامل مع معاملات بطاقة الائتمان، فالتزم بمعايير PCI DSS لضمان المعالجة الآمنة لمعلومات الدفع. يتضمن ذلك الحفاظ على شبكة آمنة، وحماية بيانات حامل البطاقة، ومراقبة الأنظمة واختبارها بانتظام.",
+        electronic: "ضوابط التجارة الإلكترونية:",
+        your: "تعرف على لوائح التجارة الإلكترونية في ولايتك القضائية والتزم بها. قد تغطي هذه اللوائح قضايا مثل العقود الإلكترونية والتوقيعات الإلكترونية وحقوق المستهلك في المعاملات عبر الإنترنت",
+        protec: "حماية الملكية الفكرية:",
+        ensure:
+          "تأكد من أن لديك الحق في استخدام أي علامات تجارية أو حقوق نشر أو ملكية فكرية مرتبطة بعملك. احترم حقوق الملكية الفكرية للآخرين، وفكر في تسجيل العلامات التجارية الخاصة بك إن أمكن.",
+        acces: "الامتثال لإمكانية الوصول:",
+        ensurethree:
+          "تأكد من أن موقع الويب الخاص بك متاح للأشخاص ذوي الإعاقة، بما يتوافق مع معايير إمكانية الوصول مثل قانون الأمريكيين ذوي الإعاقة (ADA) أو إرشادات إمكانية الوصول إلى محتوى الويب (WCAG).",
 
         showMore: "أظهر المزيد",
+        CartEmpty: "عربة التسوق فارغة. يمكنك التسوق الآن من",
+        here: "هنا",
       },
     },
   },

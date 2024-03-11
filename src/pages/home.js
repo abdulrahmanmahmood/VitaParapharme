@@ -371,24 +371,28 @@ function Home() {
           handleProductClick={handleProductClick}
         />
 
-        <div className="green-containerr mt-[80px]">
+        <div className="green-containerr mt-[100px]">
           <div className="home-containerr testtt">
             <WhatsAppIcon />
             <Slider />
 
             <div
-              className="lg:titleProduct text-center p-2 mx-auto w-[90%] h-[150px] my-10"
+              className="lg:titleProduct text-center p-2 mx-auto w-[90%] lg:w-[40%] h-[250px] my-10 bg-cover  "
               style={{
                 backgroundImage: `url(${Shipe})`,
-                backgroundSize: "cover",
+
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <h1 className="text-2xl mt-4 font-bold">
-                {translations[language]?.magasin}
-              </h1>
-              <h2 className="text-xl">{translations[language]?.learnmore}</h2>
+              <div className="mt-[60px]  items-baseline">
+                <h1 className="text-xl lg:text-2xl   font-bold">
+                  {translations[language]?.magasin}
+                </h1>
+                <h2 className="text-xs lg:text-xl">
+                  {translations[language]?.learnmore}
+                </h2>
+              </div>
             </div>
             {loading && (
               <div
@@ -399,7 +403,7 @@ function Home() {
 
             {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
               <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 ">
-                {products.map((product) => (
+                {products?.slice(0, 9).map((product) => (
                   <div
                     style={{}}
                     className="relative w-[350px] h-[420px] lg:w-[370px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
@@ -484,14 +488,14 @@ function Home() {
 
             <div className="w-fulll items-center text-center">
               <button
-                className="bg-[#61DAA2] lg:w-25 lg:h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
+                className="bg-[#61DAA2] w-25 h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
                 onClick={() => navigate("/store")}
               >
-                {translations[language]?.showMore}
+                Show More
               </button>
             </div>
             <div
-              className="lg:titleProduct text-center p-2 mx-auto lg:w-[60%] lg:h-[150px] w-full  my-20"
+              className="lg:titleProduct text-center p-2 mx-auto w-[90%] lg:w-[40%] h-[250px]  bg-cover  my-20"
               style={{
                 backgroundImage: `url(${Shipe})`,
                 backgroundSize: "cover",
@@ -499,12 +503,14 @@ function Home() {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <h1 className="font-bold my-3 text-3xl">
-                {translations[language]?.popular}
-              </h1>
-              <h2 className="font-bold my-3 text-2xl">
-                {translations[language]?.featured}
-              </h2>
+              <div className="mt-[70px]  items-baseline">
+                <h1 className="text-xl lg:text-3xl   font-bold">
+                  {translations[language]?.popular}
+                </h1>
+                <h2 className="text-xs lg:text-2xl font-semibold">
+                  {translations[language]?.featured}
+                </h2>
+              </div>
             </div>
             <Advertesment cursor={"grabbing"} />
           </div>
