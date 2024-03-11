@@ -154,9 +154,10 @@ form.sign-in-form {
   position: absolute;
   height: 2000px;
   width: 900px;
-  top: -10%;
+  top: 8%;
   right: 50%;
   transform: translateY(-50%);
+  margin-bottom: 5em;
   
   background-color: #3EBF87;
   transition: 1.8s ease-in-out;
@@ -182,6 +183,7 @@ form.sign-in-form {
 .left-panel {
   pointer-events: all;
   padding: 3rem 17% 2rem 12%;
+  overflow-y: hidden;
 }
 
 .right-panel {
@@ -211,7 +213,6 @@ form.sign-in-form {
   background: none;
   border: 2px solid #fff;
   width: 130px;
- 
   font-weight: 600;
   font-size: 0.8rem;
 }
@@ -222,6 +223,8 @@ form.sign-in-form {
 }
 
 /* ANIMATION */
+
+
 
 .containersign.sign-up-mode:before {
   transform: translate(100%, -50%);
@@ -286,9 +289,11 @@ form.sign-in-form {
   }
 
 @media (max-width: 870px) {
+  
   .containersign {
-    min-height: 800px;
+    min-height: 1000px;
     height: 100vh;
+   
   }
   .signin-signup {
     width: 100%;
@@ -317,10 +322,12 @@ form.sign-in-form {
 
   .right-panel {
     grid-row: 3 / 4;
+    overflow-y: hidden;
   }
 
   .left-panel {
     grid-row: 1 / 2;
+    overflow-y: hidden;
   }
 
   .image {
@@ -364,6 +371,7 @@ form.sign-in-form {
 
   .containersign.sign-up-mode:before {
     transform: translate(-50%, 100%);
+    margin-block-end: auto;
     bottom: 32%;
     right: initial;
   }
@@ -405,6 +413,7 @@ form.sign-in-form {
   }
   .containersign {
     padding: 1.5rem;
+   
   }
 
   .containersign:before {
@@ -415,6 +424,7 @@ form.sign-in-form {
   .containersign.sign-up-mode:before {
     bottom: 28%;
     left: 50%;
+    margin-top: 5em;
   }
   .reset{
     margin-left: 10em;
@@ -422,9 +432,9 @@ form.sign-in-form {
 }
 
 .error-message {
-  color: red; /* Set the text color to red (or any other color you prefer) */
-  font-size: 14px; /* Set the font size */
-  /* Add any additional styling you want */
+  color: red; 
+  font-size: 14px; 
+  
 }
 .signincont{
   margin-top: 40%;

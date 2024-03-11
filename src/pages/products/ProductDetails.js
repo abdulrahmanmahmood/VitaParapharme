@@ -229,7 +229,7 @@ function ProductDetails() {
           </div>
         </div>
 
-        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
+        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  bg-white">
           <div className="px-4 py-2 ">
             <div className="flex flex-row  md:flex-row md:items-center justify-between">
               <button
