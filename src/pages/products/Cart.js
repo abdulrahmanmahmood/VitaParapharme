@@ -391,7 +391,8 @@ function Cart() {
                           </div>
 
                           <h5 className="text-center lg:text-left ml-2 my-3 text-[#696767] text-3xl font-bold leaading-9 font-inter ">
-                            {product.productPrice}$
+                            {product.productPrice}
+                            {translations[language]?.currency}
                           </h5>
                           <h5 className="text-[#696767] text-center lg:text-left my-2">
                             {translations[language]?.quantity} :{" "}
@@ -453,7 +454,7 @@ function Cart() {
                     {translations[language]?.totalprice}:
                   </h4>
                   <h4 className="text-center text-[#3ebf87]">
-                    {totalPrice.toFixed(2)} $
+                    {totalPrice.toFixed(2)} {translations[language]?.currency}
                   </h4>
 
                   <h5 className="text-[#3ebf87] font-bold mt-3">
@@ -488,10 +489,8 @@ function Cart() {
                         className="text-xlg font-bold text-[#5e9ff9] no-underline"
                       >
                         {translations[language]?.termsand}{" "}
-                      </Link>
-                      {" "}
+                      </Link>{" "}
                       {translations[language]?.and}{" "}
-
                       <Link
                         to="/terms"
                         className="text-xlg font-bold text-[#5e9ff9] no-underline"

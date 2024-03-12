@@ -59,7 +59,7 @@ function ProductDetails() {
     };
 
     fetchProductDetails();
-  }, [productId]);
+  }, [productId , language ]);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -138,7 +138,7 @@ function ProductDetails() {
       setMasterImage(productDetails.pictures[0]);
       setSmallImages(productDetails.pictures.slice(0));
     }
-  }, [productDetails]);
+  }, [productDetails , language]);
 
   const handleImageClick = (src) => {
     setMasterImage(src);
@@ -151,7 +151,7 @@ function ProductDetails() {
 
       console.log("Product Details HTML:", productDetails.productDetails);
     }
-  }, [productDetails]);
+  }, [productDetails , language]);
 
   return (
     <div className="flex flex-col h-screen relative bg-white/90 ">
@@ -164,11 +164,17 @@ function ProductDetails() {
       <div className="w-full h-[90%] mt-[180px] ">
         <div className="block lg:hidden text-center items-center mx-auto w-[24%] my-3 ">
           <div className="flex flex-row lg:mx-3 text-center items-center">
-            <StarRating
-              initialRating={selectedProduct?.rating}
-              isClickable={false}
-              className="lg:mx-3 text-center"
-            />
+          {selectedProduct && selectedProduct.rating !== undefined ? (
+    <>
+      <StarRating
+        initialRating={selectedProduct.rating}
+        isClickable={false}
+      /> 
+      <h5 style={{marginTop: '10px'}}>({selectedProduct.reviews})</h5>
+    </>
+  ) : (
+    <p>Loading...</p>
+  )}
             <h5 className=" text-[#696767] mt-4 text-center ">
               ({selectedProduct?.reviews})
             </h5>
@@ -229,23 +235,29 @@ function ProductDetails() {
           </div>
         </div>
 
-        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  bg-white">
+        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
           <div className="px-4 py-2 ">
             <div className="flex flex-row  md:flex-row md:items-center justify-between">
               <button
                 className="bg-[#61DAA2] lg:h-14 lg:w-40 w-20 h-8 rounded-full text-[12px]  text-white lg:text-2xl  lg:font-bold lg:mb-2 mb-1  lg:ml-10 lg:mt-1"
                 onClick={() => handleDetailsClick()}
               >
-                Review
+                {translations[language]?.review}
               </button>
               <div className=" flex items-center lg:mb-2 mb-0">
                 <div className="hidden lg:block">
                   <div className="flex flex-row lg:mx-3">
-                    <StarRating
-                      initialRating={selectedProduct?.rating}
-                      isClickable={false}
-                      className="lg:mx-3"
-                    />
+                  {selectedProduct && selectedProduct.rating !== undefined ? (
+    <>
+      <StarRating
+        initialRating={selectedProduct.rating}
+        isClickable={false}
+      /> 
+      
+    </>
+  ) : (
+    <p>Loading...</p>
+  )}
                     <h5 className=" text-[#696767] mt-4">
                       ({selectedProduct?.reviews})
                     </h5>
@@ -255,7 +267,14 @@ function ProductDetails() {
                 <div className="text-[#696767] lg:mr-4">
                   {productDetails ? (
                     <h1 className="text-[14px] lg:text-2xl ">
-                      {productDetails.price * quantity} $
+                       {productDetails.discount && (
+                    <h1>{productDetails.afterDiscount * quantity} {translations[language]?.currency}</h1>
+                  )}
+                  {!productDetails.discount && (
+                    <h1>
+                      {(productDetails.price || productDetails.productPrice) * quantity} {translations[language]?.currency}
+                    </h1>
+                  )}
                     </h1>
                   ) : (
                     <p>Loading...</p>
@@ -285,17 +304,20 @@ function ProductDetails() {
                   handleAddToCart(productDetails.productId, productDetails)
                 }
               >
-                Add to Cart
+                {translations[language]?.addtocart}
               </button>
             </div>
           </div>
         </div>
-  
-          <ReviewDialog
-            isOpen={detailsOpen}
-            onCancel={()=>setDetailsOpen(false)}
-            productId={productId}
-          />
+
+        <ReviewDialog
+          isOpen={detailsOpen}
+          onCancel={handleCancelDetails}
+          productId={productId}
+          productDetails={productDetails}
+        />
+
+        
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Body>{modalMessage}</Modal.Body>
           <Modal.Footer>

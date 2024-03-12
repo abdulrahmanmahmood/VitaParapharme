@@ -457,17 +457,20 @@ function Home() {
                         <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
                           {product.discount && (
                             <div className="mx-3 text-xl my-1">
-                              {product.afterDiscount} $
+                              {product.afterDiscount}{" "}
+                              {translations[language]?.currency}
                             </div>
                           )}
                           {product.discount && (
                             <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                              {product.price} $
+                              {product.price} 
+                              {translations[language]?.currency}
                             </div>
                           )}
                           {!product.discount && (
                             <div className=" mx-3 text-xl my-1">
-                              {product.price} $
+                              {product.price} 
+                              {translations[language]?.currency}
                             </div>
                           )}
                         </div>

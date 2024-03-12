@@ -1,311 +1,393 @@
-import React from "react";
+import React from 'react';
 
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 
-import logo from "../.././images/Vita Logo2.png";
-import lotion from "../.././images/lotion.png";
-import {
-  setLanguage,
-  selectLanguage,
-  selectTranslations,
-} from "../../rtk/slices/Translate-slice";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import logo from '../.././images/Vita Logo2.png' ;
+import lotion from '../.././images/lotion.png';
+import { setLanguage ,selectLanguage ,selectTranslations} from '../../rtk/slices/Translate-slice';
+import { useSelector , useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { FaUser } from "react-icons/fa";
-import axios from "axios";
-import { useState } from "react";
-import StarRating from "../rate/StarRating";
-import { selectToken } from "../../rtk/slices/Auth-slice";
-import { selectEmail } from "../../rtk/slices/Auth-slice";
-import { Modal, Button } from "react-bootstrap";
+import axios from 'axios';
+import { useState } from 'react';
+import StarRating from '../rate/StarRating';
+import { selectToken } from '../../rtk/slices/Auth-slice';
+import { selectEmail } from '../../rtk/slices/Auth-slice';
+import { Modal , Button } from 'react-bootstrap';
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import "./review.css";
-import { baseUrl } from "../../rtk/slices/Product-slice";
+import './review.css';
+import { baseUrl } from '../../rtk/slices/Product-slice';
+import { FaPlus, FaMinus } from "react-icons/fa";
 
-const ReviewDialog = ({ isOpen, onCancel, productId }) => {
-  const language = useSelector(selectLanguage);
-  const translations = useSelector(selectTranslations);
-  const dispatch = useDispatch();
-  const bearerToken = useSelector(selectToken);
-  const bearerEmail = useSelector(selectEmail);
-  const isUserLoggedIn = useSelector(selectToken) !== null;
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [formData, setFormData] = useState({
-    comment: "",
-  });
-  const [rating, setRating] = useState(0);
-  const [editingReviewId, setEditingReviewId] = useState(null);
-  const [updatedComment, setUpdatedComment] = useState("");
 
-  const handleCloseModal = () => setShowModal(false);
+  const ReviewDialog = ({ isOpen, onCancel, productId , productDetails  }) => {
+    const language = useSelector(selectLanguage);
+    const translations = useSelector(selectTranslations);
+    const dispatch = useDispatch();
+    const bearerToken = useSelector(selectToken);
+    const bearerEmail = useSelector(selectEmail);
+    const isUserLoggedIn = useSelector(selectToken) !== null;
+  
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [reviews, setReviews] = useState([]);
+    const [formData, setFormData] = useState({
+      comment: '',
+    });
+    const [rating, setRating] = useState(0);
+    const [editingReviewId, setEditingReviewId] = useState(null); 
+    const [updatedComment, setUpdatedComment] = useState('');
 
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("popup")) {
-      onCancel();
+    const [quantity, setQuantity] = useState(1);
+  
+    const handleCloseModal = () => setShowModal(false);
+  
+    
+
+    const handleOverlayClick = (e) => {
+      if (e.target.classList.contains('popup')) {
+        onCancel();
+      }
+    };
+  
+    const handleViewProductClick = () => {
+      onCancel(); 
+    };
+  
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `${baseUrl}/public/review/product/${productId}`,
+          {
+            headers: {
+              
+              'Content-Type': 'application/json',
+              'Accept-Language': language,
+            },
+          }
+        );
+  
+        setReviews(response.data.data.reviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+  
+    useEffect(() => {
+      if (isOpen && productId) {
+        fetchReviews();
+       
+      }
+    }, [isOpen, productId]);
+
+    
+  
+    const handleChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const apiUrl = `${baseUrl}/user/review/new`;
+      const requestBody = {
+        productId: productId,
+        comment: formData.comment,
+        rating: rating,
+      };
+  
+      try {
+        if (!isUserLoggedIn) {
+          setModalMessage('please sign in first');
+          setShowModal(true);
+          return;
+        }
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+            'Accept-Language': language,
+          },
+          body: JSON.stringify(requestBody),
+        });
+  
+        const responseData = await response.json();
+  
+        if (response.ok) {
+          console.log('Review submitted successfully');
+          fetchReviews();
+          setFormData({
+            comment: '',
+          });
+          setRating(0);
+        } else {
+          console.error('Failed to submit review:', responseData);
+        }
+      } catch (error) {
+        console.error('Error while submitting review:', error.message);
+      }
+    };
+
+    
+  
+    const handleEditClick = (reviewId, comment, rating) => {
+      console.log("Current rating:", rating);
+      setEditingReviewId(reviewId);
+      setUpdatedComment(comment);
+      setRating(rating); 
+    };
+  
+    const handleSaveClick = async (reviewId) => {
+      try {
+        const apiUrl = `${baseUrl}/user/review/update/${reviewId}`;
+        const requestBody = {
+          comment: updatedComment,
+          rating: rating,
+        };
+        const response = await axios.put(apiUrl, requestBody, {
+          headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+            'Accept-Language': language,
+          },
+        });
+    
+          console.log('Review submitted successfully');
+          setEditingReviewId(null);
+          fetchReviews();
+         
+  
+        
+      } catch (error) {
+        console.error('Error while updating review:', error);
+      }
+    };
+    
+
+    const handleDeleteClick = async (reviewId) => {
+      try {
+        const apiUrl = `${baseUrl}/user/review/delete/${reviewId}`;
+        
+        const response = await axios.delete(apiUrl, {
+          headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
+          },
+        });
+  
+          console.log('Review deleted successfully');
+          fetchReviews(); 
+      } catch (error) {
+        console.error('Error while deleting review:', error.message);
+      }
+    };
+
+    
+  const extractFirstLetter = (email) => {
+      return email.charAt(0).toUpperCase();
+  };
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 0) {
+      setQuantity(quantity - 1);
     }
   };
 
-  const handleViewProductClick = () => {
-    onCancel();
-  };
+  const handleAddToCart = async (productId, product) => {
+    if (!isUserLoggedIn) {
+      setModalMessage("please sign in first");
+      setShowModal(true);
+      return;
+    }
 
-  const fetchReviews = async () => {
+    const cartItem = {
+      productId: productId,
+      quantity: quantity,
+    };
+
     try {
-      const response = await axios.get(
-        `${baseUrl}/public/review/product/${productId}`,
+      const response = await axios.put(
+        `${baseUrl}/user/cart/update`,
+        cartItem,
         {
           headers: {
+            Authorization: `Bearer ${bearerToken}`,
             "Content-Type": "application/json",
             "Accept-Language": language,
           },
         }
       );
 
-      setReviews(response.data.data.reviews);
+      setModalMessage("product added to cart");
+      setShowModal(true);
+      console.log("Product added to cart:", response.data);
     } catch (error) {
-      console.error("Error fetching reviews:", error);
+      console.error("Error adding product to cart:", error.message);
     }
   };
-
-  useEffect(() => {
-    if (isOpen && productId) {
-      fetchReviews();
-    }
-  }, [isOpen, productId]);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const apiUrl = `${baseUrl}/user/review/new`;
-    const requestBody = {
-      productId: productId,
-      comment: formData.comment,
-      rating: rating,
-    };
-
-    try {
-      if (!isUserLoggedIn) {
-        setModalMessage("please sign in first");
-        setShowModal(true);
-        return;
-      }
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        console.log("Review submitted successfully");
-        fetchReviews();
-        setFormData({
-          comment: "",
-        });
-        setRating(0);
-      } else {
-        console.error("Failed to submit review:", responseData);
-      }
-    } catch (error) {
-      console.error("Error while submitting review:", error.message);
-    }
-  };
-
-  const handleEditClick = (reviewId, comment, rating) => {
-    console.log("Current rating:", rating);
-    setEditingReviewId(reviewId);
-    setUpdatedComment(comment);
-    setRating(rating);
-  };
-
-  const handleSaveClick = async (reviewId) => {
-    try {
-      const apiUrl = `${baseUrl}/user/review/update/${reviewId}`;
-      const requestBody = {
-        comment: updatedComment,
-        rating: rating,
-      };
-      const response = await axios.put(apiUrl, requestBody, {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-      });
-
-      console.log("Review submitted successfully");
-      setEditingReviewId(null);
-      fetchReviews();
-    } catch (error) {
-      console.error("Error while updating review:", error);
-    }
-  };
-
-  const handleDeleteClick = async (reviewId) => {
-    try {
-      const apiUrl = `${baseUrl}/user/review/delete/${reviewId}`;
-
-      const response = await axios.delete(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Accept-Language": language,
-        },
-      });
-
-      console.log("Review deleted successfully");
-      fetchReviews();
-    } catch (error) {
-      console.error("Error while deleting review:", error.message);
-    }
-  };
-
-  const extractFirstLetter = (email) => {
-    return email.charAt(0).toUpperCase();
-  };
+  
 
   return (
-    <div className=" ">
+    <div className={`review ${isOpen ? 'open' : ''}`}>
       {isOpen && (
-        <div
-          className=" fixed top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-50 shadow-md flex flex-col justify-center items-center p-4 w-full max-w-md sm:max-w-lg md:max-w-xl "
-          onClick={handleOverlayClick}
-        >
-          <div className=" w-full h-full bg-[#3EBF87] rounded-lg  shadow-lg p-4">
-            <div className="">
-              <div className="">
-                {reviews.map((review, index) => (
-                  <div
-                    className="bg-white py-2 px-2 mb-3 rounded-lg border border-grey shadow-md"
-                    key={index}
-                  >
-                    <div className="flex flex-row items-center justify-between">
-                      <div>
-                        <img
-                          className="w-10 h-10 rounded-full mr-2"
-                          src={`https://ui-avatars.com/api/?name=${extractFirstLetter(
-                            review.email
-                          )}&background=random`}
-                          alt="User Avatar"
-                        />
-                      </div>
-                      <div className="flex flex-col w-full">
-                        <p className="ml-2 text-lg flex flex-start text-black">
-                          {review.email}
-                        </p>
-                        <div className="w-full">
-                          {editingReviewId === review.reviewId ? (
-                            <div className="w-36">
-                              <StarRating
-                                initialRating={rating}
-                                onRatingChange={(newRating) =>
-                                  setRating(newRating)
-                                }
-                                isClickable={true}
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-36">
-                              <StarRating
-                                initialRating={review.rating}
-                                isClickable={false}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div>
-                        <MdDeleteOutline
-                          className="text-gray-600"
-                          style={{ fontSize: "1.5rem" }}
-                          onClick={() => handleDeleteClick(review.reviewId)}
-                        />
-                      </div>
-                      {editingReviewId === review.reviewId ? (
-                        <div>
-                          <button
-                            className="text-blue-500"
-                            onClick={() => handleSaveClick(review.reviewId)}
-                          >
-                            Save
-                          </button>
-                        </div>
-                      ) : (
-                        <div>
-                          <CiEdit
-                            className="text-gray-600"
-                            style={{ fontSize: "1.5rem" }}
-                            onClick={() =>
-                              handleEditClick(
-                                review.reviewId,
-                                review.comment,
-                                review.rating
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-                    </div>
+        <div className="popup" onClick={handleOverlayClick}>
+          <div className="popup-content">
+            <div  className="grey-container">
+              <div className='header-container'>
+                
+                <div >
+                <div className="mt-16  w-full ">
+          <div className="px-4 py-2 ">
+            <div className="flex flex-row  md:flex-row md:items-center justify-between">
+              <button
+                className="bg-[#61DAA2] lg:h-14 lg:w-40 w-20 h-8 rounded-full text-[12px]  text-white lg:text-2xl  lg:font-bold lg:mb-2 mb-1  lg:ml-10 lg:mt-1"
+                onClick={handleViewProductClick}
+              >
+                {translations[language]?.view}
+              </button>
+              
+              <div className=" flex items-center lg:mb-2 mb-0">
+                
 
-                    {editingReviewId === review.reviewId ? (
-                      <input
-                        type="text"
-                        value={updatedComment}
-                        onChange={(e) => setUpdatedComment(e.target.value)}
-                      />
-                    ) : (
-                      <h5 className="text-black text-lg flex flex-start ml-[8%]">
-                        {review.comment}
-                      </h5>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="w-full">
-                <form className="w-full" onSubmit={handleSubmit}>
-                  <div className="mt-4 w-full flex flex-col md:flex-row md:justify-between relative">
-                    <div className="md:w-[70%]">
-                      <label className="w-full">
-                        <textarea
-                          placeholder="Write Your Review"
-                          name="comment"
-                          value={formData.comment}
-                          onChange={handleChange}
-                          className="border border-gray-300 rounded-lg px-3 py-2 w-full"
-                        />
-                      </label>
-                    </div>
-                    <div className="mt-4 md:mt-0 md:absolute md:inset-y-0 md:right-0 md:w-[30%]">
-                      <StarRating
-                        initialRating={rating}
-                        onRatingChange={(newRating) => setRating(newRating)}
-                        isClickable={true}
-                      />
-                    </div>
-                  </div>
+                <div className="text-[#696767] lg:mr-4">
+                  {productDetails ? (
+                    <h1 className="text-[14px] lg:text-2xl ">
+                      {productDetails.discount && (
+                    <h1>{productDetails.afterDiscount * quantity} {translations[language]?.currency}</h1>
+                  )}
+                  {!productDetails.discount && (
+                    <h1>
+                      {(productDetails.price || productDetails.productPrice) * quantity} {translations[language]?.currency}
+                    </h1>
+                  )}
+                    </h1>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </div>
+                <div className="flex  items-center">
                   <button
-                    className="bg-white h-12 w-full md:w-20 rounded-lg text-black font-bold mt-3"
-                    type="submit"
+                    className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1"
+                    onClick={handleDecrement}
                   >
-                    {translations[language]?.submit}
+                    <FaMinus />
                   </button>
-                </form>
+                  <span className="md:text-lg md:font-bold  mx-3 text-2xl text-black">
+                    {quantity}
+                  </span>
+                  <button
+                    className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1 "
+                    onClick={handleIncrement}
+                  >
+                    <FaPlus />
+                  </button>
+                </div>
               </div>
+              <button
+                className="bg-[#61DAA2] lg:h-14 lg:w-40 w-20 text-[12px] h-8 rounded-full mb-1  text-white lg:text-2xl  lg:font-bold lg:mb-2   lg:mr-10 lg:mt-1"
+                onClick={() =>
+                  handleAddToCart(productDetails.productId, productDetails)
+                }
+              >
+                {translations[language]?.addtocart}
+              </button>
+            </div>
+          </div>
+        </div>
+                </div>
+                
+                
+                {reviews.map((review, index) => (
+  <div className='bg-white py-2 px-2 mb-3 rounded-lg border border-grey shadow-md' key={index} >
+   <div className='flex flex-row items-center justify-between'>
+  <div>
+    <img className="w-10 h-10 rounded-full mr-2 ml-2" src={`https://ui-avatars.com/api/?name=${extractFirstLetter(review.email)}&background=random`} alt="User Avatar" />   
+  </div>
+  <div className='flex flex-col  w-full'>
+    <p className='ml-2 text-lg flex flex-start text-black'>{review.email}</p> 
+    <div className='w-full'>
+      {editingReviewId === review.reviewId ? (
+        <div className='w-36'>
+          <StarRating
+            initialRating={rating} 
+            onRatingChange={(newRating) => setRating(newRating)} 
+            isClickable={true}
+          />
+        </div>
+      ) : (
+        <div className='w-36'>
+          <StarRating
+            initialRating={review.rating} 
+            isClickable={false} 
+          />
+        </div>
+      )}
+    </div>
+  </div>
+  <div>
+    <MdDeleteOutline className="text-gray-600" style={{fontSize:'1.5rem'}} onClick={() => handleDeleteClick(review.reviewId)} />
+  </div>
+  {editingReviewId === review.reviewId ? (
+    <div>
+      <button className="text-blue-500" onClick={() => handleSaveClick(review.reviewId)}>Save</button>
+    </div>
+  ) : (
+    <div>
+      <CiEdit className="text-gray-600" style={{fontSize:'1.5rem'}} onClick={() => handleEditClick(review.reviewId, review.comment , review.rating)} />
+    </div>
+  )}
+</div>
+
+    {editingReviewId === review.reviewId ? (
+      <input type="text" value={updatedComment} onChange={(e) => setUpdatedComment(e.target.value)} />
+    ) : (
+      <h5 className='text-black text-lg flex flex-start '>{review.comment}</h5>
+    )}
+
+  </div>
+))}
+
+
+
+              </div>
+              <div className='w-full'>
+  <form className='w-full' onSubmit={handleSubmit}>
+    <div className='mt-4 w-full flex flex-col md:flex-row md:justify-between relative max-w-[800px]' >
+      <div className='md:w-[50%]'>
+        <label className='w-full'>
+          <textarea
+            placeholder={translations[language]?.write}
+            name="comment"
+            value={formData.comment}
+            onChange={handleChange}
+            className='border border-gray-300 rounded-lg px-3 py-2 w-full'
+          />
+        </label>
+      </div>
+      <div className='mt-4 md:mt-0  md:inset-y-0 md:right-0 md:w-[30%]'>
+        <StarRating
+          initialRating={rating}
+          onRatingChange={(newRating) => setRating(newRating)}
+          isClickable={true}
+        />
+      </div>
+      <div>
+      <button className="bg-[#61DAA2] lg:h-10 lg:w-15 w-15 h-8 rounded-[15px]  text-white lg:text-xl   lg:mb-2 mb-1  lg:ml-10 lg:mt-1 mt-4 md:mt-0 px-2" type="submit">{translations[language]?.submit}</button>
+      </div>
+    </div>
+    
+  </form>
+</div>
             </div>
           </div>
         </div>
@@ -320,6 +402,7 @@ const ReviewDialog = ({ isOpen, onCancel, productId }) => {
       </Modal>
     </div>
   );
-};
+  };
+ 
 
 export default ReviewDialog;

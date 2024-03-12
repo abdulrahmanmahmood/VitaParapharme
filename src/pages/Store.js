@@ -549,7 +549,7 @@ function Store() {
                     return (
                       <div
                         style={{}}
-                        className="relative w-70 h-[420px] lg:w-90 lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                        className="relative w-70 h-[450px] lg:w-90 lg:h-[450px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                         key={product.id}
                       >
                         <div className="">
@@ -599,17 +599,20 @@ function Store() {
                             <div className="flex flex-row justify-between w-[98%] mx-auto text-[#696767]">
                               {product.discount && (
                                 <div className="mx-3 text-xl my-1">
-                                  {product.afterDiscount} $
+                                  {product.afterDiscount}{" "}
+                                  {translations[language]?.currency}
                                 </div>
                               )}
                               {product.discount && (
                                 <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                                  {product.price} $
+                                  {product.price}{" "}
+                                  {translations[language]?.currency}
                                 </div>
                               )}
                               {!product.discount && (
                                 <div className=" mx-3 text-xl my-1">
-                                  {product.price} $
+                                  {product.price}{" "}
+                                  {translations[language]?.currency}
                                 </div>
                               )}
                             </div>

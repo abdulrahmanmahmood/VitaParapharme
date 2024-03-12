@@ -9,6 +9,10 @@ import { selectToken } from "../../rtk/slices/Auth-slice";
 import { baseUrl } from "../../rtk/slices/Product-slice";
 import "./detailsDialog.css";
 import { Link } from "react-router-dom";
+import {
+  selectLanguage,
+  selectTranslations,
+} from "../../rtk/slices/Translate-slice";
 
 const DetailsDialog = ({ isOpen, onCancel, product }) => {
   const dispatch = useDispatch();
@@ -19,6 +23,8 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [addedToCart, setAddedToCart] = useState(false); // State to track if item is added to cart
+  const translations = useSelector(selectTranslations);
+  const language = useSelector(selectLanguage);
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -110,11 +116,15 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
                 </div>
                 <div className="flex flex-row justify-around mt-8">
                   {product.discount && (
-                    <h1>{product.afterDiscount * quantity} $</h1>
+                    <h1>
+                      {product.afterDiscount * quantity}{" "}
+                      {translations[language]?.currency}
+                    </h1>
                   )}
                   {!product.discount && (
                     <h1>
-                      {(product.price || product.productPrice) * quantity} $
+                      {(product.price || product.productPrice) * quantity}{" "}
+                      {translations[language]?.currency}
                     </h1>
                   )}
                   <div className="">
