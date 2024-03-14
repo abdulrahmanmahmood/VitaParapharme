@@ -9,7 +9,7 @@ const initialState = {
   loading: false,
   error: null,
 };
-export const NewBaseUrl = "https://api.vitaparapharma.com/api/v1";
+export const NewBaseUrl = "https://api.vitaparapharma.com/api/v3";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
@@ -23,7 +23,7 @@ export const fetchProducts = createAsyncThunk(
           "Accept-Language": language,
         },
       });
-      console.log("products", response.data.data.products);
+      console.log("products from slice", response.data.data.products);
       return response.data.data.products;
     } catch (error) {
       console.log("error in pro : ", error);

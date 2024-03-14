@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, setProducts } from "../rtk/slices/Product-slice";
+import { NewBaseUrl, fetchProducts, setProducts } from "../rtk/slices/Product-slice";
 //import { addToWishlist , removeFromWishlist  } from '../rtk/slices/Wishlist-slice';
 //import { selectWishlist } from '../rtk/slices/Wishlist-slice';
 import DetailsDialog from "./products/DetailsDialog";
@@ -92,8 +92,6 @@ function Store() {
   const [wishlist, setWishlist] = useState([]);
   useEffect(() => {
     fetchUserFavourite();
-    fetchMianCategory();
-    fetchSubCategory();
   }, []);
 
   const isProductInWishlist = (productId) => {
@@ -250,7 +248,7 @@ function Store() {
       let url;
       if (categoryId === null) {
         // If categoryId is null, fetch all products
-        url = `${baseUrl}/public/product/all`;
+        url = `${NewBaseUrl}/public/product/all`;
       } else {
         url = `${baseUrl}/public/category/${categoryId}`;
       }
@@ -308,7 +306,7 @@ function Store() {
   const queryParams = new URLSearchParams(location.search);
   const searchTermFromUrl = queryParams.get("search") || "";
   const categoryIdFromUrl = queryParams.get("category");
-  const mainCategoryIdFromUrl = queryParams.get("Maincategory");
+  // const mainCategoryIdFromUrl = queryParams.get("Maincategory");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -322,24 +320,12 @@ function Store() {
 
     fetchData();
     setSearchTerm(searchTermFromUrl);
-  }, [language, searchTermFromUrl, categoryIdFromUrl]);
+  }, [language, searchTermFromUrl, categoryIdFromUrl, ]);
 
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    // Update the URL when the search term changes
-    navigate(`/store?search=${term}`);
-  };
 
   const [value, setValue] = useState(50);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
 
-  const handleSelect = (categoryId) => {
-    handleCategoryFilter(categoryId);
-  };
 
   const handleSearchChangeInternal = (e) => {
     const term = e.target.value.toLowerCase();
@@ -380,92 +366,6 @@ function Store() {
 
   const [userRating, setUserRating] = useState(0);
 
-  const fetchMianCategory = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/public/main/category/all`, {
-        headers: {
-          "Accept-Language": language,
-        },
-      });
-      console.log("success in fetching main Categoryies ", response.data.data);
-      setMainCategory(response.data.data.mainCategories);
-    } catch (error) {
-      console.log("error in fetching main Category", error);
-    }
-  };
-  const fetchSubCategory = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/public/category/all`, {
-        headers: {
-          "Accept-Language": language,
-        },
-      });
-      console.log(
-        "success in fetching Sub Categoryies ",
-        response.data.data.categories
-      );
-      setSubCategory(response.data.data.categories);
-    } catch (error) {
-      console.log("error in fetching Sub Category", error);
-    }
-  };
-  const fetchProductsByMainCat = async (MC) => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}/public/product/main/category/${MC}`,
-        {
-          headers: {
-            "Accept-Language": language,
-          },
-        }
-      );
-      console.log(
-        "success in fetching Products with Main Category ",
-        response.data.data
-      );
-      setProductsWithMainCat(response.data.data.products);
-    } catch (error) {
-      console.log("error in fetching Products with Main Category", error);
-    }
-  };
-  const fetchProductsBySubCat = async (MC) => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}/public/product/category/${MC}`,
-        {
-          headers: {
-            "Accept-Language": language,
-          },
-        }
-      );
-      console.log(
-        "success in fetching Products with Sub Category ",
-        response.data.data
-      );
-      setProductsWithSubCat(response.data.data.products);
-    } catch (error) {
-      console.log("error in fetching Products with Sub Category", error);
-    }
-  };
-  const handleMainCatSelect = (id, name) => {
-    console.log("Selected main Category id:", id);
-    fetchProductsByMainCat(id);
-    setSelectedMainCat(id);
-    setMainCategoryText(name);
-  };
-  const handleSubCatSelect = (id, name) => {
-    console.log("Selected Sub Category id:", id);
-    fetchProductsBySubCat(id);
-    setSelectedSubCat(id);
-    setSubCategoryText(name);
-  };
-  const handleDeleteFilters = () => {
-    setSelectedMainCat(0);
-    setSelectedSubCat(0);
-    setSubCategoryText("Sub Category");
-    setMainCategoryText(translations[language]?.main);
-  };
-
   return (
     <div className="page-container">
       {/* Header Container */}
@@ -481,7 +381,7 @@ function Store() {
           <WhatsAppIcon />
 
           <div className="store-flex">
-            {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
+            {!loading && (
               <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] lg:w-[90%] ">
                 {products.map((product) => {
                   const matchesSearch =
@@ -502,12 +402,23 @@ function Store() {
                   const matchesCategory =
                     !categoryIdFromUrl ||
                     product.categoryId === parseInt(categoryIdFromUrl);
+                  if (categoryIdFromUrl) {
+                    console.log(" Category filter", categoryIdFromUrl);
+                  }
+
+                  // const matchesMainCategory =
+                  //   !mainCategoryIdFromUrl ||
+                  //   product.mainCategoryId === parseInt(mainCategoryIdFromUrl);
+                  // if (mainCategoryIdFromUrl) {
+                  //   console.log("main Category filter", mainCategoryIdFromUrl);
+                  // }
 
                   if (
                     matchesRating &&
                     matchesPriceRange &&
                     matchesSearch &&
-                    matchesCategory
+                    matchesCategory 
+                    // matchesMainCategory
                   ) {
                     return (
                       <div

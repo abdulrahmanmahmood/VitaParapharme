@@ -20,7 +20,7 @@ import {
   selectLanguage,
   selectTranslations,
 } from "../rtk/slices/Translate-slice";
-import { fetchProducts } from "../rtk/slices/Product-slice";
+import { NewBaseUrl, fetchProducts } from "../rtk/slices/Product-slice";
 import { setToken } from "../rtk/slices/Auth-slice";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
@@ -165,7 +165,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     navigate(`/store?category=${categoryId}`);
   };
   const handleSelectMainCategory = (categoryId) => {
-    navigate(`/store?category=${categoryId}`);
+    navigate(`/store?Maincategory=${categoryId}`);
   };
 
   const handleCategoryFilter = (categoryId) => {
@@ -195,7 +195,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/profile/notifications`, {
+      const response = await axios.get(`${NewBaseUrl}/profile/notifications`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
@@ -661,9 +661,11 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                               ? "bg-[#3EBF87]"
                                               : ""
                                           }`}
-                                          onClick={() =>
-                                            setNestedListId(category.categoryId)
-                                          }
+                                          onClick={() => {
+                                            setNestedListId(
+                                              category.categoryId
+                                            );
+                                          }}
                                         >
                                           {category.name}{" "}
                                           <RiArrowDropDownLine className="transform items-end  ml-auto my-auto text-3xl -rotate-90" />
@@ -702,7 +704,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                         onClick={() => {
                                           setNestedListId(category.categoryId);
                                           handleSelectMainCategory(
-                                            category.categoryId,
+                                            category.mainCategoryId,
                                             category.name
                                           );
                                         }}
@@ -768,96 +770,100 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
               )} */}
 
               {showtheDropDown && (
-                <div
-                  className={` w-[30%] ${
-                    showtheDropDown ? "fixed" : "hidden"
-                  } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
-                  ref={categoriesRef}
-                  onMouseLeave={() => setShowtheDropDown(false)}
-                >
-                  <div className="w-[50%]  bg-white rounded-xl">
-                    {allCategories?.map((category) => (
-                      <div key={category.name}>
-                        {category.subCategories.length > 0 ? (
-                          <div className="">
-                            <div
-                              className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
-                                nestedListId === category.categoryId
-                                  ? "bg-[#3EBF87]"
-                                  : ""
-                              }`}
-                              onClick={() =>
-                                setNestedListId(category.categoryId)
-                              }
-                              onMouseEnter={() =>
-                                setNestedListId(category.categoryId)
-                              }
-                            >
-                              {category.name}{" "}
-                              <RiArrowDropDownLine
-                                className={`transform items-end ml-auto my-auto text-3xl ${
-                                  direction === "rtl"
-                                    ? "rotate-90"
-                                    : "-rotate-90"
-                                }`}
-                              />{" "}
-                            </div>
-                            {nestedListId === category.categoryId && (
-                              <div
-                                className={`fixed bg-white border  -mt-5 rounded-xl
-                                ${
-                                  direction === "rtl" ? "mr-[15%]" : "ml-[15%] "
-                                }
-                                
-                                
-                                `}
-                                onMouseLeave={() => setNestedListId(-1)}
-                              >
-                                <ul className="list-none text-left p-2 w-full ">
-                                  {category.subCategories.map((subCategory) => (
-                                    <li
-                                      key={subCategory.name}
-                                      className="hover:bg-[#3EBF87] p-2 rounded cursor-default"
-                                      onClick={() =>
-                                        handleSelectSubCategory(
-                                          subCategory.categoryId,
-                                          subCategory.name
-                                        )
-                                      }
-                                    >
-                                      {subCategory.name}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <p
-                            className={`font-semibold text-center text-xl p-1 m-1 cursor-default ${
-                              nestedListId === category.categoryId
-                                ? "bg-[#3EBF87]"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              setNestedListId(category.categoryId);
-                              handleSelectMainCategory(
-                                category.categoryId,
-                                category.name
-                              );
-                            }}
-                            onMouseEnter={() =>
-                              setNestedListId(category.categoryId)
-                            }
-                          >
-                            {category.name}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+               <div
+               className={` w-[30%] ${
+                 showtheDropDown ? "fixed" : "hidden"
+               } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
+               ref={categoriesRef}
+               onMouseLeave={() => setShowtheDropDown(false)}
+             >
+               <div className="w-[50%]  bg-white rounded-xl">
+                 {allCategories?.map((category) => (
+                   <div key={category.name}>
+                     {category.subCategories.length > 0 ? (
+                       <div className="">
+                         <div
+                           className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
+                             nestedListId === category.categoryId
+                               ? "bg-[#3EBF87]"
+                               : ""
+                           }`}
+                           onClick={() => {
+                             setNestedListId(category.categoryId);
+                             handleSelectMainCategory(
+                               category.categoryId,
+                               category.name
+                             );
+                           }}
+                           onMouseEnter={() =>
+                             setNestedListId(category.categoryId)
+                           }
+                         >
+                           {category.name}{" "}
+                           <RiArrowDropDownLine
+                             className={`transform items-end ml-auto my-auto text-3xl ${
+                               direction === "rtl"
+                                 ? "rotate-90"
+                                 : "-rotate-90"
+                             }`}
+                           />{" "}
+                         </div>
+                         {nestedListId === category.categoryId && (
+                           <div
+                             className={`fixed bg-white border  -mt-5 rounded-xl
+                             ${
+                               direction === "rtl" ? "mr-[15%]" : "ml-[15%] "
+                             }
+                             
+                             
+                             `}
+                             onMouseLeave={() => setNestedListId(-1)}
+                           >
+                             <ul className="list-none text-left p-2 w-full ">
+                               {category.subCategories.map((subCategory) => (
+                                 <li
+                                   key={subCategory.name}
+                                   className="hover:bg-[#3EBF87] p-2 rounded cursor-default"
+                                   onClick={() =>
+                                     handleSelectSubCategory(
+                                       subCategory.categoryId,
+                                       subCategory.name
+                                     )
+                                   }
+                                 >
+                                   {subCategory.name}
+                                 </li>
+                               ))}
+                             </ul>
+                           </div>
+                         )}
+                       </div>
+                     ) : (
+                       <p
+                         className={`font-semibold text-center text-xl p-1 m-1 cursor-default ${
+                           nestedListId === category.categoryId
+                             ? "bg-[#3EBF87]"
+                             : ""
+                         }`}
+                         onClick={() => {
+                           setNestedListId(category.categoryId);
+                           handleSelectMainCategory(
+                             category.mainCategoryId,
+                             category.name
+                           );
+                         }}
+                         onMouseEnter={() =>
+                           setNestedListId(category.categoryId)
+                         }
+                       >
+                         {category.name}
+                       </p>
+                     )}
+                   </div>
+                 ))}
+               </div>
+             </div>
+           )}
             </div>
           </div>
         </div>
