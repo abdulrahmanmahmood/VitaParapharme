@@ -425,7 +425,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       <div className={`flexLanguage  ${direction === "rtl" ? "rtl" : "ltr"}`}>
         <div className="languageInnav rightAlign ">
           <select
-            className="bg-[#61DAA2] border border-white border-opacity-50 outline-none text-white flex items-center mr-28"
+            className="bg-[#61DAA2] border border-white border-opacity-50 outline-none text-white flex items-center mr-28 ml-20"
             value={language}
             onChange={handleLanguageChange}
           >
@@ -534,17 +534,15 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                 <div className="text-line text-linelogout ">
                   {isLoggedIn && (
                     <>
-                      <div
+                      <button
                         onClick={handleNotificationsClick}
-                        className="relative overflow-visible"
+                        className="relative overflow-visible cursor-pointer"
                       >
-                        <IoIosNotificationsOutline className="lg:text-[40px] lg:mr-[15px]  text-[25px]  mr-[5px] mt-[7px]" />
+                        <IoIosNotificationsOutline className="lg:text-[40px] lg:mr-[15px] cursor-pointer text-[25px]  mr-[5px] mt-[7px]" />
                         {readed && notifications.length > 0 ? (
-                          <div className=" top-2  w-10 h-10 rounded-full  text-center items-center text-red-800  absolute">
-                            {notifications?.length}
-                          </div>
+                          <div className=" top-2 left-2 w-2 h-3 rounded-full  text-center items-center bg-red-400  absolute"></div>
                         ) : null}
-                      </div>
+                      </button>
 
                       <div
                         className="notification-dropdown-container "
@@ -566,14 +564,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                   <div>{notification.time}</div>
                                 </div>
                               ))}
-                              <div className="items-center mx-auto text-center">
-                                <button
-                                  className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                                  onClick={handleReadNotifications}
-                                >
-                                  Mark As Read
-                                </button>
-                              </div>
+                              <div className="items-center mx-auto text-center"></div>
                             </div>
                           </div>
                         )}

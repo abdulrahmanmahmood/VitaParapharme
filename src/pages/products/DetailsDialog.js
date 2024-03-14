@@ -91,7 +91,7 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
     <>
       {isOpen && (
         <div className="fixed mt-5 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center popup">
-          <div className="flex justify-between bg-gradient-to-r from-green-500 to-green-400 p-5 rounded-lg shadow-lg w-full sm:w-[600px] h-[600px] relative">
+          <div className="flex justify-between bg-gradient-to-r from-green-400 to-green-300 p-5 rounded-lg shadow-lg w-full sm:w-[600px] h-[600px] relative">
             <div className="flex flex-col items-center w-full">
               <div className="w-[50%] h-[50%] my-3">
                 <Link to={`/home/product/${product.productId}`}>
@@ -105,10 +105,14 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
               <div className="h-100 bg-white rounded-t-3xl text-center sm:w-full">
                 <h1>{product.name || product.productName}</h1>
                 <hr />
-                <p className="text-xl text-[#3A7E89]">
-                  {product.description || product.productDescription}
+                <p className="text-xl text-[#3A7E89] line-clamp-3 text-center ">
+                  {product.description || product.productDescription}{" "}
+
                 </p>
-                <div>
+                <Link to={`/home/product/${product.productId}`}>
+                    {translations[language]?.showMore}
+                  </Link>
+                <div className="">
                   <StarRating
                     initialRating={product.rating}
                     isClickable={false}
@@ -123,7 +127,7 @@ const DetailsDialog = ({ isOpen, onCancel, product }) => {
                   )}
                   {!product.discount && (
                     <h1>
-                      {(product.price || product.productPrice) * quantity}{" "}
+                      {(product.price || product.productPrice) * quantity}
                       {translations[language]?.currency}
                     </h1>
                   )}

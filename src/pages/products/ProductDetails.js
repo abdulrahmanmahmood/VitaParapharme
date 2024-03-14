@@ -268,7 +268,7 @@ function ProductDetails() {
                   {productDetails ? (
                     <h1 className="text-[14px] lg:text-2xl ">
                        {productDetails.discount && (
-                    <h1>{productDetails.afterDiscount * quantity} {translations[language]?.currency}</h1>
+                    <h1>{(productDetails.afterDiscount * quantity).toFixed(2)} {translations[language]?.currency}</h1>
                   )}
                   {!productDetails.discount && (
                     <h1>

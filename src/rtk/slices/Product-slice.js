@@ -9,6 +9,7 @@ const initialState = {
   loading: false,
   error: null,
 };
+export const NewBaseUrl = "https://api.vitaparapharma.com/api/v1";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
@@ -17,7 +18,7 @@ export const fetchProducts = createAsyncThunk(
       const language = selectLanguage(getState());
       console.log("Language:", language);
 
-      const response = await axios.get(`${baseUrl}/public/product/all`, {
+      const response = await axios.get(`${NewBaseUrl}/public/product/all`, {
         headers: {
           "Accept-Language": language,
         },

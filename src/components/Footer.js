@@ -17,65 +17,86 @@ function Footer() {
 
   return (
     <>
-      <div className="bg-[#3EBF87] text-white p-3 text-center bottom-0">
-        <div className=" header-container ">
+      <div className="bg-[#3EBF87] text-white w-full py-3 text-center bottom-0">
+        <div className="  ">
           <div
-            className={`flex flex-col lg:flex-row gap-3 ${
+            className={`flex flex-col lg:flex-row gap-4 lg:gap-1 justify-between w-[100%] lg:w-[95%] mx-auto ${
               direction === "rtl" ? "lg:flex-row-reverse" : ""
             }`}
           >
-            <div className="cartfooter text-start">
-              <div className="important">
-                <h1>{translations[language]?.important}</h1>
-                <Link className="footerlink">
-                  {translations[language]?.privacy}{" "}
-                </Link>
-                <Link className="footerlink">
-                  {translations[language]?.cookies}{" "}
-                </Link>
-                <Link className="footerlink">
-                  {translations[language]?.terms}{" "}
-                </Link>
+            <div className="px-3 lg:px-0 text-start w-full lg:w-[50%]">
+              <div className=" capitalize flex flex-col py-1">
+                <h1 className="text-xl">{translations[language]?.important}</h1>
+                <div className="flex flex-col  ml-3">
+                  <Link className="text-white no-underline">
+                    {translations[language]?.privacy}{" "}
+                  </Link>
+                  <Link className="text-white no-underline">
+                    {translations[language]?.cookies}{" "}
+                  </Link>
+                  <Link className="text-white no-underline">
+                    {translations[language]?.terms}{" "}
+                  </Link>
+                </div>
               </div>
-              <div className="information">
-                <h1>{translations[language]?.information}</h1>
-                <h2>{translations[language]?.pfooter}</h2>
+              <div className="">
+                <h1 className="text-white text-xl">
+                  {translations[language]?.information}
+                </h1>
+                <p className="text-white lg:w-[70%]  ml-3 text-left">
+                  {translations[language]?.pfooter}
+                </p>
               </div>
             </div>
-            <div className="cartfooter cartfootertwo text-start">
-              <div className="important">
-                <h1>{translations[language]?.contactdetails}</h1>
-                <h2>{translations[language]?.require}</h2>
+            <div className="px-3 lg:px-0 w-full lg:w-[50%] text-start">
+              <div className="">
+                <h2 className="text-xl ">
+                  {translations[language]?.contactdetails}
+                </h2>
+                <p className="text-white text-left lg:w-[80%]">
+                  {translations[language]?.require}
+                </p>
               </div>
               <div className="address">
-                <div className="flexaddress">
-                  <img src={address} />
-                  <h2>{translations[language]?.addresscontact}</h2>
+                <div className="flex flex-row my-1">
+                  <img src={address} className="w-[30px] h-[30px]" alt="" />
+                  <h2 className="items-baseline font-bold text-2xl my-auto">
+                    {translations[language]?.addresscontact}
+                  </h2>
                 </div>
-                <h2>
+                <p className="text-white text-left w-[100%] lg:w-[90%] mx-auto">
                   {translations[language]?.addfooterone} <br />
                   {translations[language]?.addfootertwo}
-                </h2>
+                </p>
               </div>
-              <div className="flexphoneemail">
-                <div className="address">
-                  <div className="flexaddress">
-                    <img src={phone} />
-                    <h2>{translations[language]?.phonenumber}:</h2>
+              <div className="flex flex-col lg:flex-row gap-[50px] w-[100%] lg:w-[90%]">
+                <div className="address lg:w-[40%]">
+                  <div className="flex flex-row my-2 ">
+                    <img src={phone} className="w-[30px] h-[30px]" />
+                    <h2 className="items-baseline font-bold text-2xl my-auto capitalize">
+                      {translations[language]?.phonenumber}:
+                    </h2>
                   </div>
-                  <h2>00212689831227</h2>
+                  <h2 className="text-center">00212689831227</h2>
                 </div>
-                <div className="address">
-                  <div className="flexaddress">
-                    <img src={email} />
-                    <h2>{translations[language]?.email}:</h2>
+                <div className="address lg:w-[40%]">
+                  <div className="flex flex-row my-2 ">
+                    <img src={email} className="w-[30px] h-[30px]" />
+                    <h2 className="items-baseline font-bold text-2xl my-auto">
+                      {translations[language]?.email}:
+                    </h2>
                   </div>
-                  <h2>contact@vitaparapharma.com</h2>
+                  <h2 className="text-center text-xl ">
+                    contact@vitaparapharma.com
+                  </h2>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="text-center text-[#70CCDA] font-bold">
+        Copyright © 2023 ET VITAPARA | Propulsé par ET VITAPARA
       </div>
     </>
   );

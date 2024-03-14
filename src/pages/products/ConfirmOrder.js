@@ -358,7 +358,7 @@ function ConfirmOrder() {
           </div>
           {address.length > 0 && (
             <div className="hidden lg:block my-5">
-              <h3 className="text-center p-2 ">Your Old Addresses</h3>
+              <h3 className="text-center p-2 ">Your  Addresses</h3>
 
               <div className="overflow-x-auto">
                 <table className="table-fixed border border-1 w-full md:w-[80%] mx-auto rounded-xl">
@@ -408,7 +408,7 @@ function ConfirmOrder() {
                         <td className="p-1 text-center border-r">
                           <button
                             onClick={() => handleSubmit(item.addressId)}
-                            className="bg-[#3EBF87] text-white p-1 rounded-2xl m-2 "
+                            className="bg-[#3EBF87] text-white p-1 rounded-lg m-2 "
                           >
                             {translations[language]?.confirmorder}
                           </button>
@@ -416,7 +416,7 @@ function ConfirmOrder() {
                         <td className="p-1 text-center border-r">
                           <button
                             onClick={() => handleDeleteAddress(item.addressId)}
-                            className="bg-[#c43714] text-white p-1 rounded-xl mt-2  "
+                            className="bg-[#c43714] text-white p-1 rounded-lg mt-2  "
                           >
                             {translations[language]?.deleteadd}
                           </button>
@@ -430,7 +430,7 @@ function ConfirmOrder() {
           )}
           {address.length > 0 && (
             <div className="my-5 overflow-x-auto block lg:hidden">
-              <h3 className="text-center p-2 ">Your Old Addresses</h3>
+              <h3 className="text-center p-2 ">Your Addresses</h3>
 
               <table className="table-fixed border border-1 w-[80%] mx-auto rounded-xl">
                 <thead>
@@ -490,7 +490,7 @@ function ConfirmOrder() {
                       <td key={`action_${index}`} className="p-3">
                         <button
                           onClick={() => handleSubmit(item.addressId)}
-                          className="bg-[#3EBF87] text-white p-1 rounded-2xl m-2"
+                          className="bg-[#3EBF87] text-white p-1 rounded-lg m-2"
                         >
                           {translations[language]?.confirmorder}
                         </button>
@@ -503,7 +503,7 @@ function ConfirmOrder() {
                       <td key={`delete_${index}`} className="p-3">
                         <button
                           onClick={() => handleDeleteAddress(item.addressId)}
-                          className="bg-[#c43714] text-white p-1 rounded-xl mt-2"
+                          className="bg-[#c43714] text-white p-1 rounded-lg mt-2"
                         >
                           {translations[language]?.deleteadd}
                         </button>

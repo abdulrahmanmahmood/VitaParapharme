@@ -98,6 +98,8 @@ function Home() {
     fetchUserFavourite();
     console.log("CART", cart);
     fetchMianCategory();
+    fetchUserCart();
+
     setMainCategoryText(
       translations[language]?.main || translations["en"]?.main
     );
@@ -112,6 +114,8 @@ function Home() {
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [cartStatus, setCartStatus] = useState({});
+  const [cartItems, setCartItems] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -214,6 +218,10 @@ function Home() {
       setModalMessage("product added to cart");
       setShowModal(true);
       console.log("Product added to cart:", response.data);
+
+      // Update the cart status for the specific product
+      setCartItems([...cartItems, productId]);
+
       dispatch(addToCart(productId));
     } catch (error) {
       console.error("Error adding product to cart:", error.message);
@@ -261,7 +269,6 @@ function Home() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [language]);
 
@@ -358,6 +365,30 @@ function Home() {
     setSelectedSubCat(0);
     setSubCategoryText("Sub Category");
     setMainCategoryText(translations[language]?.main);
+  };
+  const fetchUserCart = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/user/cart/my`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
+
+      const cartData = response.data.data;
+
+      if (cartData && cartData.cart) {
+        setCartItems(cartData.cart.cartItems || []);
+        console.log("Success fetch carts", cartData.cart.cartItems);
+      } else {
+        console.error(
+          "Error fetching user cart: Unexpected response structure"
+        );
+      }
+      console.log("success fetch carts", response.data.data.cart.cartItems);
+    } catch (error) {
+      console.error("Error fetching user cart:", error);
+    }
   };
 
   return (
@@ -463,25 +494,31 @@ function Home() {
                           )}
                           {product.discount && (
                             <div className="line-through text-gray-400 mx-3 text-xl my-1">
-                              {product.price} 
+                              {product.price}
                               {translations[language]?.currency}
                             </div>
                           )}
                           {!product.discount && (
                             <div className=" mx-3 text-xl my-1">
-                              {product.price} 
+                              {product.price}
                               {translations[language]?.currency}
                             </div>
                           )}
                         </div>
                       </div>
                       <button
-                        className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
+                        className={`p-3 w-[60%] h-15 ml-auto text-white rounded-2xl ${
+                          cartItems.includes(product.productId)
+                            ? "bg-gray-400"
+                            : "bg-[#61DAA2]"
+                        }`}
                         onClick={() =>
                           handleAddToCart(product.productId, product)
                         }
                       >
-                        add to cart
+                        {cartItems.includes(product.productId)
+                          ? "Added to Cart"
+                          : "Add to Cart"}
                       </button>
                     </div>
                   </div>
@@ -491,7 +528,7 @@ function Home() {
 
             <div className="w-fulll items-center text-center">
               <button
-                className="bg-[#61DAA2] w-25 h-25 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
+                className="bg-[#61DAA2] lg:w-25 lg:h-25 w-15 h-15 items-center text-center mx-auto mt-10 p-5 text-white text-2xl font-bold rounded-3xl"
                 onClick={() => navigate("/store")}
               >
                 Show More
@@ -535,9 +572,7 @@ function Home() {
           </Modal.Footer>
         </Modal>
       </div>
-      <div className="text-center text-[#70CCDA] ">
-        Copyright © 2023 ET VITAPARA | Propulsé par ET VITAPARA
-      </div>
+
     </div>
   );
 }

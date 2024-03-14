@@ -245,43 +245,14 @@ function Store() {
     }
   };
 
-  const detailsBtn = () => {
-    if (!isLoggedIn) {
-      alert("Please sign in to view details.");
-      return;
-    }
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  /*const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };*/
-
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedMainCategoryId, setSelectedMainCategoryId] = useState(null);
-
-  /* const handleCategoryFilter = (categoryId) => {
-    setSelectedCategoryId(categoryId);
-     
-    navigate(`/store?category=${categoryId}`); 
-    dispatch(fetchProducts(categoryId));
-  };*/
-
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
   const handleCategoryFilter = async (categoryId) => {
     try {
       let url;
       if (categoryId === null) {
         // If categoryId is null, fetch all products
         url = `${baseUrl}/public/product/all`;
-        setSelectedCategoryId(null); // Set selectedCategoryId to null
       } else {
         url = `${baseUrl}/public/category/${categoryId}`;
-        setSelectedCategoryId(categoryId);
       }
 
       const response = await fetch(url, {
@@ -366,17 +337,9 @@ function Store() {
     setValue(event.target.value);
   };
 
-  const [selectedCategoryIdTwo, setSelectedCategoryIdTwo] = useState(null);
-
   const handleSelect = (categoryId) => {
-    setSelectedCategoryId(categoryId);
     handleCategoryFilter(categoryId);
   };
-
-  /* const handleSelectTwo  = (categoryId) => {
-    setSelectedCategoryIdTwo(categoryId);
-    navigate(`/store?category=${categoryId}`);
-  };*/
 
   const handleSearchChangeInternal = (e) => {
     const term = e.target.value.toLowerCase();
@@ -549,10 +512,10 @@ function Store() {
                     return (
                       <div
                         style={{}}
-                        className="relative w-70 h-[450px] lg:w-90 lg:h-[450px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                        className="relative w-70 h-[450px] lg:w-[80%] lg:h-[450px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                         key={product.id}
                       >
-                        <div className="">
+                        <div className="w-70 lg:w-[100%]">
                           <div className="flex flex-col absolute right-4 top-4 gap-2">
                             <div className="w-10 h-10 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-2.5 overflow-hidden text-center  rounded-full">
                               <FaHeart
@@ -585,7 +548,7 @@ function Store() {
                             </Link>
                           </div>
                           <div className=" ">
-                            <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
+                            <h2 className="text-[#3EBF87] text-[25px] line-clamp-1">
                               {product.name}
                             </h2>
 
