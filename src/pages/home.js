@@ -9,6 +9,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Shipe from "../images/Shipe.png";
+import { MdOutlineLocalOffer  } from "react-icons/md";
 
 import {
   setLanguage,
@@ -53,6 +54,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Advertesment from "../components/Advertesment";
 import Footer from "../components/Footer";
 import { baseUrl } from "../rtk/slices/Product-slice";
+
 
 function Home() {
   const dispatch = useDispatch();
@@ -437,7 +439,7 @@ function Home() {
                 {products?.slice(0, 9).map((product) => (
                   <div
                     style={{}}
-                    className="relative w-[350px] h-[420px] lg:w-[370px] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
+                    className="relative w-[350px] h-[420px] lg:w-[95%] lg:h-[420px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                     key={product.id}
                   >
                     <div className="">
@@ -474,6 +476,8 @@ function Home() {
                         </Link>
                       </div>
                       <div className=" ">
+                        {product.discount ? <MdOutlineLocalOffer  className="absolute top-6 left-[10%] text-[70px] text-[#3EBF87] "/> : null}
+
                         <h2 className="text-[#3EBF87] tex-[20px] line-clamp-1">
                           {product.name}
                         </h2>
@@ -572,7 +576,6 @@ function Home() {
           </Modal.Footer>
         </Modal>
       </div>
-
     </div>
   );
 }

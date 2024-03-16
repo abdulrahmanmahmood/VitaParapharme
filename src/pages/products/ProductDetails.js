@@ -59,7 +59,7 @@ function ProductDetails() {
     };
 
     fetchProductDetails();
-  }, [productId , language ]);
+  }, [productId, language]);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -138,7 +138,7 @@ function ProductDetails() {
       setMasterImage(productDetails.pictures[0]);
       setSmallImages(productDetails.pictures.slice(0));
     }
-  }, [productDetails , language]);
+  }, [productDetails, language]);
 
   const handleImageClick = (src) => {
     setMasterImage(src);
@@ -151,7 +151,7 @@ function ProductDetails() {
 
       console.log("Product Details HTML:", productDetails.productDetails);
     }
-  }, [productDetails , language]);
+  }, [productDetails, language]);
 
   return (
     <div className="flex flex-col h-screen relative bg-white/90 ">
@@ -164,17 +164,19 @@ function ProductDetails() {
       <div className="w-full h-[90%] mt-[180px] ">
         <div className="block lg:hidden text-center items-center mx-auto w-[24%] my-3 ">
           <div className="flex flex-row lg:mx-3 text-center items-center">
-          {selectedProduct && selectedProduct.rating !== undefined ? (
-    <>
-      <StarRating
-        initialRating={selectedProduct.rating}
-        isClickable={false}
-      /> 
-      <h5 style={{marginTop: '10px'}}>({selectedProduct.reviews})</h5>
-    </>
-  ) : (
-    <p>Loading...</p>
-  )}
+            {selectedProduct && selectedProduct.rating !== undefined ? (
+              <>
+                <StarRating
+                  initialRating={selectedProduct.rating}
+                  isClickable={false}
+                />
+                <h5 style={{ marginTop: "10px" }}>
+                  ({selectedProduct.reviews})
+                </h5>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
             <h5 className=" text-[#696767] mt-4 text-center ">
               ({selectedProduct?.reviews})
             </h5>
@@ -222,20 +224,31 @@ function ProductDetails() {
                 <h1 className="text-xl text-black text-center my-3 lg:font-bold">
                   {translations[language]?.aboutpro}{" "}
                 </h1>
-                <p className=" ">
-                  {productDetails && productDetails.description}
-                </p>
+
+                {productDetails && (
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: productDetails.description,
+                    }}
+                  ></p>
+                )}
 
                 <h1 className="text-xl text-black text-center my-3 lg:font-bold ">
                   {translations[language]?.productdet}{" "}
                 </h1>
-                <p>{productDetails && productDetails.about}</p>
+                <p>
+                  {productDetails && (
+                    <p
+                      dangerouslySetInnerHTML={{ __html: productDetails.about }}
+                    ></p>
+                  )}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className=" border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
+        <div className=" bg-wh border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
           <div className="px-4 py-2 ">
             <div className="flex flex-row  md:flex-row md:items-center justify-between">
               <button
@@ -247,17 +260,16 @@ function ProductDetails() {
               <div className=" flex items-center lg:mb-2 mb-0">
                 <div className="hidden lg:block">
                   <div className="flex flex-row lg:mx-3">
-                  {selectedProduct && selectedProduct.rating !== undefined ? (
-    <>
-      <StarRating
-        initialRating={selectedProduct.rating}
-        isClickable={false}
-      /> 
-      
-    </>
-  ) : (
-    <p>Loading...</p>
-  )}
+                    {selectedProduct && selectedProduct.rating !== undefined ? (
+                      <>
+                        <StarRating
+                          initialRating={selectedProduct.rating}
+                          isClickable={false}
+                        />
+                      </>
+                    ) : (
+                      <p>Loading...</p>
+                    )}
                     <h5 className=" text-[#696767] mt-4">
                       ({selectedProduct?.reviews})
                     </h5>
@@ -267,14 +279,19 @@ function ProductDetails() {
                 <div className="text-[#696767] lg:mr-4">
                   {productDetails ? (
                     <h1 className="text-[14px] lg:text-2xl ">
-                       {productDetails.discount && (
-                    <h1>{(productDetails.afterDiscount * quantity).toFixed(2)} {translations[language]?.currency}</h1>
-                  )}
-                  {!productDetails.discount && (
-                    <h1>
-                      {(productDetails.price || productDetails.productPrice) * quantity} {translations[language]?.currency}
-                    </h1>
-                  )}
+                      {productDetails.discount && (
+                        <h1>
+                          {(productDetails.afterDiscount * quantity).toFixed(2)}{" "}
+                          {translations[language]?.currency}
+                        </h1>
+                      )}
+                      {!productDetails.discount && (
+                        <h1>
+                          {(productDetails.price ||
+                            productDetails.productPrice) * quantity}{" "}
+                          {translations[language]?.currency}
+                        </h1>
+                      )}
                     </h1>
                   ) : (
                     <p>Loading...</p>
@@ -317,7 +334,6 @@ function ProductDetails() {
           productDetails={productDetails}
         />
 
-        
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Body>{modalMessage}</Modal.Body>
           <Modal.Footer>

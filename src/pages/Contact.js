@@ -73,11 +73,10 @@ function Contact() {
                     {translations[language]?.addresscontact}
                   </h4>
                   <h2 className="text-black font-semibold text-base px-3 mb-0">
-                    LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M).
+                  {translations[language]?.addressdescontact}
                   </h2>
                   <h2 className="text-black font-semibold text-base px-3 mb-0">
-                    Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                    N° 873 Tétouan
+                  {translations[language]?.addressdescontacttwo}
                   </h2>
                 </div>
               </div>
@@ -148,7 +147,8 @@ function Contact() {
                   className="mb-9  rounded-lg border border-green-500 pl-5 py-3 "
                   placeholder={translations[language]?.message}
                   cols="100"
-                />
+                  rows='5'
+                ></textarea>
               </div>
               <div className="">
                 <button className="bg-green-500 text-white h-10 rounded-lg px-5 mt-2">
