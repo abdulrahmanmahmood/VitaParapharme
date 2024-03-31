@@ -72,6 +72,7 @@ function Store() {
   const [selectedSubCat, setSelectedSubCat] = useState(0);
   const [productsWithMainCat, setProductsWithMainCat] = useState([]);
   const [productsWithSubCat, setProductsWithSubCat] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [mainCategoryText, setMainCategoryText] = useState(
     translations[language]?.main
   );
@@ -87,7 +88,7 @@ function Store() {
   const products = useSelector((state) => state.products.products);
   const [priceRange, setPriceRange] = useState({
     min: 0,
-    max: Math.max(...products.map((product) => product.price)),
+    max: products?Math.max(...products.map((product) => product.price)):1000,
   });
 
   const [ratingFilter, setRatingFilter] = useState(0);
@@ -199,6 +200,12 @@ function Store() {
     fetchData();
   }, [language]);
 
+  useEffect(() => {
+    // Update the price range when products are fetched
+    const maxPrice = Math.max(...products.map((product) => product.price));
+    setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
+  }, [products]);
+
   const checkLoggedInStatus = () => {
     const userToken = localStorage.getItem("token");
     setIsLoggedIn(!!userToken);
@@ -220,6 +227,8 @@ function Store() {
   const handleRatingChange = (newRating) => {
     setRatingFilter((prevRating) => (prevRating === newRating ? 0 : newRating));
   };
+
+  const [addedToCart, setAddedToCart] = useState([]);
 
   const handleAddToCart = async (productId, product) => {
     if (!isLoggedIn) {
@@ -246,6 +255,8 @@ function Store() {
       );
 
       console.log("Product added to cart:", response.data);
+      setAddedToCart([...addedToCart, productId]);
+      dispatch(addToCart(productId));
     } catch (error) {
       console.error("Error adding product to cart:", error.message);
     }
@@ -306,7 +317,7 @@ function Store() {
         console.error("Error fetching categories:", error);
       }
     };
-
+    fetchUserCart();
     fetchCategories();
   }, [language]);
 
@@ -368,6 +379,30 @@ function Store() {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+  const fetchUserCart = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/user/cart/my`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
+
+      const cartData = response.data.data;
+
+      if (cartData && cartData.cart) {
+        setCartItems(cartData.cart.cartItems || []);
+        console.log("Success fetch carts", cartData.cart.cartItems);
+      } else {
+        console.error(
+          "Error fetching user cart: Unexpected response structure"
+        );
+      }
+      console.log("success fetch carts", response.data.data.cart.cartItems);
+    } catch (error) {
+      console.error("Error fetching user cart:", error);
+    }
+  };
 
   const [userRating, setUserRating] = useState(0);
 
@@ -387,7 +422,7 @@ function Store() {
 
           <div className="flex flex-col-reverse lg:flex-row justify-between ">
             {!loading && (
-              <div className=" grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] max-md:mx-auto lg:w-[90%] ">
+              <div className=" grid grid-cols-1 xl:grid-cols-3 md:grid-cols-2 gap-3 lg:gap-4 w-[95%] max-md:mx-auto lg:w-[90%] ">
                 {products.map((product) => {
                   const matchesSearch =
                     product.name
@@ -421,7 +456,6 @@ function Store() {
                   ) {
                     return (
                       <div
-                      
                         className="relative w-[90%] max-md:mx-auto  h-[450px] lg:w-[80%] lg:h-[450px] mx-auto mt-5 bg-white p-2 rounded-2xl text-center "
                         key={product.id}
                       >
@@ -495,12 +529,18 @@ function Store() {
                             </div>
                           </div>
                           <button
-                            className="p-3 w-[60%] h-15 ml-auto bg-[#61DAA2] text-white rounded-2xl"
+                            className={`p-3 w-[60%] h-15 ml-auto text-white rounded-2xl ${
+                              addedToCart.includes(product.productId)
+                                ? "bg-gray-400"
+                                : "bg-[#61DAA2]"
+                            }`}
                             onClick={() =>
                               handleAddToCart(product.productId, product)
                             }
                           >
-                            add to cart
+                            {addedToCart.includes(product.productId)
+                              ? "Added to Cart"
+                              : "Add to Cart"}
                           </button>
                         </div>
                       </div>
@@ -512,7 +552,7 @@ function Store() {
               </div>
             )}
 
-            <div className="w-[90%] max-md:mx-auto lg:border-l-[1px] border-[#707070] flex-grow lg:w-[30%] lg:pl-[40px]">
+            <div className="w-[90%] max-md:mx-auto lg:border-l-[1px] border-[#707070] flex-grow lg:w-[25%] lg:pl-[40px]">
               <p></p>
               <div>
                 <div style={{ marginBottom: "30px" }}>
@@ -527,7 +567,7 @@ function Store() {
                 </div>
                 <div style={{ marginBottom: "30px" }}>
                   <h5 style={{ color: "black" }}>
-                    {translations[language]?.price} : {priceRange.max}
+                    {translations[language]?.price} : {priceRange?.max}
                   </h5>
                   <div className="range-slider">
                     <input

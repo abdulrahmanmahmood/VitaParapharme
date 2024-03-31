@@ -251,6 +251,23 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
       console.error("Error adding product to cart:", error.message);
     }
   };
+  const hasUserSubmittedReview = () => {
+    return reviews.some((review) => review.email === userData.email);
+  };
+  const hasUserData = userData !== null;
+
+  const userReview = hasUserData
+    ? reviews.find((review) => review.email === userData.email)
+    : null;
+  const otherReviews = reviews.filter(
+    (review) => review.email !== userData?.email
+  );
+  let sortedReview = [];
+  if (userReview) {
+    sortedReview = [userReview, ...otherReviews];
+  } else {
+    sortedReview = [...otherReviews];
+  }
 
   return (
     <div className={`review ${isOpen ? "open" : ""}`}>
@@ -267,7 +284,7 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
                     <div className="px-4 py-2 ">
                       <div className="flex flex-row border-2 rounded-2xl shadow-md md:flex-row md:items-center justify-between">
                         <button
-                          className="bg-[#61DAA2] lg:h-16 lg:w-[250px] w-20 my-auto text-[12px] h-8 rounded-full   text-white lg:text-2xl  lg:font-bold lg:mb-2   lg:mr-10 lg:mt-1"
+                          className="bg-[#61DAA2] lg:h-16 lg:w-[250px] w-20 my-auto text-[10px] h-8 rounded-full   text-white lg:text-2xl  lg:font-bold lg:mb-2   lg:mr-10 lg:mt-1"
                           onClick={handleViewProductClick}
                         >
                           {translations[language]?.view}
@@ -283,12 +300,12 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
                                   </h1>
                                 )}
                                 {!productDetails.discount && (
-                                  <h1>
+                                  <p className="text-center items-baseline my-auto mt-1  text-2xl max-md:text-sm text-nowrap">
                                     {(productDetails.price ||
                                       productDetails.productPrice) *
                                       quantity}{" "}
                                     $
-                                  </h1>
+                                  </p>
                                 )}
                               </h1>
                             ) : (
@@ -297,16 +314,16 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
                           </div>
                           <div className="flex  items-center">
                             <button
-                              className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1"
+                              className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] lg:p-1"
                               onClick={handleDecrement}
                             >
                               <FaMinus />
                             </button>
-                            <span className="md:text-lg md:font-bold  mx-3 text-2xl text-black">
+                            <p className="max-md:text-sm md:font-bold max-md:mx-[10px] my-auto lg:mx-3 text-2xl text-black">
                               {quantity}
-                            </span>
+                            </p>
                             <button
-                              className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1 "
+                              className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] lg:p-1 "
                               onClick={handleIncrement}
                             >
                               <FaPlus />
@@ -330,7 +347,7 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
                 </div>
 
                 <div className="mt-5">
-                  {reviews.map((review, index) => (
+                  {sortedReview.map((review, index) => (
                     <div
                       className="bg-white/90 py-2 px-4 mb-3 mx-auto rounded-2xl border-2 border-grey w-[80%]  h-[120px] shadow-md"
                       key={index}
@@ -427,40 +444,42 @@ const ReviewDialog = ({ isOpen, onCancel, productId, productDetails }) => {
                 </div>
 
                 <div className="w-full mb-10">
-                  <form className="w-full" onSubmit={handleSubmit}>
-                    <div className="mt-4 w-full flex flex-col md:flex-row md:justify-between relative max-w-[800px]">
-                      <div className="md:w-[50%] relative">
-                        <label className="w-full relative">
-                          <textarea
-                            placeholder={translations[language]?.write}
-                            name="comment"
-                            value={formData.comment}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-lg px-3 py-2 w-full pr-10"
-                          />
-                        </label>
-                      </div>
+                  {userData && !hasUserSubmittedReview() && (
+                    <form className="w-full" onSubmit={handleSubmit}>
+                      <div className="mt-4 w-full flex flex-col md:flex-row md:justify-between relative max-w-[800px]">
+                        <div className="md:w-[50%] relative">
+                          <label className="w-full relative">
+                            <textarea
+                              placeholder={translations[language]?.write}
+                              name="comment"
+                              value={formData.comment}
+                              onChange={handleChange}
+                              className="border border-gray-300 rounded-lg px-3 py-2 w-full pr-10"
+                            />
+                          </label>
+                        </div>
 
-                      <div className="mt-4 md:mt-0  md:inset-y-0 md:right-0 md:w-[30%]">
-                        <StarRating
-                          initialRating={rating}
-                          onRatingChange={(newRating) => setRating(newRating)}
-                          isClickable={true}
-                        />
-                      </div>
-                      <div>
-                        <button
-                          className="bg-[#61DAA2] lg:h-10 lg:w-15 w-15 h-8 rounded-[15px]  text-white lg:text-xl  cursor-pointer lg:mb-2 mb-1  lg:ml-10 lg:mt-1 mt-4 md:mt-0 px-2"
-                          type="submit"
-                        >
-                          {translations[language]?.submit}
-                        </button>
-                        {/*<button className=" lg:h-10 lg:w-15 w-15 h-8 rounded-[15px]  text-white lg:text-xl   lg:mb-2 mb-1  lg:ml-10 lg:mt-1 mt-4 md:mt-0 px-2" type="submit">
+                        <div className="mt-4 md:mt-0  md:inset-y-0 md:right-0 md:w-[30%]">
+                          <StarRating
+                            initialRating={rating}
+                            onRatingChange={(newRating) => setRating(newRating)}
+                            isClickable={true}
+                          />
+                        </div>
+                        <div>
+                          <button
+                            className="bg-[#61DAA2] lg:h-10 lg:w-15 w-15 h-8 rounded-[15px]  text-white lg:text-xl  cursor-pointer lg:mb-2 mb-1  lg:ml-10 lg:mt-1 mt-4 md:mt-0 px-2"
+                            type="submit"
+                          >
+                            {translations[language]?.submit}
+                          </button>
+                          {/*<button className=" lg:h-10 lg:w-15 w-15 h-8 rounded-[15px]  text-white lg:text-xl   lg:mb-2 mb-1  lg:ml-10 lg:mt-1 mt-4 md:mt-0 px-2" type="submit">
       <IoSendOutline className="w-6 h-6 text-[#61DAA2]" />
     </button>*/}
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  )}
                 </div>
               </div>
             </div>

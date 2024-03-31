@@ -32,6 +32,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { selectToken } from "../rtk/slices/Auth-slice";
 import { baseUrl } from "../rtk/slices/Product-slice";
 import $ from "jquery";
+import { formatDate } from "../pages/MyOrders";
 
 function NavHeader({ userId, handleProductClick, cartunmber }) {
   const dispatch = useDispatch();
@@ -61,11 +62,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   useEffect(() => {
     const checkLoggedInStatus = () => {
       const userToken = localStorage.getItem("token");
-      setIsLoggedIn(!!userToken);
+      if(userToken){
+        console.log("tokennn is ", userToken);
+        setIsLoggedIn(true);
 
-      console.log("tokennn is ", userToken);
-      console.log("n of items", numItems);
-      console.log("Cart length:", cart.length);
+      }
+
     };
 
     const fetchCategories = async () => {
@@ -86,6 +88,8 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     fetchNotifications();
     fetchMainSubCategories();
   }, [language]);
+
+  
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
@@ -185,6 +189,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     }
   };
   const [notifications, setNotifications] = useState([]);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showtheDropDown, setShowtheDropDown] = useState(false);
   const [showMopDropDown, setshowmopDropDown] = useState(false);
@@ -203,6 +208,11 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
         },
       });
       setNotifications(response.data.data.notifications);
+      const unreadCount = response.data.data.notifications.filter(
+        (notification) => !notification.read
+      ).length;
+      console.log("unreadCount", unreadCount);
+      setUnreadNotificationsCount(unreadCount);
       console.log("success fetch notification in header", response.data.data);
     } catch (error) {
       console.error("Error fetching notifications: ", error);
@@ -420,6 +430,43 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const [nestedListId, setNestedListId] = useState(0);
 
+  const hanldeNotificationClick = (notification) => {
+    switch (notification.typeId) {
+      case 4:
+        navigate(`/order?orderId=${notification.identifier}`);
+        break;
+      case 3:
+        navigate(`/home/product/${notification.identifier}`);
+      case 2:
+        navigate(`/home/product/${notification.identifier}`);
+        break;
+      case 1:
+        navigate("/cart");
+        break;
+      default:
+      // Handle other cases if needed
+    }
+
+    axios
+      .put(
+        `${NewBaseUrl}/profile/read-notification/${notification.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Accept-Language": language,
+          },
+        }
+      )
+      .then((response) => {
+        // Handle success
+        console.log("Notification marked as read:", response.data);
+      })
+      .catch((error) => {
+        // Handle error
+        console.log("Error marking notification as read:", error);
+      });
+  };
   return (
     <div className="fixed z-50 w-full bg-white ">
       <div className={`flexLanguage  ${direction === "rtl" ? "rtl" : "ltr"}`}>
@@ -435,7 +482,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
           </select>
         </div>
       </div>
-      <Navbar collapseOnSelect expand="lg">
+      <Navbar collapseOnSelect expand="xl" className="lg:w-full">
         <div className="w-full ">
           <div className="flex flex-col  ">
             <div className="flex flex-row items-center w-[100%]  lg:w-[95%] mx-auto  h-[70px] ">
@@ -531,7 +578,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                   )}
                 </div>
 
-                <div className="text-line text-linelogout ">
+                <div className="text-line flex-row text-linelogout ">
                   {isLoggedIn && (
                     <>
                       <button
@@ -539,29 +586,40 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         className="relative overflow-visible cursor-pointer"
                       >
                         <IoIosNotificationsOutline className="lg:text-[40px] lg:mr-[15px] cursor-pointer text-[25px]  mr-[5px] mt-[7px]" />
-                        {readed && notifications.length > 0 ? (
+                        {unreadNotificationsCount > 0 ? (
                           <div className=" top-2 left-2 w-2 h-3 rounded-full  text-center items-center bg-red-400  absolute"></div>
                         ) : null}
                       </button>
 
                       <div
-                        className="notification-dropdown-container "
+                        className="notification-dropdown-container w-[150px] lg:w-[200px] bg-red-500"
                         ref={notificationRef}
                       >
                         {showNotifications && (
                           <div
-                            className={`flexLanguage ${
+                            className={`flexLanguage  ${
                               direction === "rtl" ? "rtl" : "ltr"
                             }`}
                           >
-                            <div className="notification-dropdown -mr-20 my-5 w-[150px] bg-white items-center text-center ">
+                            <div className="notification-dropdown  -mr-20 my-5 w-[200px] lg:w-[300px] bg-white items-center text-center overflow-auto">
                               {notifications.map((notification) => (
                                 <div
-                                  className="notification-item"
+                                  className={`notification-item  cursor-pointer   ${
+                                    notification.read == true
+                                      ? "bg-white text-gray-400 hover:text-green-700"
+                                      : " hover:text-green-700"
+                                  }`}
                                   key={notification.id}
+                                  onClick={() =>
+                                    hanldeNotificationClick(notification)
+                                  }
                                 >
-                                  <div>{notification.message}</div>
-                                  <div>{notification.time}</div>
+                                  <div className="text-[10px] lg:text-[13px]">
+                                    {notification.message}
+                                  </div>
+                                  <div className="text-[8px] lg:text-[10px]">
+                                    {formatDate(notification.time)}
+                                  </div>
                                 </div>
                               ))}
                               <div className="items-center mx-auto text-center"></div>
@@ -596,9 +654,12 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
             </div>
 
             <div className="">
-              <div className="mx-auto items-center text-center w-full  ">
+              <div className="mx-auto items-center text-center w-full ">
                 <div className=" mx-auto ">
-                  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                  <Navbar.Toggle
+                    aria-controls="responsive-navbar-nav"
+                    className="w-20 my-3"
+                  />
                   <Navbar.Collapse
                     id="responsive-navbar-nav"
                     className="w-full"
@@ -770,100 +831,98 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
               )} */}
 
               {showtheDropDown && (
-               <div
-               className={` w-[30%] ${
-                 showtheDropDown ? "fixed" : "hidden"
-               } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
-               ref={categoriesRef}
-               onMouseLeave={() => setShowtheDropDown(false)}
-             >
-               <div className="w-[50%]  bg-white rounded-xl">
-                 {allCategories?.map((category) => (
-                   <div key={category.name}>
-                     {category.subCategories.length > 0 ? (
-                       <div className="">
-                         <div
-                           className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
-                             nestedListId === category.categoryId
-                               ? "bg-[#3EBF87]"
-                               : ""
-                           }`}
-                           onClick={() => {
-                             setNestedListId(category.categoryId);
-                             handleSelectMainCategory(
-                               category.categoryId,
-                               category.name
-                             );
-                           }}
-                           onMouseEnter={() =>
-                             setNestedListId(category.categoryId)
-                           }
-                         >
-                           {category.name}{" "}
-                           <RiArrowDropDownLine
-                             className={`transform items-end ml-auto my-auto text-3xl ${
-                               direction === "rtl"
-                                 ? "rotate-90"
-                                 : "-rotate-90"
-                             }`}
-                           />{" "}
-                         </div>
-                         {nestedListId === category.categoryId && (
-                           <div
-                             className={`fixed bg-white border  -mt-5 rounded-xl
-                             ${
-                               direction === "rtl" ? "mr-[15%]" : "ml-[15%] "
-                             }
+                <div
+                  className={` w-[30%] ${
+                    showtheDropDown ? "fixed" : "hidden"
+                  } ${direction === "rtl" ? "right-1/2" : "left-1/2 "}`}
+                  ref={categoriesRef}
+                  onMouseLeave={() => setShowtheDropDown(false)}
+                >
+                  <div className="w-[50%]  bg-white rounded-xl">
+                    {allCategories?.map((category) => (
+                      <div key={category.name}>
+                        {category.subCategories.length > 0 ? (
+                          <div className="">
+                            <div
+                              className={`font-semibold text-center text-xl flex flex-row px-4 cursor-default  ${
+                                nestedListId === category.categoryId
+                                  ? "bg-[#3EBF87]"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                setNestedListId(category.categoryId);
+                                handleSelectMainCategory(
+                                  category.categoryId,
+                                  category.name
+                                );
+                              }}
+                              onMouseEnter={() =>
+                                setNestedListId(category.categoryId)
+                              }
+                            >
+                              {category.name}{" "}
+                              <RiArrowDropDownLine
+                                className={`transform items-end ml-auto my-auto text-3xl ${
+                                  direction === "rtl"
+                                    ? "rotate-90"
+                                    : "-rotate-90"
+                                }`}
+                              />{" "}
+                            </div>
+                            {nestedListId === category.categoryId && (
+                              <div
+                                className={`fixed bg-white border  -mt-5 rounded-xl
+                             ${direction === "rtl" ? "mr-[15%]" : "ml-[15%] "}
                              
                              
                              `}
-                             onMouseLeave={() => setNestedListId(-1)}
-                           >
-                             <ul className="list-none text-left p-2 w-full ">
-                               {category.subCategories.map((subCategory) => (
-                                 <li
-                                   key={subCategory.name}
-                                   className="hover:bg-[#3EBF87] p-2 rounded cursor-default"
-                                   onClick={() =>
-                                     handleSelectSubCategory(
-                                       subCategory.categoryId,
-                                       subCategory.name
-                                     )
-                                   }
-                                 >
-                                   {subCategory.name}
-                                 </li>
-                               ))}
-                             </ul>
-                           </div>
-                         )}
-                       </div>
-                     ) : (
-                       <p
-                         className={`font-semibold text-center text-xl p-1 m-1 cursor-default ${
-                           nestedListId === category.categoryId
-                             ? "bg-[#3EBF87]"
-                             : ""
-                         }`}
-                         onClick={() => {
-                           setNestedListId(category.categoryId);
-                           handleSelectMainCategory(
-                             category.mainCategoryId,
-                             category.name
-                           );
-                         }}
-                         onMouseEnter={() =>
-                           setNestedListId(category.categoryId)
-                         }
-                       >
-                         {category.name}
-                       </p>
-                     )}
-                   </div>
-                 ))}
-               </div>
-             </div>
-           )}
+                                onMouseLeave={() => setNestedListId(-1)}
+                              >
+                                <ul className="list-none text-left p-2 w-full ">
+                                  {category.subCategories.map((subCategory) => (
+                                    <li
+                                      key={subCategory.name}
+                                      className="hover:bg-[#3EBF87] p-2 rounded cursor-default"
+                                      onClick={() =>
+                                        handleSelectSubCategory(
+                                          subCategory.categoryId,
+                                          subCategory.name
+                                        )
+                                      }
+                                    >
+                                      {subCategory.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p
+                            className={`font-semibold text-center text-xl p-1 m-1 cursor-default ${
+                              nestedListId === category.categoryId
+                                ? "bg-[#3EBF87]"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNestedListId(category.categoryId);
+                              handleSelectMainCategory(
+                                category.mainCategoryId,
+                                category.name
+                              );
+                            }}
+                            onMouseEnter={() =>
+                              setNestedListId(category.categoryId)
+                            }
+                          >
+                            {category.name}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

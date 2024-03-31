@@ -17,14 +17,14 @@ function Slider() {
           {images.map((imageUrl, index) => (
             <div
               key={index}
-              className={` carousel-item lg:h-[500px] h-[400px] ${
+              className={` carousel-item lg:h-[500px] h-[250px] ${
                 index === 0 ? "active " : ""
               } h-[400px]`}
             >
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  className="w-full h-full rounded object-fill bg-white"
+                  className="w-full h-full rounded object-contain bg-white"
                   alt={`slider-${index}`}
                 />
               ) : (

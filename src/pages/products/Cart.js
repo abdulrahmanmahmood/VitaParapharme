@@ -20,13 +20,12 @@ import { FaHeart } from "react-icons/fa6";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import "./cart.css";
 import WhatsAppIcon from "../../components/Whatsapp";
 import email from "../../images/Email icon.png";
 import address from "../../images/Location icon.png";
 import phone from "../../images/phone icon.png";
 import Footer from "../../components/Footer";
-import { baseUrl } from "../../rtk/slices/Product-slice";
+import { baseUrl, baseUrl2 } from "../../rtk/slices/Product-slice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -41,14 +40,21 @@ function Cart() {
   const cartProducts = useSelector((state) => state.cart);
 
   const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
   const [itemToDelete, setItemToDelete] = useState(null);
   const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  const [promoCode, setPromoCode] = useState("");
+  const bearerToken = useSelector(selectToken);
+  const [numItems, setNumItems] = useState(0);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [priceAfterCode, setPriceAfterCode] = useState(0); // State to store the price after applying the code
+  const [modalMessage, setModalMessage] = useState(""); // This line defines the state variable for the modal message
 
   const handleCloseModal = () => setShowModal(false);
 
   const handleDeleteFromCart = (productId) => {
-    setModalMessage("Are you sure you want to delete this item from the cart?");
+    setModalMessage("Are you sure you want to delete this item from the cart?"); // Here you set the message for item deletion confirmation
     setShowModal(true);
     setItemToDelete(productId);
   };
@@ -102,6 +108,7 @@ function Cart() {
         }
       );
       console.log("Cart quantity updated successfully.");
+      checkOrder(promoCode);
     } catch (error) {
       console.error("Error updating cart quantity:", error.message);
     }
@@ -129,20 +136,11 @@ function Cart() {
     acc += product.price * product.quantity;
     return acc;
   }, 0);
-
-
   
 
   const handleDeleteFromCart = (productId) => {
     dispatch(deleteFromCart({ id: productId }));
   };*/
-
-  const [cart, setCart] = useState([]);
-
-  const [promoCode, setPromoCode] = useState("");
-  const bearerToken = useSelector(selectToken);
-  const [numItems, setNumItems] = useState(0);
-  const [confirmDisabled, setConfirmDisabled] = useState(true); // State to control the disabled status of the confirm button
 
   const fetchUserCart = async () => {
     try {
@@ -299,8 +297,6 @@ function Cart() {
     }
   }, [cart]);
 
-  const [updatedCart, setUpdatedCart] = useState([]);
-
   const handleSave = async (productId, product) => {
     const cartItem = {
       productId: productId,
@@ -329,9 +325,6 @@ function Cart() {
     }
   };
 
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-
   const handleCheckboxChange = () => {
     // Toggle the checkbox state
     setIsCheckboxChecked(!isCheckboxChecked);
@@ -340,13 +333,39 @@ function Cart() {
   const handleConfirmClick = () => {
     // Handle the confirm click only if the checkbox is checked
     if (isCheckboxChecked) {
-      navigate("/order/confirm");
+      navigate("/order/confirm", { state: { coupon: promoCode } });
+    } else {
+      // Show the new modal if the checkbox is not checked
+      setModalMessage("You should confirm our terms and conditions and the privacy policy before proceeding.");
+      setShowModal(true);
     }
   };
+  
 
-  // Set the confirm button disabled state based on the checkbox state
-  const confirmButtonDisabled = !isCheckboxChecked;
+  const checkOrder = async (coupon) => {
+    try {
+      const data = { coupons: [coupon] };
+      const response = await axios.post(
+        `${baseUrl2}/user/order/check/cart`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log("data from price ", response);
 
+      // Extract the price from the response and calculate the price after code
+      const priceFromResponse = response.data?.data?.order?.price || 0;
+      const priceAfterCode = priceFromResponse - priceFromResponse / 10; // Example calculation, adjust as needed
+      setPriceAfterCode(priceFromResponse);
+    } catch (error) {
+      console.log("Error in checkOrder:", error);
+    }
+  };
   return (
     <div>
       <NavHeader
@@ -368,21 +387,21 @@ function Cart() {
               </p>
             </div>
           ) : (
-            <div className="mt-[200px] w-[95%] lg:w-[90%] mx-auto ">
-              <div className="flex flex-col lg:flex-row  justify-between">
+            <div className="mt-[200px] w-[95%] lg:w-[95%] mx-auto  ">
+              <div className="flex flex-col xl:flex-row gap-3 justify-between">
                 <div className="">
                   {cart?.map((product) => (
                     <div
-                      className="w-full lg:w-110 h-30 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-3 text-center  rounded-[50px] mx-auto my-3 "
+                      className="w-full lg:w-[85%] h-30 bg-white border-1 border-solid border-gray-300 text-black shadow-2xl items-center p-3 text-center  rounded-[50px] mx-auto my-3 "
                       key={product.productId}
                     >
                       <div className="flex flex-col lg:flex-row gap-3  ">
                         <div className="flex flex-row relative w-full lg:w-[280px] h-[190px] ">
-                          <div className="bg-[#3EBF87] w-[150px] h-[150px] rounded-full mx-auto" />
+                          <div className=" w-[150px] h-[150px] rounded-full mx-auto" />
                           <Image
                             src={product.pictureUrl}
                             alt="Product poster"
-                            className="right-20 absolute lg:right-14  rounded-full w-[140px] h-[120px] top-[5%] object-contain"
+                            className="right-[35%] w-[30%] absolute lg:right-16  rounded-full lg:w-[140px] h-[120px] top-[5%] object-contain"
                           />
                         </div>
                         <div className="w-full lg:w-[50%] text-center pt-3 ">
@@ -418,7 +437,7 @@ function Cart() {
                             </button>
                           </div>
                         </div>
-                        <div className="absolute lg:static right-2">
+                        <div className="absolute lg:static right-10 h-20  lg:right-2">
                           <div className="">
                             <FaTrash
                               className="text-[#B3B8B8] text-2xl  my-3"
@@ -449,12 +468,39 @@ function Cart() {
                     </div>
                   ))}
                 </div>
-                <div className=" w-[100%] lg:w-[35%]  h-[400px] bg-white items-center relative mt-[15px] mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] p-2">
+                <div className=" w-[97%] mb-3 max-md:mx-auto lg:w-[35%]  min-h-[500px] lg:h-[450px] bg-white items-center relative mt-[15px] lg:mr-[15px] shadow-md rounded-tr-[100px] rounded-bl-[100px] px-4 py-2">
                   <h4 className="m-3 text-[#3ebf87]">
                     {translations[language]?.totalprice}:
                   </h4>
                   <h4 className="text-center text-[#3ebf87]">
                     {totalPrice.toFixed(2)} {translations[language]?.currency}
+                  </h4>
+
+                  <h4 className="text-[#3EBF87] ml-3">Add Promo Code</h4>
+                  <div className="flex flex-row relative">
+                    <input
+                      type="text"
+                      name="copoune"
+                      id=""
+                      placeholder="Promo Code"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value)}
+                      className="bg-[#3EBF87] focus:border-white text-lg text-white h-[30px] px-3 mx-auto placeholder-white placeholder:text-xl placeholder:pl-2 rounded-2xl "
+                    />
+                    <button
+                      className="bg-white text-[#3EBF87] rounded-lg w-[30px] h-[20px] absolute right-[12px] top-1.5 text-[10px] "
+                      onClick={() => {
+                        console.log("promoCode >> ", promoCode);
+                        checkOrder(promoCode);
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <h4 className="text-[#3EBF87] ml-3">
+                    Price after code: &nbsp;
+                    {priceAfterCode.toFixed(2)}{" "}
+                    {translations[language]?.currency}
                   </h4>
 
                   <h5 className="text-[#3ebf87] font-bold mt-3">
@@ -477,6 +523,7 @@ function Cart() {
                       id="agreeTerms"
                       onChange={handleCheckboxChange}
                       checked={isCheckboxChecked}
+                      className="min-w-[15px] min-h-[15px] "
                     />
 
                     <label
@@ -503,7 +550,6 @@ function Cart() {
                   <button
                     className="uppercase absolute text-2xl  bg-[#3ebf87] text-white w-50 h-10 rounded-3xl right-10 bottom-6"
                     onClick={handleConfirmClick}
-                    disabled={confirmButtonDisabled}
                   >
                     {translations[language]?.confirm}
                   </button>

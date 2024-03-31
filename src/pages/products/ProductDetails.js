@@ -162,24 +162,23 @@ function ProductDetails() {
       />
 
       <div className="w-full h-[90%] mt-[180px] ">
-        <div className="block lg:hidden text-center items-center mx-auto w-[24%] my-3 ">
-          <div className="flex flex-row lg:mx-3 text-center items-center">
+        <div className="block lg:hidden text-center items-center mx-auto  my-3    px-2">
+        <div className=" lg:mx-3 text-center items-center mx-auto  w-[130px]">
             {selectedProduct && selectedProduct.rating !== undefined ? (
-              <>
+              <div className="flex flex-row mx-auto text-center ">
+              <div className="inline-block text-center">
                 <StarRating
                   initialRating={selectedProduct.rating}
                   isClickable={false}
-                />
-                <h5 style={{ marginTop: "10px" }}>
+                /></div>
+                <h5 style={{ marginTop: "10px" }} className="">
                   ({selectedProduct.reviews})
                 </h5>
-              </>
+              </div>
             ) : (
               <p>Loading...</p>
             )}
-            <h5 className=" text-[#696767] mt-4 text-center ">
-              ({selectedProduct?.reviews})
-            </h5>
+
           </div>
         </div>
 
@@ -225,17 +224,6 @@ function ProductDetails() {
                   {translations[language]?.aboutpro}{" "}
                 </h1>
 
-                {productDetails && (
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: productDetails.description,
-                    }}
-                  ></p>
-                )}
-
-                <h1 className="text-xl text-black text-center my-3 lg:font-bold ">
-                  {translations[language]?.productdet}{" "}
-                </h1>
                 <p>
                   {productDetails && (
                     <p
@@ -243,12 +231,24 @@ function ProductDetails() {
                     ></p>
                   )}
                 </p>
+
+                <h1 className="text-xl text-black text-center my-3 lg:font-bold ">
+                  {translations[language]?.productdet}{" "}
+                </h1>
+
+                {productDetails && (
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: productDetails.description,
+                    }}
+                  ></p>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        <div className=" bg-wh border-1 border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
+        <div className=" bg-white border-1  border-gray-300 shadow-3xl shadow-slate-400 rounded-t-full  absolute w-full bottom-0  ">
           <div className="px-4 py-2 ">
             <div className="flex flex-row  md:flex-row md:items-center justify-between">
               <button
@@ -261,12 +261,12 @@ function ProductDetails() {
                 <div className="hidden lg:block">
                   <div className="flex flex-row lg:mx-3">
                     {selectedProduct && selectedProduct.rating !== undefined ? (
-                      <>
+                      <div>
                         <StarRating
                           initialRating={selectedProduct.rating}
                           isClickable={false}
                         />
-                      </>
+                      </div>
                     ) : (
                       <p>Loading...</p>
                     )}
@@ -280,17 +280,17 @@ function ProductDetails() {
                   {productDetails ? (
                     <h1 className="text-[14px] lg:text-2xl ">
                       {productDetails.discount && (
-                        <h1>
+                        <span className="max-md:text-[12px]">
                           {(productDetails.afterDiscount * quantity).toFixed(2)}{" "}
                           {translations[language]?.currency}
-                        </h1>
+                        </span>
                       )}
                       {!productDetails.discount && (
-                        <h1>
+                        <span className="max-md:text-[12px]">
                           {(productDetails.price ||
                             productDetails.productPrice) * quantity}{" "}
                           {translations[language]?.currency}
-                        </h1>
+                        </span>
                       )}
                     </h1>
                   ) : (
@@ -299,16 +299,16 @@ function ProductDetails() {
                 </div>
                 <div className="flex  items-center">
                   <button
-                    className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1"
+                    className="bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-0.5 lg:p-1"
                     onClick={handleDecrement}
                   >
                     <FaMinus />
                   </button>
-                  <span className="md:text-lg md:font-bold  mx-3 text-2xl text-black">
+                  <span className="md:text-lg md:font-bold mx-1 lg:mx-3 text-lg lg:text-2xl text-black">
                     {quantity}
                   </span>
                   <button
-                    className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-1 "
+                    className=" bg-[#3EBF87] text-white ml-2  border-1 border-[#3EBF87] p-0.5 lg:p-1 "
                     onClick={handleIncrement}
                   >
                     <FaPlus />

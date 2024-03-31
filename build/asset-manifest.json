@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.e55b8d7d.css",
-    "main.js": "/static/js/main.0249b3d0.js",
+    "main.css": "/static/css/main.7a433f4b.css",
+    "main.js": "/static/js/main.0076f96f.js",
     "static/js/787.15e37750.chunk.js": "/static/js/787.15e37750.chunk.js",
     "static/media/myimg.png": "/static/media/myimg.09bdd0e5555d5adbee77.png",
     "static/media/slide2.png": "/static/media/slide2.ae374f6843338d873c7c.png",
@@ -10,6 +10,7 @@
     "static/media/carousel.png": "/static/media/carousel.dca39eeeb0d4369e68c3.png",
     "static/media/lotion.png": "/static/media/lotion.03d95b0175407c4ed141.png",
     "static/media/lotion2.png": "/static/media/lotion2.f241b5c1fd7ef4dfe29e.png",
+    "static/media/email 1.png": "/static/media/email 1.5767baa8bf0275dd6c30.png",
     "static/media/Vita Logo2.png": "/static/media/Vita Logo2.04658a8b7b775128f751.png",
     "static/media/product.png": "/static/media/product.2e4bc1dbdd42b81d6956.png",
     "static/media/Shipe.png": "/static/media/Shipe.8db1dc70f7423a552019.png",
@@ -18,12 +19,12 @@
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.e55b8d7d.css.map": "/static/css/main.e55b8d7d.css.map",
-    "main.0249b3d0.js.map": "/static/js/main.0249b3d0.js.map",
+    "main.7a433f4b.css.map": "/static/css/main.7a433f4b.css.map",
+    "main.0076f96f.js.map": "/static/js/main.0076f96f.js.map",
     "787.15e37750.chunk.js.map": "/static/js/787.15e37750.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e55b8d7d.css",
-    "static/js/main.0249b3d0.js"
+    "static/css/main.7a433f4b.css",
+    "static/js/main.0076f96f.js"
   ]
 }

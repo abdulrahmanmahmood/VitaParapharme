@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import address from "../images/Location icon.png";
 import phone from "../images/phone icon.png";
 import { Link } from "react-router-dom";
 import WhatsAppIcon from "../components/Whatsapp";
+import { selectToken } from "../../src/rtk/slices/Auth-slice";
 
 import {
   setLanguage,
@@ -20,6 +21,8 @@ import {
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import "./contact.css";
+import axios from "axios";
+import { baseUrl } from "../rtk/slices/Product-slice";
 
 function Contact() {
   const dispatch = useDispatch();
@@ -29,6 +32,13 @@ function Contact() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const allProducts = useSelector((state) => state.products);
+  const [UserEmail, setUserEmail] = useState(null);
+  const bearerToken = useSelector(selectToken);
+  const [contactData, setContactData] = useState({
+    name: "",
+    email: UserEmail,
+    message: "",
+  });
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -51,6 +61,52 @@ function Contact() {
     setIsEditing(false);
   };
 
+  const fetchUserEmail = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/profile`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Accept-Language": language,
+        },
+      });
+      setUserEmail(response.data.data.user.email);
+      console.log(response.data.data.user.email);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchUserEmail();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setContactData((prevData) => ({
+      ...prevData,
+      email: UserEmail,
+      [name]: value,
+    }));
+    console.log(contactData);
+  };
+
+  const handleSubmit = async () => {
+    if (!UserEmail) {
+      alert("please sign in first");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        "https://email.vitaparapharma.com/api/v1/email-template/VITA_CONTACT_US",
+        contactData
+      );
+      console.log("Response:", response.data);
+      // Handle success, e.g., show a success message to the user
+    } catch (error) {
+      console.log("Error submitting form:", error.message);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
   return (
     <div className="">
       <NavHeader
@@ -62,7 +118,7 @@ function Contact() {
       <div className="bg-gray-50 bottom-0 overflow-y-hidden mt-[200px] ">
         <div className="mt-5 relative top-12 lg:top-0 lg:mx-12 overflow-y-hidden md:px-5  sm:px-2">
           <WhatsAppIcon />
-          <div className="flex flex-col lg:flex-row justify-between">
+          <div className="flex flex-col lg:flex-row justify-between mb-10 ">
             <div className="w-full lg:w-2/5 mb-4 lg:mb-0 mr-5">
               <div className="flex flex-row  bg-white p-4 mb-4 min-h-40 rounded-xl shadow-md">
                 <div className="flex items-center justify-center bg-[#61DAA2] w-20 h-20 rounded-full">
@@ -73,10 +129,10 @@ function Contact() {
                     {translations[language]?.addresscontact}
                   </h4>
                   <h2 className="text-black font-semibold text-base px-3 mb-0">
-                  {translations[language]?.addressdescontact}
+                    {translations[language]?.addressdescontact}
                   </h2>
                   <h2 className="text-black font-semibold text-base px-3 mb-0">
-                  {translations[language]?.addressdescontacttwo}
+                    {translations[language]?.addressdescontacttwo}
                   </h2>
                 </div>
               </div>
@@ -136,6 +192,8 @@ function Contact() {
                   placeholder={translations[language]?.firstname}
                   name="name"
                   className="mb-9 h-14 rounded-lg border border-green-500 pl-5"
+                  value={contactData.name}
+                  onChange={handleChange}
                 />
                 {/* <input
                   type="text"
@@ -147,11 +205,16 @@ function Contact() {
                   className="mb-9  rounded-lg border border-green-500 pl-5 py-3 "
                   placeholder={translations[language]?.message}
                   cols="100"
-                  rows='5'
+                  rows="5"
+                  name="message"
+                  value={contactData.message}
+                  onChange={handleChange}
                 ></textarea>
               </div>
               <div className="">
-                <button className="bg-green-500 text-white h-10 rounded-lg px-5 mt-2">
+                <button className="bg-green-500 text-white h-10 rounded-lg px-5 mt-2"
+                onClick={handleSubmit}
+                >
                   {translations[language]?.submitcontact}
                 </button>
               </div>

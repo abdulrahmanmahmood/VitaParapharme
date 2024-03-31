@@ -4,6 +4,7 @@ import { selectLanguage } from "./Translate-slice";
 import axios from "axios";
 
 export const baseUrl = "https://api.vitaparapharma.com/api/v1";
+export const baseUrl2 = "https://api.vitaparapharma.com/api/v2";
 const initialState = {
   products: [],
   loading: false,

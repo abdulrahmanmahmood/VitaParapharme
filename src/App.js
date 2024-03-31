@@ -39,14 +39,15 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Notification from "./pages/Notification";
 import { useSelector } from "react-redux";
 import Terms from "./pages/Termis";
+import Validate from "./pages/auth/Validate";
 
 function App() {
   const direction = useSelector((state) => state.translation.direction);
   return (
     <div className={`flexLanguage ${direction === 'rtl' ? 'rtl' : 'ltr'} App`}>
       <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/" element={<Home />} />
+      <Route key="home1" path="/" element={<Home />} />
+      <Route key="home2" path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/store" element={<Store />} />
       <Route path="/brand" element={<Brand />} />
@@ -68,6 +69,7 @@ function App() {
       
      
       <Route path="/authentication" element={<Sign />} />
+      <Route path="/validate" element={<Validate />} />
       <Route path="/authentication/forget-password" element={< ForgetPassword/>} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       

@@ -7,6 +7,9 @@
   height: 40vmin;
   pointer-events: none;
 }
+body {
+  font-family: 'Inter Tight', sans-serif;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

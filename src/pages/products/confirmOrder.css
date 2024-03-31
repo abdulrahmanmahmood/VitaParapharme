@@ -83,3 +83,32 @@
     margin-left: -4em;
     }
 }
+
+
+/* Custom CSS */
+.select-container {
+  position: relative;
+}
+
+.select-container select {
+  position: relative;
+  z-index: 10; /* Ensure the select element appears above the options list */
+}
+
+.select-container select:focus + select {
+  display: block;
+}
+
+.select-container select:focus {
+  outline: none; /* Remove outline on focus to improve appearance */
+}
+
+.select-container select option {
+  background-color: white; /* Ensure options have white background */
+  color: black; /* Ensure options have black text color */
+}
+
+.select-container select option:checked {
+  background-color: #3ebf87; /* Set background color for selected option */
+  color: white; /* Set text color for selected option */
+}

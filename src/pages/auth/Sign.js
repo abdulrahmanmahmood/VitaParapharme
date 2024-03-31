@@ -16,6 +16,7 @@ const Sign = () => {
   const dispatch = useDispatch();
   const language = useSelector(selectLanguage);
   const translations = useSelector(selectTranslations);
+  const direction = useSelector((state) => state.translation.direction);
 
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -29,11 +30,29 @@ const Sign = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    dispatch(setLanguage(selectedLanguage));
+  };
 
   return (
     <div className={`containersign ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
         <div className="signin-signup">
+          {/* <div className={`flexLanguage  ${direction === "rtl" ? "rtl" : "ltr"}`}>
+        <div className="languageInnav rightAlign ">
+          <select
+            className="bg-[#61DAA2] border border-white border-opacity-50 outline-none text-white flex items-center mr-28 ml-20"
+            value={language}
+            onChange={handleLanguageChange}
+          >
+            <option value="en">English</option>
+            <option value="fr">Française</option>
+            <option value="ar">لغه عربيه</option>
+          </select>
+        </div>
+      </div> */}
+
           {isSignUpMode ? (
             <SignUpForm
               showPassword={showPassword}

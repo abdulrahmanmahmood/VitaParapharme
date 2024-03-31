@@ -664,7 +664,6 @@ justify-content: space-between;
 }
 
 .notification-dropdown {
-  width: 300px;
   position: fixed;
   top: 100px;
   right: 100px;
@@ -803,7 +802,6 @@ justify-content: space-between;
   position: absolute;
   top: 100%;
   right: 0;
-  width: 200px;
 }
 
 .notification-dropdown {
