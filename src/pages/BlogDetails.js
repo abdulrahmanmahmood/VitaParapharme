@@ -42,34 +42,44 @@ function BlogDetails() {
   const [searchTerm, setSearchTerm] = useState("");
   const bearerToken = useSelector(selectToken);
   const { blogId } = useParams();
-  const [blogDetails, setblogDetails] = useState(null);
+  const [blogDetails, setBlogDetails] = useState(null);
   const isUserLoggedIn = useSelector(selectToken) !== null;
+  const [like, setLike] = useState([]);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const response = await fetch(`${baseUrl}/public/post/${blogId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Accept-Language": language,
-          },
-        });
+        const response = await fetch(
+          `${baseUrl}/public/post/${params.blogId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Accept-Language": language,
+            },
+          }
+        );
         const data = await response.json();
-        setblogDetails(data.data.post);
-        console.log("data is", data);
+        setBlogDetails(data.data.post);
       } catch (error) {
         console.error("Error fetching blog details:", error);
       }
     };
 
     fetchBlogDetails();
-  }, [blogId]);
+  }, [params.blogId]);
+
+  if (!blogDetails) {
+    return <div>Loading...</div>;
+  }
 
   const handleCopyLink = () => {
     if (pageLinkRef.current) {
-      const blogTitle = blogDetails?.title;
+      // const blogTitle = blogDetails?.title;
       const pageURL = window.location.href;
-      const linkWithTitle = `${blogTitle}: ${pageURL}`;
+      const linkWithTitle = `${pageURL}`;
 
       pageLinkRef.current.select();
       document.execCommand("copy");
@@ -89,14 +99,9 @@ function BlogDetails() {
     setSearchTerm(term.toLowerCase());
   };
 
-  const [like, setLike] = useState([]);
-
   const isProductInWishlist = (blogPostId) => {
     return blogDetails && like.some((item) => item.blogPostId === blogPostId);
   };
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -151,8 +156,6 @@ function BlogDetails() {
     }
   };
 
-  const [isDisliked, setIsDisliked] = useState(false);
-
   const handleDislike = async (postId) => {
     try {
       if (!isUserLoggedIn) {
@@ -181,10 +184,14 @@ function BlogDetails() {
   return (
     <div className="">
       <Helmet>
-        <link rel="icon" href={blogDetails?.pictureUrl} />
-        <title>{blogDetails ? blogDetails.title : "Blog Details"}</title>
-        <meta property="og:title" content={blogDetails?.title} />
-        <meta property="og:image" content={blogDetails?.pictureUrl} />
+        <link rel="icon" href={blogDetails.pictureUrl} />
+        <link rel="apple-touch-icon" href={blogDetails.pictureUrl} />
+        <link rel="manifest" href={blogDetails.pictureUrl} />
+        <link rel="icon" href={blogDetails.pictureUrl} />
+        <title>{blogDetails.title}</title>
+        <meta property="og:title" content={blogDetails.content} />
+        <meta property="description" content={`${blogDetails.content} `}/>
+        <meta property="og:image" content={blogDetails.pictureUrl} />
       </Helmet>
       <NavHeader
         searchTerm={searchTerm}
