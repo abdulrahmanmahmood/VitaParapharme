@@ -23,6 +23,7 @@ import { Modal, Button } from "react-bootstrap";
 import WhatsAppIcon from "../components/Whatsapp";
 import Footer from "../components/Footer";
 import { baseUrl } from "../rtk/slices/Product-slice";
+import { Helmet } from "react-helmet";
 
 function BlogDetails() {
   const navigate = useNavigate();
@@ -64,15 +65,12 @@ function BlogDetails() {
     fetchBlogDetails();
   }, [blogId]);
 
-
-
-
   const handleCopyLink = () => {
     if (pageLinkRef.current) {
       const blogTitle = blogDetails?.title;
       const pageURL = window.location.href;
       const linkWithTitle = `${blogTitle}: ${pageURL}`;
-      
+
       pageLinkRef.current.select();
       document.execCommand("copy");
       setIsCopied(true);
@@ -81,15 +79,6 @@ function BlogDetails() {
       }, 1000);
     }
   };
-  
-
-
-  
-  
-
-  
-  
-  
 
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
@@ -191,6 +180,11 @@ function BlogDetails() {
 
   return (
     <div className="">
+   <Helmet>
+        <title>{blogDetails ? blogDetails.title : "Blog Details"}</title>
+        <meta property="og:title" content={blogDetails?.title} />
+        <meta property="og:image" content={blogDetails?.pictureUrl} />
+      </Helmet>
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}

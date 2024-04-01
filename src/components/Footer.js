@@ -116,7 +116,7 @@ function Footer() {
                     </h2>
                   </div>
                   <h2 className="text-center">
-                    <a href="tel:+00212689831227" className="text-white no-underline">00212689831227</a>
+                    <a href="tel:0708759037" className="text-white no-underline">0708759037</a>
                   </h2>
                 </div>
                 <div className="address lg:w-[40%]">
