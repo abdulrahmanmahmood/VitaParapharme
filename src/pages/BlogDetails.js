@@ -180,7 +180,8 @@ function BlogDetails() {
 
   return (
     <div className="">
-   <Helmet>
+      <Helmet>
+        <link rel="icon" href={blogDetails?.pictureUrl} />
         <title>{blogDetails ? blogDetails.title : "Blog Details"}</title>
         <meta property="og:title" content={blogDetails?.title} />
         <meta property="og:image" content={blogDetails?.pictureUrl} />
