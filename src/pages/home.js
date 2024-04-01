@@ -54,6 +54,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Advertesment from "../components/Advertesment";
 import Footer from "../components/Footer";
 import { baseUrl } from "../rtk/slices/Product-slice";
+import MetaTags from "../components/MetaTags";
 
 function Home() {
   const dispatch = useDispatch();
@@ -81,6 +82,10 @@ function Home() {
   const [selectedSubCat, setSelectedSubCat] = useState(0);
   const [productsWithMainCat, setProductsWithMainCat] = useState([]);
   const [productsWithSubCat, setProductsWithSubCat] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [cartStatus, setCartStatus] = useState({});
+  const [cartItems, setCartItems] = useState([]);
   const [mainCategoryText, setMainCategoryText] = useState(
     translations[language]?.main
   );
@@ -110,13 +115,6 @@ function Home() {
   const isProductInWishlist = (productId) => {
     return wishlist.some((item) => item.productId === productId);
   };
-
-  const getCart = () => {};
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [cartStatus, setCartStatus] = useState({});
-  const [cartItems, setCartItems] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -394,6 +392,11 @@ function Home() {
 
   return (
     <div className="     w-full">
+      <MetaTags
+        title="Vitaparapharma"
+        content="تسوق الضروريات الصحية بسهولة. الفيتامينات والعناية بالبشرة والمكملات الغذائيه والأجهزة الطبية والمزيد!"
+        pictureUrl="%PUBLIC_URL%/favicon.ico"
+      />
       <div className="page-container ">
         <NavHeader
           userId={userId}

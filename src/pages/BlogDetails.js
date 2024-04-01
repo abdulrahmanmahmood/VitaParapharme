@@ -23,7 +23,7 @@ import { Modal, Button } from "react-bootstrap";
 import WhatsAppIcon from "../components/Whatsapp";
 import Footer from "../components/Footer";
 import { baseUrl } from "../rtk/slices/Product-slice";
-import { Helmet } from "react-helmet";
+import MetaTags from "../components/MetaTags";
 
 function BlogDetails() {
   const navigate = useNavigate();
@@ -183,16 +183,11 @@ function BlogDetails() {
 
   return (
     <div className="">
-      <Helmet>
-        <link rel="icon" href={blogDetails.pictureUrl} />
-        <link rel="apple-touch-icon" href={blogDetails.pictureUrl} />
-        <link rel="manifest" href={blogDetails.pictureUrl} />
-        <link rel="icon" href={blogDetails.pictureUrl} />
-        <title>{blogDetails.title}</title>
-        <meta property="og:title" content={blogDetails.content} />
-        <meta property="description" content={`${blogDetails.content} `}/>
-        <meta property="og:image" content={blogDetails.pictureUrl} />
-      </Helmet>
+      <MetaTags
+        title={blogDetails.title}
+        content={blogDetails.content}
+        pictureUrl={blogDetails.pictureUrl}
+      />
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
