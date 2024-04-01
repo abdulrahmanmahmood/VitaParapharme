@@ -48,6 +48,8 @@ function BlogDetails() {
   const [isDisliked, setIsDisliked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const pageURL = window.location.href;
+
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
@@ -78,7 +80,6 @@ function BlogDetails() {
   const handleCopyLink = () => {
     if (pageLinkRef.current) {
       // const blogTitle = blogDetails?.title;
-      const pageURL = window.location.href;
       const linkWithTitle = `${pageURL}`;
 
       pageLinkRef.current.select();
@@ -187,6 +188,7 @@ function BlogDetails() {
         title={blogDetails.title}
         content={blogDetails.content}
         pictureUrl={blogDetails.pictureUrl}
+        url={pageURL}
       />
       <NavHeader
         searchTerm={searchTerm}
