@@ -24,6 +24,7 @@ import WhatsAppIcon from "../components/Whatsapp";
 import Footer from "../components/Footer";
 import { baseUrl } from "../rtk/slices/Product-slice";
 import MetaTags from "../components/MetaTags";
+import { Helmet } from "react-helmet-async";
 
 function BlogDetails() {
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ function BlogDetails() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const pageURL = window.location.href;
-
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
@@ -184,12 +184,39 @@ function BlogDetails() {
 
   return (
     <div className="">
-      <MetaTags
+      <Helmet>
+        <meta charset="utf-8" />
+        <link rel="icon" href={blogDetails.pictureUrl} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
+        <meta
+          name="description"
+          content="Web site created using create-react-app"
+        />
+        <link rel="apple-touch-icon" href={blogDetails.pictureUrl} />
+
+        <link rel="manifest" href={blogDetails.pictureUrl} />
+
+        <meta property="og:title" content={blogDetails.title} />
+        <meta property="og:description" content={blogDetails.title} />
+        <meta property="description" content={blogDetails.title} />
+        <meta property="og:image" content={blogDetails.pictureUrl} />
+        <meta property="og:url" content={pageURL} />
+        <meta property="og:type" content="article" />
+      </Helmet>
+
+      {/* <MetaTags
         title={blogDetails.title}
-        content={blogDetails.content}
+        content={blogDetails.title}
         pictureUrl={blogDetails.pictureUrl}
         url={pageURL}
-      />
+      /> */}
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}

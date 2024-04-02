@@ -18,15 +18,15 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 // Use createRoot instead of ReactDOM.render
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HashRouter>
-      <HelmetProvider>
+    <HelmetProvider>
+      <HashRouter>
         <Provider store={store}>
           <div dir={store.getState().translation.direction}>
             <App />
           </div>
         </Provider>
-      </HelmetProvider>
-    </HashRouter>
+      </HashRouter>
+    </HelmetProvider>
   </React.StrictMode>
 );
 
