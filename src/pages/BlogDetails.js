@@ -184,7 +184,7 @@ function BlogDetails() {
 
   return (
     <div className="">
-      <Helmet>
+      {/* <Helmet>
         <meta charset="utf-8" />
         <link rel="icon" href={blogDetails.pictureUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -209,14 +209,14 @@ function BlogDetails() {
         <meta property="og:image" content={blogDetails.pictureUrl} />
         <meta property="og:url" content={pageURL} />
         <meta property="og:type" content="article" />
-      </Helmet>
+      </Helmet> */}
 
-      {/* <MetaTags
+      <MetaTags
         title={blogDetails.title}
         content={blogDetails.title}
         pictureUrl={blogDetails.pictureUrl}
         url={pageURL}
-      /> */}
+      />
       <NavHeader
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
@@ -225,6 +225,7 @@ function BlogDetails() {
 
       <div className="bg-gray-50 bottom-0 overflow-y-hidden mt-[150px] ">
         <div className="">
+          
           <WhatsAppIcon />
           <div className="md:mr-24 mx-4 overflow-y-hidden min-h-screen">
             <div>

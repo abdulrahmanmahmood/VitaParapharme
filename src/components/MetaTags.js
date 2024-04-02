@@ -17,7 +17,7 @@ const MetaTags = ({ title, content, pictureUrl,url }) => {
       <meta property="description" content={`${content}`} />
       <meta property="og:image" content={pictureUrl} />
       <meta property="og:url" content={url} />
-      <meta property="og:type" content="article" />
+      <meta property="og:type" content="website" />
 
     </Helmet>
   );
