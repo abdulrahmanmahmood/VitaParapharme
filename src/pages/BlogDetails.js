@@ -184,8 +184,8 @@ function BlogDetails() {
 
   return (
     <div className="">
-      {/* <Helmet>
-        <meta charset="utf-8" />
+      <Helmet>
+        {/*         <meta charset="utf-8" />
         <link rel="icon" href={blogDetails.pictureUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
@@ -208,8 +208,10 @@ function BlogDetails() {
         <meta property="description" content={blogDetails.title} />
         <meta property="og:image" content={blogDetails.pictureUrl} />
         <meta property="og:url" content={pageURL} />
-        <meta property="og:type" content="article" />
-      </Helmet> */}
+        <meta property="og:type" content="article" />*/}
+        <meta property="og:image:width" content="526" />
+        <meta property="og:image:height" content="275" />
+      </Helmet>
 
       <MetaTags
         title={blogDetails.title}
@@ -225,7 +227,6 @@ function BlogDetails() {
 
       <div className="bg-gray-50 bottom-0 overflow-y-hidden mt-[150px] ">
         <div className="">
-          
           <WhatsAppIcon />
           <div className="md:mr-24 mx-4 overflow-y-hidden min-h-screen">
             <div>

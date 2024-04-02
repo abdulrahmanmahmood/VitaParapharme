@@ -13,6 +13,7 @@
     "@tinymce/tinymce-react": "^4.3.2",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
+    "express": "^4.19.2",
     "framer-motion": "^11.0.3",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
@@ -39,7 +40,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap"
+    "postbuild": "react-snap",
+    "start:server": "node server.js"
   },
   "eslintConfig": {
     "extends": [
