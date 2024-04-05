@@ -162,7 +162,7 @@ function Blog() {
         handleSearchChange={handleSearchChange}
         handleProductClick={handleProductClick}
       />
-  
+
       <div className="mt-[150px]">
         <div className="">
           <div className="border-black border-[1px] lg:py-2  border-solid w-[80%] lg:w-[50%] h-30 mx-auto mt-6 rounded-xl">
@@ -177,7 +177,7 @@ function Blog() {
                 <FaSearch className="text-xl" />
               </button>
             </form>
-  
+
             <div className="autocom-box autocom-blog">
               {productExistsInCategory === false && (
                 <div className="error-message">
@@ -187,7 +187,7 @@ function Blog() {
             </div>
           </div>
           <WhatsAppIcon />
-  
+
           {loading && (
             <div
               className="loading-spinner"
@@ -276,8 +276,13 @@ function Blog() {
                           <h5 style={{ textAlign: "center", margin: "10px 0" }}>
                             {blog.title}
                           </h5>
-                          <p style={{ textAlign: "center" }}>
-                            {blog.content.substring(0, 125)}...
+                          <p
+                            style={{ textAlign: "center" }}
+                            className="max-h-[130px] overflow-hidden"
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{ __html: blog.content }}
+                            ></div>
                           </p>
                           <div
                             className="buttons"
@@ -296,12 +301,14 @@ function Blog() {
                   </div>
                 </div>
               ) : (
-                <div className="text-center my-8 p-3 text-2xl w-[60%] py-3 shadow-md  h-[100px] border-1 mx-auto">There are no articles.</div>
+                <div className="text-center my-8 p-3 text-2xl w-[60%] py-3 shadow-md  h-[100px] border-1 mx-auto">
+                  There are no articles.
+                </div>
               )}
             </div>
           )}
         </div>
-  
+
         <DialogBlog
           isOpen={detailsOpen}
           onCancel={handleCancelDetails}
@@ -311,7 +318,6 @@ function Blog() {
       <Footer />
     </div>
   );
-  
 }
 
 export default Blog;

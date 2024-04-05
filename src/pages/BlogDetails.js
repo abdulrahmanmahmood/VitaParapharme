@@ -312,7 +312,7 @@ function BlogDetails() {
                     )}
                     {blogDetails ? (
                       <div>
-                        <h6>{blogDetails.content}</h6>
+                          <div dangerouslySetInnerHTML={{ __html: blogDetails.content }}></div>
                       </div>
                     ) : (
                       <p>Loading...</p>
