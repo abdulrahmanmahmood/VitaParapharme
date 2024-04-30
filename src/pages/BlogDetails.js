@@ -234,7 +234,7 @@ function BlogDetails() {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-[100%] md:w-[40%] bg-transparent md:ml-20   mt-12">
                     <img
-                      className="w-full h-[100%] md:w-[90%]  rounded-tr-3xl rounded-bl-3xl"
+                      className="w-full h-[80%] md:w-[30%] bottom-3 fixed rounded-tr-3xl rounded-bl-3xl"
                       src={blogDetails && blogDetails.pictureUrl}
                       alt="Product poster"
                     />

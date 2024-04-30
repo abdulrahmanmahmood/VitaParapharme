@@ -16,13 +16,13 @@ import "bootstrap/dist/js/bootstrap.esm";
 const RootComponent = (
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Provider store={store}>
           <div dir={store.getState().translation.direction}>
             <App />
           </div>
         </Provider>
-      </BrowserRouter>
+      </HashRouter>
     </HelmetProvider>
   </React.StrictMode>
 );
