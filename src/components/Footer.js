@@ -17,7 +17,7 @@ function Footer() {
 
   return (
     <>
-      <div className="bg-[#3EBF87] text-white w-full py-3 text-center bottom-0 z-50">
+      <div className="bg-[#3EBF87] text-white w-full py-3 text-center bottom-0 z-5000000 relative ">
         <div className="  ">
           <div
             className={

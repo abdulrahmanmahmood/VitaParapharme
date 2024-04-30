@@ -239,8 +239,15 @@ function Blog() {
                         </div>
                         <p className=" content-start text-left">
                           {selectedBlog
-                            ? selectedBlog.content
-                            : blogs[0].content}
+                          
+                            ? 
+                            <div
+                              dangerouslySetInnerHTML={{ __html: selectedBlog.content }}
+                            ></div>
+                            :  <div
+                            dangerouslySetInnerHTML={{ __html: blogs[0].content }}
+                            ></div>
+                            }
                         </p>
                       </div>
                     </div>
